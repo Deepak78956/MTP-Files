@@ -12,6 +12,8 @@ struct node
     int start;
     int end;
     int pred;
+    int id;
+    int comp;
 };
 
 struct graph
@@ -23,9 +25,10 @@ struct graph
 
 int clk = 0;
 
-void Traverse(int vertex, vector<int> rowPtr, vector<int> dest, vector<node> &prop)
+void Traverse(int vertex, vector<int> rowPtr, vector<int> dest, vector<node> &prop, int scc)
 {
     prop[vertex].start = ++clk;
+    prop[vertex].comp = scc;
     prop[vertex].color = 1;
     for (int j = rowPtr[vertex]; j < rowPtr[vertex + 1]; j++)
     {
@@ -33,7 +36,7 @@ void Traverse(int vertex, vector<int> rowPtr, vector<int> dest, vector<node> &pr
         if (prop[neigh].color == 0)
         {
             prop[neigh].pred = vertex;
-            Traverse(neigh, rowPtr, dest, prop);
+            Traverse(neigh, rowPtr, dest, prop, scc);
         }
     }
     prop[vertex].color = 2;
@@ -50,29 +53,100 @@ vector<node> DFS(vector<int> rowPtr, vector<int> dest, int n)
         ele.start = -1;
         ele.end = -1;
         ele.pred = -1;
+        ele.id = i;
+        ele.comp = -1;
         prop.push_back(ele);
     }
 
     for (int i = 0; i < n; ++i)
     {
         if (prop[i].color == 0)
-            Traverse(i, rowPtr, dest, prop);
+            Traverse(i, rowPtr, dest, prop, -1);
     }
 
-    for (int i = 0; i < n; ++i)
-    {
-        printf("For node %d \n", i);
-        printf("start = %d, end = %d, pred = %d\n", prop[i].start, prop[i].end, prop[i].pred);
-        printf("\n");
+    if (DEBUG == true) {
+        cout << "After DFS" << endl;
+        for (int i = 0; i < n; ++i)
+        {
+            printf("For node %d \n", i);
+            printf("start = %d, end = %d, pred = %d\n", prop[i].start, prop[i].end, prop[i].pred);
+            printf("\n");
+        }
     }
 
     return prop;
 }
 
+// bool comp(struct node &a, struct node &b)
+// {
+//     return a.end >= b.end;
+// }
+
 void SCC(struct graph g, struct graph transpose)
 {
     vector<node> prop;
     prop = DFS(g.rowPtr, g.dest, g.vertices);
+
+    if (DEBUG == true)
+    {
+        cout << "Before sorting according to End times" << endl;
+        for (int i = 0; i < g.vertices; i++)
+        {
+            cout << "Vertex: " << i << " "
+                 << "End time: " << prop[i].end << endl;
+        }
+        cout << endl;
+    }
+
+    // Sorting according to the end times, performing Kosaraju's algorithm
+    sort(prop.begin(), prop.end(), [](const node &a, const node &b)
+         { return a.end >= b.end; });
+
+    vector<int> decSortedVertices;
+    for (int i = 0; i < g.vertices; i++)
+    {
+        decSortedVertices.push_back(prop[i].id);
+    }
+
+    if (DEBUG == true)
+    {
+        cout << "After sorting according to End times" << endl;
+        for (int i = 0; i < g.vertices; i++)
+        {
+            cout << "Vertex: " << prop[i].id << " "
+                 << "End time: " << prop[i].end << endl;
+        }
+        cout << endl;
+    }
+
+    int scc = 0;
+    vector<node> transposeProp;
+    for (int i = 0; i < g.vertices; ++i)
+    {
+        node ele;
+        ele.color = 0; // 0 - white, 1 - gray, 2 - black
+        ele.start = -1;
+        ele.end = -1;
+        ele.pred = -1;
+        ele.id = i;
+        ele.comp = -1;
+        transposeProp.push_back(ele);
+    }
+
+    for (int i = 0; i < transpose.vertices; ++i)
+    {
+        int nextDec = decSortedVertices[i];
+        if (transposeProp[nextDec].color == 0)
+        {
+            Traverse(nextDec, transpose.rowPtr, transpose.dest, transposeProp, scc);
+            scc += 1;
+        }
+    }
+
+    for (int i = 0; i < transpose.vertices; i++)
+    {
+        printf("Node %d, component %d\n", i, transposeProp[i].comp);
+    }
 }
 
 void swap(int &n1, int &n2)
@@ -204,4 +278,6 @@ int main()
         }
         cout << endl;
     }
+
+    SCC(csr, graphTranspose);
 }
