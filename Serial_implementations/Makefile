@@ -1,8 +1,8 @@
-output: main.o make_csr.o
-	g++ main.o make_csr.o -o output
+output: Boruvkas_MST.o make_csr.o
+	g++ Boruvkas_MST.o make_csr.o -o output
 
-main.o: main.cpp
-	g++ -c main.cpp
+Boruvkas_MST.o: Boruvkas_MST.cpp
+	g++ -c Boruvkas_MST.cpp
 
 make_csr.o: make_csr.cpp make_csr.hpp
 	g++ -c make_csr.cpp
