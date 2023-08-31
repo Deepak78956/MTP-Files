@@ -1,8 +1,8 @@
-output: triangle_counting.o make_csr.o
-	g++ triangle_counting.o make_csr.o -o output
+output: k_core.o make_csr.o
+	g++ k_core.o make_csr.o -o output
 
-triangle_counting.o: triangle_counting.cpp file.txt
-	g++ -c triangle_counting.cpp
+k_core.o: k_core.cpp file.txt
+	g++ -c k_core.cpp
 
 make_csr.o: make_csr.cpp make_csr.hpp
 	g++ -c make_csr.cpp
