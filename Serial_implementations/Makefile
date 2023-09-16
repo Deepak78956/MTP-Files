@@ -1,11 +1,11 @@
-output: k_core.o make_csr.o
-	g++ k_core.o make_csr.o -o output
+output: csr_to_adj.o make_csr.o
+	nvcc csr_to_adj.o make_csr.o -o output
 
-k_core.o: k_core.cpp file.txt
-	g++ -c k_core.cpp
+csr_to_adj.o: csr_to_adj.cpp file.txt
+	nvcc -c csr_to_adj.cpp
 
 make_csr.o: make_csr.cpp make_csr.hpp
-	g++ -c make_csr.cpp
+	nvcc -c make_csr.cpp
 
 clean:
 	rm *.o output
