@@ -37,17 +37,14 @@ __global__ void initGraph(struct Graph *graph, int vertices, struct Node **adjLi
     {
         graph->adjLists[id] = NULL;
     }
-    // for (int i = 0; i < vertices; i++)
-    // {
-    //     graph->adjLists[i] = NULL;
-    // }
+
     if (DEBUG)
     {
         printf("id = %d and its val %d\n", id, graph->adjLists[id]);
     }
 }
 
-__global__ void initEdgeList(struct Node **edgeList, int *dev_col_ind, int size)
+__global__ void initEdgeList(struct Node *edgeList, int *dev_col_ind, int size)
 {
     if (DEBUG)
     {
@@ -72,11 +69,11 @@ __global__ void initEdgeList(struct Node **edgeList, int *dev_col_ind, int size)
     unsigned id = blockIdx.x * blockDim.x + threadIdx.x;
     if (id < size)
     {
-        edgeList[id]->data = dev_col_ind[id];
+        edgeList[id].data = dev_col_ind[id];
     }
 }
 
-__global__ void makeD_LL(struct Node **edgeList, int *dev_row_ptr, struct Graph *graph, int size)
+__global__ void makeD_LL(struct Node *edgeList, int *dev_row_ptr, struct Graph *graph, int size)
 {
     unsigned id = blockIdx.x * blockDim.x + threadIdx.x;
     if (id < graph->numVertices)
@@ -86,8 +83,8 @@ __global__ void makeD_LL(struct Node **edgeList, int *dev_row_ptr, struct Graph 
         // printf("For vertex number %d Edges are: ", id);
         for (int v = start; v < end; v++)
         {
-            edgeList[v]->next = graph->adjLists[id];
-            graph->adjLists[id] = edgeList[v];
+            edgeList[v].next = graph->adjLists[id];
+            graph->adjLists[id] = &edgeList[v];
             // printf(" %d ", graph->adjLists[id]);
         }
         // printf("\n");
@@ -192,18 +189,18 @@ int main()
     cudaDeviceSynchronize();
     initClock = clock() - initClock;
 
-    struct Node **edgeList;
-    cudaMalloc(&edgeList, size * sizeof(struct Node *));
-    for (int i = 0; i < size; i++)
-    {
-        struct Node *node;
-        cudaMalloc(&node, sizeof(struct Node));
-        allocate<<<1, 1>>>(node, edgeList, i);
-        if (DEBUG)
-        {
-            printf("Allocated for edge %d\n", i);
-        }
-    }
+    struct Node *edgeList;
+    cudaMalloc((struct Node **)&edgeList, size * sizeof(struct Node));
+    // for (int i = 0; i < size; i++)
+    // {
+    //     struct Node *node;
+    //     cudaMalloc(&node, sizeof(struct Node));
+    //     allocate<<<1, 1>>>(node, edgeList, i);
+    //     if (DEBUG)
+    //     {
+    //         printf("Allocated for edge %d\n", i);
+    //     }
+    // }
 
     initEdgeClock = clock();
     unsigned nBlocks_for_edges = ceil((float)size / B_SIZE);
@@ -216,8 +213,9 @@ int main()
     cudaDeviceSynchronize();
     makeD_LLClock = clock() - makeD_LLClock;
 
-    // printD_LL<<<1, 1>>>(graph);
-    // cudaDeviceSynchronize();
+    cout << "here" << endl;
+    printD_LL<<<1, 1>>>(graph);
+    cudaDeviceSynchronize();
 
     cout << endl;
     cout << "Total time taken: " << ((double)(makeD_LLClock + initEdgeClock + initClock)) / CLOCKS_PER_SEC << endl;
