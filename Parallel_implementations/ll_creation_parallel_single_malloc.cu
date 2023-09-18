@@ -213,12 +213,11 @@ int main()
     cudaDeviceSynchronize();
     makeD_LLClock = clock() - makeD_LLClock;
 
-    cout << "here" << endl;
-    printD_LL<<<1, 1>>>(graph);
-    cudaDeviceSynchronize();
+    // printD_LL<<<1, 1>>>(graph);
+    // cudaDeviceSynchronize();
 
     cout << endl;
-    cout << "Total time taken: " << ((double)(makeD_LLClock + initEdgeClock + initClock)) / CLOCKS_PER_SEC << endl;
+    cout << "Total time taken: " << ((double)(makeD_LLClock + initEdgeClock + initClock)) / CLOCKS_PER_SEC * 1000 << endl;
 
     return 0;
 }

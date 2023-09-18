@@ -7,7 +7,7 @@
 #include <cuda.h>
 
 #define DEBUG false
-#define BATCH_SIZE 2
+#define BATCH_SIZE 100000
 #define BLOCK_SIZE 1024
 
 using namespace std;
@@ -60,21 +60,7 @@ __global__ void initEdgeList(struct Node *edgeList, int *dev_col_ind, int size)
         printf("In init edgelist func\n");
         printf("size got %d\n", size);
     }
-    // for (int i = 0; i < size; i++)
-    // {
-    //     if (DEBUG)
-    //     {
-    //         printf("loop in initEdge %d\n", i);
-    //     }
 
-    //     edgeList[i]->data = dev_col_ind[i];
-
-    //     if (DEBUG)
-    //     {
-    //         printf("data of dev_col_ind i got %d\n", dev_col_ind[i]);
-    //         printf("data of Edgelist i got %d\n", edgeList[i]->data);
-    //     }
-    // }
     unsigned id = blockIdx.x * blockDim.x + threadIdx.x;
     if (id < size)
     {
@@ -89,31 +75,20 @@ __global__ void makeD_LL(struct Node *edgeList, int *dev_row_ptr, int *dev_verte
     {
         int start = dev_row_ptr[id];
         int end = dev_row_ptr[id + 1];
-        // printf("For vertex number %d Edges are: ", id);
+
         int u = dev_vertex_arr[id];
         for (int v = start; v < end; v++)
         {
             edgeList[v].next = graph->adjLists[u];
             graph->adjLists[u] = &edgeList[v];
-            // printf(" %d ", graph->adjLists[id]);
         }
-        // printf("\n");
     }
-    // for (int u = 0; u < graph->numVertices; u++)
-    // {
-    //     int start = dev_row_ptr[u];
-    //     int end = dev_row_ptr[u + 1];
-    //     for (int v = start; v < end; v++)
-    //     {
-    //         edgeList[v]->next = graph->adjLists[u];
-    //         graph->adjLists[u] = edgeList[v];
-    //     }
-    // }
 }
 
 __global__ void printD_LL(struct Graph *graph)
 {
     int vertices = graph->numVertices;
+    int edges = 0;
     for (int u = 0; u < vertices; u++)
     {
         struct Node *temp = graph->adjLists[u];
@@ -122,9 +97,12 @@ __global__ void printD_LL(struct Graph *graph)
         {
             printf("%d ", temp->data);
             temp = temp->next;
+            edges++;
         }
         printf("\n");
     }
+    printf("Total Vertices: %d\n", vertices);
+    printf("Totak Edges: %d\n", edges);
 }
 
 int main()
@@ -137,6 +115,9 @@ int main()
     int dev_ll_size = 0;
 
     cudaMalloc(&graph, sizeof(struct Graph));
+
+    clock_t setNoneClk, copyAdjClk, edgeBuffClk;
+    double totalTime = 0;
 
     while (total_edges > 0)
     {
@@ -268,17 +249,24 @@ int main()
             int req_size = maximum * 2;
 
             struct Node **tempList;
+
+            setNoneClk = clock();
             cudaMalloc(&tempList, sizeof(struct Node *) * req_size);
             unsigned nBlocks_for_setNone = ceil((float)req_size / BLOCK_SIZE);
             setNone<<<nBlocks_for_setNone, BLOCK_SIZE>>>(req_size, tempList);
             cudaDeviceSynchronize();
+            setNoneClk = clock() - setNoneClk;
+            totalTime += ((double)setNoneClk) / CLOCKS_PER_SEC * 1000;
 
             if (dev_ll_size != 0)
             {
                 // copy old adjlist
                 unsigned nBlock_for_copy_adjlist = ceil((float)dev_ll_size / BLOCK_SIZE);
+                copyAdjClk = clock();
                 copyAdjlist<<<nBlock_for_copy_adjlist, BLOCK_SIZE>>>(graph, tempList);
                 cudaDeviceSynchronize();
+                copyAdjClk = clock() - copyAdjClk;
+                totalTime += ((double)copyAdjClk) / CLOCKS_PER_SEC * 1000;
             }
 
             // assign new number of vertices to graph and assign tempList to adjList of graph
@@ -288,6 +276,7 @@ int main()
             dev_ll_size = req_size;
         }
 
+        edgeBuffClk = clock();
         struct Node *edgeList_buffer;
         cudaMalloc((struct Node **)&edgeList_buffer, size * sizeof(struct Node));
 
@@ -298,10 +287,15 @@ int main()
         unsigned nBlocks_for_vertices = ceil((float)mapSize / BLOCK_SIZE);
         makeD_LL<<<nBlocks_for_vertices, BLOCK_SIZE>>>(edgeList_buffer, dev_offset_arr, dev_vertex_arr, graph, mapSize);
         cudaDeviceSynchronize();
+        edgeBuffClk = clock() - edgeBuffClk;
+
+        totalTime += ((double)edgeBuffClk) / CLOCKS_PER_SEC * 1000;
     }
 
-    printD_LL<<<1, 1>>>(graph);
-    cudaDeviceSynchronize();
+    // printD_LL<<<1, 1>>>(graph);
+    // cudaDeviceSynchronize();
+
+    cout << "Total time taken by kernels to Execute: " << totalTime << endl;
 
     return 0;
 }
