@@ -320,13 +320,13 @@ int main()
         totalTime += ((double)edgeBuffClk) / CLOCKS_PER_SEC * 1000;
     }
 
-    printD_LL<<<1, 1>>>(graph);
-    cudaDeviceSynchronize();
+    // printD_LL<<<1, 1>>>(graph);
+    // cudaDeviceSynchronize();
 
     // cout << "Total time taken by kernels to Execute: " << totalTime << endl;
 
     // Bulk Delete start
-    ifstream fdel("del.txt");
+    ifstream fdel("file.txt");
     fdel >> num_vertices >> total_edges >> directed >> weighted;
     int size = 2 * total_edges;
 
@@ -384,6 +384,8 @@ int main()
     struct CSR_del csr_del = {offsetArr, edgeList};
     int *dev_offset_arr, *dev_edge_list;
 
+    clock_t calcTime;
+    calcTime = clock();
     cudaMalloc(&dev_offset_arr, sizeof(int) * (num_vertices + 1));
     cudaMalloc(&dev_edge_list, sizeof(int) * size);
 
@@ -393,11 +395,13 @@ int main()
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / BLOCK_SIZE);
     delEdges<<<nBlocks_for_vertices, BLOCK_SIZE>>>(graph, dev_offset_arr, dev_edge_list, num_vertices);
     cudaDeviceSynchronize();
+    calcTime = clock() - calcTime;
 
-    cout << endl;
+    cout << "Total time taken: " << ((double)calcTime) / CLOCKS_PER_SEC * 1000 << endl;
+    // cout << endl;
 
-    printD_LL<<<1, 1>>>(graph);
-    cudaDeviceSynchronize();
+    // printD_LL<<<1, 1>>>(graph);
+    // cudaDeviceSynchronize();
 
     return 0;
 }

@@ -8,7 +8,7 @@
 
 #define DEBUG false
 #define BATCH_SIZE 100000
-#define BATCH_SIZE_FOR_DEL 2
+#define BATCH_SIZE_FOR_DEL 100000
 #define BLOCK_SIZE 1024
 
 using namespace std;
@@ -111,16 +111,21 @@ __global__ void printD_LL(struct Graph *graph)
     printf("Totak Edges: %d\n", edges);
 }
 
-__global__ void del_edge(struct Graph *graph, int *vertexArr, int *offsetArr, int *edgeList, int num_vertices){
+__global__ void del_edge(struct Graph *graph, int *vertexArr, int *offsetArr, int *edgeList, int num_vertices)
+{
     unsigned id = blockIdx.x * blockDim.x + threadIdx.x;
-    if  (id < num_vertices) {
+    if (id < num_vertices)
+    {
         int vertex = vertexArr[id];
-        for (unsigned j = offsetArr[id]; j < offsetArr[id + 1]; j++){
+        for (unsigned j = offsetArr[id]; j < offsetArr[id + 1]; j++)
+        {
             int toDel = edgeList[j];
             struct Node *temp = graph->adjLists[vertex];
 
-            while (temp){
-                if (temp->data == toDel) {
+            while (temp)
+            {
+                if (temp->data == toDel)
+                {
                     temp->data = -1;
                     break;
                 }
@@ -317,17 +322,20 @@ int main()
         totalTime += ((double)edgeBuffClk) / CLOCKS_PER_SEC * 1000;
     }
 
-    printD_LL<<<1, 1>>>(graph);
-    cudaDeviceSynchronize();
+    // printD_LL<<<1, 1>>>(graph);
+    // cudaDeviceSynchronize();
 
-    //cout << "Total time taken by kernels to Execute: " << totalTime << endl;
-
+    // cout << "Total time taken by kernels to Execute: " << totalTime << endl;
 
     // Batch Delete start
-    ifstream fdel("del.txt");
+    ifstream fdel("file.txt");
     fdel >> num_vertices >> total_edges >> directed >> weighted;
 
-    while (total_edges > 0) {
+    double total_Time = 0;
+    clock_t calcTime;
+
+    while (total_edges > 0)
+    {
         int size, num_edges_cur_batch;
 
         // Defining edges in current batch size
@@ -361,7 +369,7 @@ int main()
 
         sort(edges.begin(), edges.end(), [](const vector<int> &a, const vector<int> &b)
              { return a[0] < b[0]; });
-        
+
         int *edgeList, *offsetArr, *vertexArr;
         edgeList = (int *)malloc(sizeof(int) * size);
         map<int, int> hmap;
@@ -407,6 +415,8 @@ int main()
         struct CSR csr_del = {vertexArr, offsetArr, edgeList, mapSize};
 
         int *dev_offset_arr, *dev_edge_list, *dev_vertex_arr;
+
+        calcTime = clock();
         cudaMalloc(&dev_offset_arr, sizeof(int) * (mapSize + 1));
         cudaMalloc(&dev_edge_list, sizeof(int) * size);
         cudaMalloc(&dev_vertex_arr, sizeof(int) * mapSize);
@@ -417,12 +427,17 @@ int main()
         unsigned nBlocks_for_vertices = ceil((float)mapSize / BLOCK_SIZE);
         del_edge<<<nBlocks_for_vertices, BLOCK_SIZE>>>(graph, dev_vertex_arr, dev_offset_arr, dev_edge_list, mapSize);
         cudaDeviceSynchronize();
+        calcTime = clock() - calcTime;
+
+        total_Time += ((double)calcTime) / CLOCKS_PER_SEC * 1000;
     }
 
-    cout << endl;
+    // cout << endl;
 
-    printD_LL<<<1, 1>>>(graph);
-    cudaDeviceSynchronize();
+    // printD_LL<<<1, 1>>>(graph);
+    // cudaDeviceSynchronize();
+
+    cout << "Total time taken: " << total_Time << endl;
 
     return 0;
 }
