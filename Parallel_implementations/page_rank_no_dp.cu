@@ -4,10 +4,12 @@
 #include <bits/stdc++.h>
 #include <numeric>
 #include <cuda.h>
-#define DEBUG true
+#define DEBUG false
 #define B_SIZE 1024
 
 using namespace std;
+
+__device__ float d = 0.85;
 
 struct CSR
 {
@@ -50,7 +52,7 @@ __global__ void checkPR(float *pr, int num_vertices)
     printf("\n");
 }
 
-__global__ void computePR(struct CSR *csr, struct CSR *in_csr, float *pr, float d)
+__global__ void computePR(struct CSR *csr, struct CSR *in_csr, float *oldPr, float *newPr)
 {
     float val = 0.0;
     unsigned p = blockDim.x * blockIdx.x + threadIdx.x;
@@ -69,24 +71,25 @@ __global__ void computePR(struct CSR *csr, struct CSR *in_csr, float *pr, float 
             {
                 // pr[t] can have race conditions because of pr[p], use of atomics is needed
                 // val += pr[t] / out_deg_t;
-                float temp = pr[t] / out_deg_t;
-                atomicAdd(&val, temp);
+                float temp = oldPr[t] / out_deg_t;
+                val += oldPr[t] / out_deg_t;
+                // atomicAdd(&val, temp);
                 if (DEBUG)
                     printf("%f\n", val);
             }
         }
 
-        pr[p] = val * d + (1 - d) / csr->num_vertices;
+        newPr[p] = val * d + (1 - d) / csr->num_vertices; // Need of lock here
     }
 }
 
 __global__ void printPR(float *pr, int vertices)
 {
-    printf("hey\n");
     for (int i = 0; i < vertices; i++)
     {
         printf("%lf ", pr[i]);
     }
+    printf("\n");
 }
 
 __global__ void checkAssignment(struct CSR *csr)
@@ -237,10 +240,12 @@ int main()
         cudaDeviceSynchronize();
     }
 
-    float *pr;
+    float *pr, *prCopy;
     cudaMalloc(&pr, sizeof(float) * num_vertices);
+    cudaMalloc(&prCopy, sizeof(float) * num_vertices);
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
     init<<<nBlocks_for_vertices, B_SIZE>>>(pr, num_vertices);
+    init<<<nBlocks_for_vertices, B_SIZE>>>(prCopy, num_vertices);
     cudaDeviceSynchronize();
 
     // if (DEBUG == true)
@@ -249,12 +254,31 @@ int main()
     //     cudaDeviceSynchronize();
     // }
 
-    float d = 0.85;
-    computePR<<<nBlocks_for_vertices, B_SIZE>>>(dev_csr, dev_in_csr, pr, d);
-    cudaDeviceSynchronize();
+    int max_iter = 1;
+    // 3rd and 4th param for oldPr and newpr
+    for (int i = 1; i < max_iter + 1; i++)
+    {
+        if (i % 2 == 0)
+        {
+            computePR<<<nBlocks_for_vertices, B_SIZE>>>(dev_csr, dev_in_csr, pr, prCopy);
+        }
+        else
+        {
+            computePR<<<nBlocks_for_vertices, B_SIZE>>>(dev_csr, dev_in_csr, prCopy, pr);
+        }
+        cudaDeviceSynchronize();
+    }
 
-    printPR<<<1, 1>>>(pr, num_vertices);
-    cudaDeviceSynchronize();
+    if (max_iter % 2 == 0)
+    {
+        printPR<<<1, 1>>>(prCopy, num_vertices);
+        cudaDeviceSynchronize();
+    }
+    else
+    {
+        printPR<<<1, 1>>>(pr, num_vertices);
+        cudaDeviceSynchronize();
+    }
 
     return 0;
 }
