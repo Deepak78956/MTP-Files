@@ -269,16 +269,16 @@ int main()
         cudaDeviceSynchronize();
     }
 
-    if (max_iter % 2 == 0)
-    {
-        printPR<<<1, 1>>>(prCopy, num_vertices);
-        cudaDeviceSynchronize();
-    }
-    else
-    {
-        printPR<<<1, 1>>>(pr, num_vertices);
-        cudaDeviceSynchronize();
-    }
+    // if (max_iter % 2 == 0)
+    // {
+    //     printPR<<<1, 1>>>(prCopy, num_vertices);
+    //     cudaDeviceSynchronize();
+    // }
+    // else
+    // {
+    //     printPR<<<1, 1>>>(pr, num_vertices);
+    //     cudaDeviceSynchronize();
+    // }
 
     return 0;
 }
