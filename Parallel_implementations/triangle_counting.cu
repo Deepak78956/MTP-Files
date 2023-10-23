@@ -7,6 +7,8 @@
 #include "make_csr.hpp"
 #define DEBUG false
 #define B_SIZE 1024
+#define directed 0
+#define weighted 0
 
 using namespace std;
 
@@ -21,8 +23,6 @@ struct Graph
     int numVertices;
     struct Node **adjLists;
 };
-
-__shared__ unsigned tc = 0;
 
 __global__ void initGraph(struct Graph *graph, int vertices, struct Node **adjLists)
 {
@@ -44,7 +44,7 @@ __global__ void initGraph(struct Graph *graph, int vertices, struct Node **adjLi
 
     if (DEBUG)
     {
-        printf("id = %d and its val %d\n", id, graph->adjLists[id]);
+        printf("id = %d and its val %d\n", id, graph->adjLists[id]->data);
     }
 }
 
@@ -55,21 +55,7 @@ __global__ void initEdgeList(struct Node *edgeList, int *dev_col_ind, int size)
         printf("In init edgelist func\n");
         printf("size got %d\n", size);
     }
-    // for (int i = 0; i < size; i++)
-    // {
-    //     if (DEBUG)
-    //     {
-    //         printf("loop in initEdge %d\n", i);
-    //     }
 
-    //     edgeList[i]->data = dev_col_ind[i];
-
-    //     if (DEBUG)
-    //     {
-    //         printf("data of dev_col_ind i got %d\n", dev_col_ind[i]);
-    //         printf("data of Edgelist i got %d\n", edgeList[i]->data);
-    //     }
-    // }
     unsigned id = blockIdx.x * blockDim.x + threadIdx.x;
     if (id < size)
     {
@@ -84,25 +70,13 @@ __global__ void makeD_LL(struct Node *edgeList, int *dev_row_ptr, struct Graph *
     {
         int start = dev_row_ptr[id];
         int end = dev_row_ptr[id + 1];
-        // printf("For vertex number %d Edges are: ", id);
+
         for (int v = start; v < end; v++)
         {
             edgeList[v].next = graph->adjLists[id];
             graph->adjLists[id] = &edgeList[v];
-            // printf(" %d ", graph->adjLists[id]);
         }
-        // printf("\n");
     }
-    // for (int u = 0; u < graph->numVertices; u++)
-    // {
-    //     int start = dev_row_ptr[u];
-    //     int end = dev_row_ptr[u + 1];
-    //     for (int v = start; v < end; v++)
-    //     {
-    //         edgeList[v]->next = graph->adjLists[u];
-    //         graph->adjLists[u] = edgeList[v];
-    //     }
-    // }
 }
 
 __global__ void printD_LL(struct Graph *graph)
@@ -133,31 +107,57 @@ __device__ int isNeigh(struct Graph *graph, int t, int r)
     return 0;
 }
 
+__device__ float tc = 0;
+
 __global__ void countTriangles(struct Graph *graph)
 {
-    unsigned id = blockDim.x * blockIdx.x + threadIdx.x;
+    unsigned p = blockDim.x * blockIdx.x + threadIdx.x;
 
-    struct Node *t = graph->adjLists[id];
-    while (t)
+    if (p < graph->numVertices)
     {
-        struct Node *r = graph->adjLists[id];
-        while (r)
+        struct Node *t = graph->adjLists[p];
+        while (t)
         {
-            if (t->data != r->data && isNeigh(graph, t->data, r->data))
+            struct Node *r = graph->adjLists[p];
+            while (r)
             {
-                atomicInc(&tc, 1);
+                if (t != r && isNeigh(graph, t->data, r->data))
+                {
+                    atomicAdd(&tc, 1);
+                }
+                r = r->next;
             }
-            r = r->next;
+            t = t->next;
         }
-        t = t->next;
     }
+}
+
+__global__ void printTc()
+{
+    printf("Triangles got %f\n", tc / 6);
 }
 
 int main()
 {
-    ifstream fin("file.txt");
-    int num_vertices, num_edges, directed, weighted;
-    fin >> num_vertices >> num_edges >> directed >> weighted;
+    string fileName = "./sample_graphs/delaunay_n10.mtx";
+    ifstream fin(fileName);
+    string line;
+    while (getline(fin, line))
+    {
+        if (line[0] == '%')
+        {
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    int num_vertices, num_edges, x;
+    istringstream header(line);
+    header >> num_vertices >> x >> num_edges;
+    num_vertices += 1;
 
     struct NonWeightCSR csr = CSRNonWeighted(num_vertices, num_edges, directed, fin);
 
@@ -216,9 +216,17 @@ int main()
     makeD_LL<<<nBlocks_for_vertices, B_SIZE>>>(edgeList, dev_row_ptr, graph, size);
     cudaDeviceSynchronize();
 
-    countTriangles<<<nBlocks_for_vertices, B_SIZE>>>(graph);
+    clock_t calcTime;
 
-    printf("Number of Triangles in the graphs: %d\n", tc / 6);
+    calcTime = clock();
+    countTriangles<<<nBlocks_for_vertices, B_SIZE>>>(graph);
+    cudaDeviceSynchronize();
+    calcTime = clock() - calcTime;
+
+    // printTc<<<1, 1>>>();
+    // cudaDeviceSynchronize();
+    double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
+    cout << "On graph: " << fileName << ", Time taken: " << t_time << endl;
 
     return 0;
 }
