@@ -137,9 +137,15 @@ __global__ void printTc()
     printf("Triangles got %f\n", tc / 6);
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-    string fileName = "./sample_graphs/delaunay_n10.mtx";
+    if (argc != 2)
+    {
+        printf("Usage: %s <input_file>\n", argv[0]);
+        return 1;
+    }
+
+    string fileName = argv[1];
     ifstream fin(fileName);
     string line;
     while (getline(fin, line))
@@ -223,10 +229,11 @@ int main()
     cudaDeviceSynchronize();
     calcTime = clock() - calcTime;
 
-    // printTc<<<1, 1>>>();
-    // cudaDeviceSynchronize();
+    printTc<<<1, 1>>>();
+    cudaDeviceSynchronize();
     double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
     cout << "On graph: " << fileName << ", Time taken: " << t_time << endl;
+    cout << endl;
 
     return 0;
 }

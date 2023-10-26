@@ -4,8 +4,11 @@
 #include <bits/stdc++.h>
 #include <numeric>
 #include <cuda.h>
+#include "make_csr.hpp"
 #define DEBUG false
 #define B_SIZE 1024
+#define directed 1
+#define weighted 0
 
 using namespace std;
 
@@ -48,7 +51,7 @@ __global__ void initGraph(struct Graph *graph, int vertices, struct Node **adjLi
 
     if (DEBUG)
     {
-        printf("id = %d and its val %d\n", id, graph->adjLists[id]);
+        printf("id = %d and its val %d\n", id, graph->adjLists[id]->data);
     }
 }
 
@@ -256,11 +259,33 @@ __global__ void printPR(float *pr, int vertices)
     printf("\n");
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-    ifstream fin("file.txt");
-    int num_vertices, num_edges, directed, weighted;
-    fin >> num_vertices >> num_edges >> directed >> weighted;
+    if (argc != 2)
+    {
+        printf("Usage: %s <input_file>\n", argv[0]);
+        return 1;
+    }
+
+    string fileName = argv[1];
+    ifstream fin(fileName);
+    string line;
+    while (getline(fin, line))
+    {
+        if (line[0] == '%')
+        {
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    istringstream header(line);
+    int num_vertices, num_edges, x;
+    header >> num_vertices >> x >> num_edges;
+    num_vertices += 1;
 
     int size = num_edges;
 
@@ -283,7 +308,7 @@ int main()
 
     int *outDeg;
     outDeg = (int *)malloc(num_vertices * sizeof(int));
-    cout << "printing outdegs" << endl;
+
     for (int i = 0; i < num_vertices; i++)
     {
         outDeg[i] = mainCSR.offsetArr[i + 1] - mainCSR.offsetArr[i];
@@ -306,6 +331,9 @@ int main()
 
     int max_iter = 1;
     // 3rd and 4th param for oldPr and newpr
+    clock_t calcTime;
+
+    calcTime = clock();
     for (int i = 1; i < max_iter + 1; i++)
     {
         if (i % 2 == 0)
@@ -318,17 +346,21 @@ int main()
         }
         cudaDeviceSynchronize();
     }
+    calcTime = clock() - calcTime;
 
-    if (max_iter % 2 == 0)
-    {
-        printPR<<<1, 1>>>(prCopy, num_vertices);
-        cudaDeviceSynchronize();
-    }
-    else
-    {
-        printPR<<<1, 1>>>(pr, num_vertices);
-        cudaDeviceSynchronize();
-    }
+    double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
+    cout << "On graph: " << fileName << ", Time taken: " << t_time << endl;
+    cout << endl;
+    // if (max_iter % 2 == 0)
+    // {
+    //     printPR<<<1, 1>>>(prCopy, num_vertices);
+    //     cudaDeviceSynchronize();
+    // }
+    // else
+    // {
+    //     printPR<<<1, 1>>>(pr, num_vertices);
+    //     cudaDeviceSynchronize();
+    // }
 
     return 0;
 }

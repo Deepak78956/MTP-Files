@@ -4,8 +4,11 @@
 #include <bits/stdc++.h>
 #include <numeric>
 #include <cuda.h>
+#include "make_csr.hpp"
 #define DEBUG false
 #define B_SIZE 1024
+#define directed 1
+#define weighted 0
 
 using namespace std;
 
@@ -108,11 +111,33 @@ __global__ void checkAssignment(struct CSR *csr)
     printf("\n");
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-    ifstream fin("file.txt");
-    int num_vertices, num_edges, directed, weighted;
-    fin >> num_vertices >> num_edges >> directed >> weighted;
+    if (argc != 2)
+    {
+        printf("Usage: %s <input_file>\n", argv[0]);
+        return 1;
+    }
+
+    string fileName = argv[1];
+    ifstream fin(fileName);
+    string line;
+    while (getline(fin, line))
+    {
+        if (line[0] == '%')
+        {
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    istringstream header(line);
+    int num_vertices, num_edges, x;
+    header >> num_vertices >> x >> num_edges;
+    num_vertices += 1;
 
     int size;
     if (directed)
@@ -254,8 +279,11 @@ int main()
     //     cudaDeviceSynchronize();
     // }
 
-    int max_iter = 1;
+    int max_iter = 3;
     // 3rd and 4th param for oldPr and newpr
+    clock_t calcTime;
+    calcTime = clock();
+
     for (int i = 1; i < max_iter + 1; i++)
     {
         if (i % 2 == 0)
@@ -269,16 +297,22 @@ int main()
         cudaDeviceSynchronize();
     }
 
-    if (max_iter % 2 == 0)
-    {
-        printPR<<<1, 1>>>(prCopy, num_vertices);
-        cudaDeviceSynchronize();
-    }
-    else
-    {
-        printPR<<<1, 1>>>(pr, num_vertices);
-        cudaDeviceSynchronize();
-    }
+    calcTime = clock() - calcTime;
+
+    double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
+    cout << "On graph: " << fileName << ", Time taken: " << t_time << endl;
+    cout << endl;
+
+    // if (max_iter % 2 == 0)
+    // {
+    //     printPR<<<1, 1>>>(prCopy, num_vertices);
+    //     cudaDeviceSynchronize();
+    // }
+    // else
+    // {
+    //     printPR<<<1, 1>>>(pr, num_vertices);
+    //     cudaDeviceSynchronize();
+    // }
 
     return 0;
 }
