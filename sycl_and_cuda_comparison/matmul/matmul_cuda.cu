@@ -71,6 +71,8 @@ int main()
 
     int *d_a, *d_b, *d_c;
 
+
+    // Memory allocation and memcpy timing record
     clock_t memTime, calcTime;
     memTime = clock();
     cudaMalloc(&d_a, bytes);
@@ -79,6 +81,7 @@ int main()
 
     cudaMemcpy(d_a, h_a.data(), bytes, cudaMemcpyHostToDevice);
     cudaMemcpy(d_b, h_b.data(), bytes, cudaMemcpyHostToDevice);
+    cudaDeviceSynchronize();
     memTime = clock() - memTime;
 
     int THREADS = 32;
@@ -89,6 +92,7 @@ int main()
     dim3 threads(THREADS, THREADS);
     dim3 blocks(BLOCKS, BLOCKS);
 
+    // Kernel execution timing record
     calcTime = clock();
     matrixMul<<<blocks, threads>>>(d_a, d_b, d_c, N);
     cudaDeviceSynchronize();
