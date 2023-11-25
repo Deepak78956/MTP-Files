@@ -109,14 +109,14 @@ void printPR(sycl::queue &q, float *pr, int vertices) {
 }
 
 int main(int argc, char *argv[]) {
-    // if (argc != 2)
-    // {
-    //     printf("Usage: %s <input_file>\n", argv[0]);
-    //     return 1;
-    // }
+    if (argc != 2)
+    {
+        printf("Usage: %s <input_file>\n", argv[0]);
+        return 1;
+    }
 
-    // string fileName = argv[1];
-    string fileName = "file.txt";
+    string fileName = argv[1];
+    // string fileName = "file.txt";
     ifstream fin(fileName);
     string line;
     while (getline(fin, line))
@@ -236,8 +236,19 @@ int main(int argc, char *argv[]) {
     int *dev_offsetArr, *dev_edgeList;
     int *dev_in_offsetArr, *dev_in_edgeList;
 
+    clock_t calcTime, assignTime, initTime, initialMemOP, prMem;
+
     sycl::queue q{sycl::gpu_selector{}};
 
+    sycl::device dev = q.get_device();
+
+    // Get information about the device
+    // cout << "Device Name: " << dev.get_info<sycl::info::device::name>() << endl;
+    // cout << "Device Vendor: " << dev.get_info<sycl::info::device::vendor>() << endl;
+    // cout << "Device Type: " << dev.is_gpu() ? "GPU" : "CPU" << endl;
+
+
+    initialMemOP = clock();
     dev_offsetArr = sycl::malloc_device<int>(num_vertices + 1, q);
     dev_in_offsetArr = sycl::malloc_device<int>(num_vertices + 1, q);
 
@@ -253,14 +264,12 @@ int main(int argc, char *argv[]) {
     struct CSR *dev_csr, *dev_in_csr;
     dev_csr = sycl::malloc_device<struct CSR>(1, q);
     dev_in_csr = sycl::malloc_device<struct CSR>(1, q);
+    initialMemOP = clock() - initialMemOP;
 
-    // int *dev_num_vertices = sycl::malloc_shared<int>(1, q);
-    // int *dev_num_edges = sycl::malloc_shared<int>(1, q);
-    // *dev_num_vertices = num_vertices;
-    // *dev_num_edges = num_edges;
-
+    assignTime = clock();
     assignToCSR(q, dev_csr, dev_offsetArr, dev_edgeList, num_vertices, num_edges);
     assignToCSR(q, dev_in_csr, dev_in_offsetArr, dev_in_edgeList, num_vertices, num_edges);
+    assignTime = clock() - assignTime;
 
     if (DEBUG == true) {
         checkAssignment(q, dev_csr);
@@ -268,14 +277,23 @@ int main(int argc, char *argv[]) {
     }
 
     float *pr, *prCopy;
+
+    prMem = clock();
     pr = sycl::malloc_device<float>(num_vertices, q);
     prCopy = sycl::malloc_device<float>(num_vertices, q);
     
+    prMem = clock() - prMem;
+
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
+
+    initTime = clock();
     init(q, pr, num_vertices, nBlocks_for_vertices);    
-    init(q, prCopy, num_vertices, nBlocks_for_vertices);    
+    init(q, prCopy, num_vertices, nBlocks_for_vertices);  
+    initTime = clock() - initTime;
 
     int max_iter = 3;
+
+    calcTime = clock();
     for (int i = 1; i < max_iter + 1; i++)
     {
         if (i % 2 == 0)
@@ -287,6 +305,7 @@ int main(int argc, char *argv[]) {
             computePR(q, dev_csr, dev_in_csr, prCopy, pr, nBlocks_for_vertices);
         }
     }
+    calcTime = clock() - calcTime;
 
     if (DEBUG) {
         if (max_iter % 2 == 0)
@@ -298,6 +317,10 @@ int main(int argc, char *argv[]) {
             printPR(q, pr, num_vertices);
         }
     }
+
+    double t_time = ((double)calcTime + (double)initTime + (double)assignTime + (double)initialMemOP + (double)prMem) / CLOCKS_PER_SEC * 1000;
+    cout << "On graph: " << fileName << ", Time taken: " << t_time << endl;
+    cout << endl;
 
     return 0;
 }

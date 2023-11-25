@@ -240,6 +240,9 @@ int main(int argc, char *argv[])
     int *dev_offsetArr, *dev_edgeList;
     int *dev_in_offsetArr, *dev_in_edgeList;
 
+    clock_t calcTime, assignTime, initTime, initialMemOP, prMem;
+
+    initialMemOP = clock();
     cudaMalloc(&dev_offsetArr, sizeof(int) * (num_vertices + 1));
     cudaMalloc(&dev_in_offsetArr, sizeof(int) * (num_vertices + 1));
     cudaMalloc(&dev_edgeList, sizeof(int) * size);
@@ -253,10 +256,13 @@ int main(int argc, char *argv[])
     struct CSR *dev_csr, *dev_in_csr;
     cudaMalloc(&dev_csr, sizeof(struct CSR));
     cudaMalloc(&dev_in_csr, sizeof(struct CSR));
+    initialMemOP = clock() - initialMemOP;
 
+    assignTime = clock();
     assignToCSR<<<1, 1>>>(dev_offsetArr, dev_edgeList, num_vertices, num_edges, dev_csr);
     assignToCSR<<<1, 1>>>(dev_in_offsetArr, dev_in_edgeList, num_vertices, num_edges, dev_in_csr);
     cudaDeviceSynchronize();
+    assignTime = clock() - assignTime;
 
     if (DEBUG == true)
     {
@@ -266,12 +272,19 @@ int main(int argc, char *argv[])
     }
 
     float *pr, *prCopy;
+
+    prMem = clock();
     cudaMalloc(&pr, sizeof(float) * num_vertices);
     cudaMalloc(&prCopy, sizeof(float) * num_vertices);
+    prMem = clock() - prMem;
+
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
+
+    initTime = clock();
     init<<<nBlocks_for_vertices, B_SIZE>>>(pr, num_vertices);
     init<<<nBlocks_for_vertices, B_SIZE>>>(prCopy, num_vertices);
     cudaDeviceSynchronize();
+    initTime = clock() - initTime;
 
     // if (DEBUG == true)
     // {
@@ -281,7 +294,6 @@ int main(int argc, char *argv[])
 
     int max_iter = 3;
     // 3rd and 4th param for oldPr and newpr
-    clock_t calcTime;
     calcTime = clock();
 
     for (int i = 1; i < max_iter + 1; i++)
@@ -299,7 +311,7 @@ int main(int argc, char *argv[])
 
     calcTime = clock() - calcTime;
 
-    double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
+    double t_time = ((double)calcTime + (double)initTime + (double)assignTime + (double)initialMemOP + (double)prMem) / CLOCKS_PER_SEC * 1000;
     cout << "On graph: " << fileName << ", Time taken: " << t_time << endl;
     cout << endl;
 
