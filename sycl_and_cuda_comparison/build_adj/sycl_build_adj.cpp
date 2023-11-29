@@ -10,7 +10,7 @@
 #define B_SIZE 1024
 #define directed 0
 #define weighted 0
-#define USE_RANGE 0
+#define USE_RANGE 1
 using namespace std;
 
 struct Node
@@ -186,11 +186,11 @@ void printDLL(sycl::queue &Q, struct Graph *graph){
 int main(int argc, char *argv[])
 {
 
-    // if (argc != 2)
-    // {
-    //     printf("Usage: %s <input_file>\n", argv[0]);
-    //     return 1;
-    // }
+    if (argc != 2)
+    {
+        printf("Usage: %s <input_file>\n", argv[0]);
+        return 1;
+    }
 
     sycl::queue Q{sycl::gpu_selector{}};
 
@@ -198,8 +198,8 @@ int main(int argc, char *argv[])
     cout << "Device Name: " << dev.get_info<sycl::info::device::name>() << endl;
     cout << "Device Vendor: " << dev.get_info<sycl::info::device::vendor>() << endl;
 
-    // string fileName = argv[1];
-    string fileName = "file.txt";
+    string fileName = argv[1];
+    // string fileName = "file.txt";
     ifstream fin(fileName);
     string line;
     while (getline(fin, line))
@@ -258,29 +258,53 @@ int main(int argc, char *argv[])
     }).wait();
 
     if (USE_RANGE) {
+        clock_t initClock, initEdgeClock, makeD_LLClock;
+
         UsingRangeFunctions rangeQueries;
+        initClock = clock();
         rangeQueries.initGraph(Q, graph, num_vertices, adjLists);
+        initClock = clock() - initClock;
 
         struct Node *edgeList;
         edgeList = sycl::malloc_device<struct Node>(size, Q);
 
+        initEdgeClock = clock();
         rangeQueries.initEdgeList(Q, edgeList, dev_col_ind, size);
+        initEdgeClock = clock() - initEdgeClock;
         
+        makeD_LLClock = clock();
         rangeQueries.make_DLL(Q, edgeList, dev_row_ptr, graph, num_vertices);
+        makeD_LLClock = clock() - makeD_LLClock;
+
+        cout << fileName << endl;
+        cout << "Total time taken: " << ((double)(makeD_LLClock + initEdgeClock + initClock)) / CLOCKS_PER_SEC * 1000 << endl;
+        cout << endl;
     }
     else {
+        clock_t initClock, initEdgeClock, makeD_LLClock;
+
         UsingND_RangeFunctions ndQueries;
+        initClock = clock();
         ndQueries.initGraph(Q, graph, num_vertices, adjLists);
+        initClock = clock() - initClock;
 
         struct Node *edgeList;
         edgeList = sycl::malloc_device<struct Node>(size, Q);
 
+        initEdgeClock = clock();
         ndQueries.initEdgeList(Q, edgeList, dev_col_ind, size);
+        initEdgeClock = clock() - initEdgeClock;
 
+        makeD_LLClock = clock();
         ndQueries.make_DLL(Q, edgeList, dev_row_ptr, graph, num_vertices);
+        makeD_LLClock = clock() - makeD_LLClock;
+
+        cout << fileName << endl;
+        cout << "Total time taken: " << ((double)(makeD_LLClock + initEdgeClock + initClock)) / CLOCKS_PER_SEC * 1000 << endl;
+        cout << endl;
     }
 
-    printDLL(Q, graph);
+    // printDLL(Q, graph);
     
     return 0;
 }
