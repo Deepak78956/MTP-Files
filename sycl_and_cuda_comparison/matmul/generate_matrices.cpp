@@ -4,7 +4,7 @@
 #include <ctime>
 
 // Define the value of N using a macro
-#define N 64
+#define N 2048
 
 int main()
 {

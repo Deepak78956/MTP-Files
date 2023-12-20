@@ -8,6 +8,7 @@ using namespace std;
 #define weighted 0
 #define DEBUG false
 #define B_SIZE 1024
+#define USE_RANGE 1
 
 struct CSR
 {
@@ -45,11 +46,15 @@ void checkAssignment(sycl::queue &q, struct CSR *csr) {
     q.wait_and_throw();
 }
 
-void init(sycl::queue q, float *pr, int num_vertices, unsigned blocks) {
+clock_t init(sycl::queue &q, float *pr, int num_vertices, unsigned blocks) {
     // sycl::range<1> totalItems{blocks * B_SIZE};
     // sycl::range<1> itemsInWG{B_SIZE};
     auto totalItems = sycl::range<1>(blocks * B_SIZE);
     auto itemsInWG = sycl::range<1>(B_SIZE);
+
+    clock_t initTime;
+    initTime = clock();
+
     q.parallel_for(sycl::nd_range<1>(totalItems, itemsInWG), [=](sycl::nd_item<1> item){
         unsigned id = item.get_global_id(0);
 
@@ -66,12 +71,48 @@ void init(sycl::queue q, float *pr, int num_vertices, unsigned blocks) {
         }
     }).wait();
     q.wait_and_throw();
+
+    initTime = clock() - initTime;
+    return initTime;
 }
 
-void computePR(sycl::queue &q, struct CSR *csr, struct CSR *in_csr, float *oldPr, float *newPr, unsigned blocks){
+clock_t init_range(sycl::queue &q, float *pr, int num_vertices, unsigned blocks) {
+    auto totalItems = sycl::range<1>(blocks * B_SIZE);
+    auto itemsInWG = sycl::range<1>(B_SIZE);
+
+    clock_t initTime;
+    initTime = clock();
+
+    q.parallel_for(sycl::range<1>(totalItems), [=](sycl::id<1> id){
+        unsigned global_id = id[0];
+
+        if (DEBUG) {
+            if (global_id == 0)
+                printf("Inside init with num vertices = %d \n", num_vertices);
+        }
+
+        if (global_id < num_vertices) {
+            pr[global_id] = 1.0f / num_vertices;
+
+            if (DEBUG)
+                printf("id = %d, val = %f, actual value = %f\n", global_id, pr[global_id], 1.0 / num_vertices);
+        }
+    }).wait();
+    q.wait_and_throw();
+
+    initTime = clock() - initTime;
+    return initTime;
+}
+
+
+clock_t computePR(sycl::queue &q, struct CSR *csr, struct CSR *in_csr, float *oldPr, float *newPr, unsigned blocks){
     auto totalItems = sycl::range<1>(blocks * B_SIZE);
     auto itemsInWG = sycl::range<1>(B_SIZE);
     float d = 0.85;
+
+    clock_t calcTime;
+    calcTime = clock();
+
     q.parallel_for(sycl::nd_range<1>(totalItems, itemsInWG), [=](sycl::nd_item<1> item){
         unsigned p = item.get_global_id(0);
         float val = 0.0;
@@ -96,7 +137,42 @@ void computePR(sycl::queue &q, struct CSR *csr, struct CSR *in_csr, float *oldPr
             newPr[p] = val * d + (1 - d) / csr->num_vertices;
         }
     }).wait();
+    calcTime = clock() - calcTime;
+    return calcTime;
 }
+
+clock_t computePR_range(sycl::queue &q, struct CSR *csr, struct CSR *in_csr, float *oldPr, float *newPr, unsigned blocks){
+    auto totalItems = sycl::range<1>(blocks * B_SIZE);
+    auto itemsInWG = sycl::range<1>(B_SIZE);
+    float d = 0.85;
+
+    clock_t calcTime;
+    calcTime = clock();
+    q.parallel_for(sycl::range<1>(totalItems), [=](sycl::id<1> p){
+        unsigned global_id = p[0];
+        float val = 0.0;
+
+        if (DEBUG && global_id == 0) printf("Inside PR, value of d = %f\n", d);
+
+        if (global_id < csr->num_vertices) {
+            for (int i = in_csr->offsetArr[global_id]; i < in_csr->offsetArr[global_id + 1]; i++) {
+                unsigned t = in_csr->edgeList[i];
+                unsigned out_deg_t = csr->offsetArr[t + 1] - csr->offsetArr[t];
+
+                if (out_deg_t != 0) {
+                    float temp = oldPr[t] / out_deg_t;
+                    val += oldPr[t] / out_deg_t;
+
+                    if (DEBUG) printf("%f\n", val);
+                }
+            }
+            newPr[global_id] = val * d + (1 - d) / csr->num_vertices;
+        }
+    }).wait();
+    calcTime = clock() - calcTime;
+    return calcTime;
+}
+
 
 void printPR(sycl::queue &q, float *pr, int vertices) {
     q.parallel_for(sycl::range<1>(1), [=](sycl::id<1> idx) {
@@ -286,26 +362,33 @@ int main(int argc, char *argv[]) {
 
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
 
-    initTime = clock();
-    init(q, pr, num_vertices, nBlocks_for_vertices);    
-    init(q, prCopy, num_vertices, nBlocks_for_vertices);  
-    initTime = clock() - initTime;
+    
+    if (USE_RANGE == 0) {
+        initTime = init(q, pr, num_vertices, nBlocks_for_vertices);    
+        initTime += init(q, prCopy, num_vertices, nBlocks_for_vertices); 
+    }
+    else {
+        initTime = init_range(q, pr, num_vertices, nBlocks_for_vertices);
+        initTime += init_range(q, prCopy, num_vertices, nBlocks_for_vertices); 
+    }
 
     int max_iter = 3;
 
-    calcTime = clock();
+    
+    calcTime = 0;
     for (int i = 1; i < max_iter + 1; i++)
     {
         if (i % 2 == 0)
         {
-            computePR(q, dev_csr, dev_in_csr, pr, prCopy, nBlocks_for_vertices);
+            if (USE_RANGE == 0) calcTime += computePR(q, dev_csr, dev_in_csr, pr, prCopy, nBlocks_for_vertices);
+            else calcTime += computePR_range(q, dev_csr, dev_in_csr, pr, prCopy, nBlocks_for_vertices);
         }
         else
         {
-            computePR(q, dev_csr, dev_in_csr, prCopy, pr, nBlocks_for_vertices);
+            if (USE_RANGE == 0) calcTime += computePR(q, dev_csr, dev_in_csr, prCopy, pr, nBlocks_for_vertices);
+            else calcTime += computePR_range(q, dev_csr, dev_in_csr, prCopy, pr, nBlocks_for_vertices);
         }
     }
-    calcTime = clock() - calcTime;
 
     if (DEBUG) {
         if (max_iter % 2 == 0)
@@ -318,7 +401,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    double t_time = ((double)calcTime + (double)initTime + (double)assignTime + (double)initialMemOP + (double)prMem) / CLOCKS_PER_SEC * 1000;
+    double t_time = ((double)calcTime + (double)initTime + (double)assignTime) / CLOCKS_PER_SEC * 1000;
     cout << "On graph: " << fileName << ", Time taken: " << t_time << endl;
     cout << endl;
 

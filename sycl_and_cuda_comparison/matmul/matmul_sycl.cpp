@@ -8,23 +8,23 @@ using namespace std;
 
 void matrix_mutilply(sycl::queue &q, int *A, int *B, int *C, unsigned int N)
 {
-    q.submit([&](sycl::handler &cgh){
-        sycl::range<2> globalRange{ N , N };
-        sycl::range<2> localRange{ THREADS, THREADS };
+    // q.submit([&](sycl::handler &cgh){
+    //     sycl::range<2> globalRange{ N , N };
+    //     sycl::range<2> localRange{ THREADS, THREADS };
 
-        cgh.parallel_for(sycl::nd_range<2>(globalRange, localRange), [=](sycl::nd_item<2> item){
-            size_t i = item.get_group(1) * THREADS + item.get_local_id(1);
-            size_t j = item.get_group(0) * THREADS + item.get_local_id(0);
+    //     cgh.parallel_for(sycl::nd_range<2>(globalRange, localRange), [=](sycl::nd_item<2> item){
+    //         size_t i = item.get_group(1) * THREADS + item.get_local_id(1);
+    //         size_t j = item.get_group(0) * THREADS + item.get_local_id(0);
 
-            float sum = 0.0f;
-            for (size_t k = 0; k < N; ++k) {
-                sum += A[i * N + k] * B[k * N + j];
-            }
+    //         float sum = 0.0f;
+    //         for (size_t k = 0; k < N; ++k) {
+    //             sum += A[i * N + k] * B[k * N + j];
+    //         }
 
-            C[i * N + j] = sum;
-        });
-    });
-    q.wait_and_throw();
+    //         C[i * N + j] = sum;
+    //     });
+    // });
+    // q.wait_and_throw();
     // q.submit([&](sycl::handler &h)
     //          { h.parallel_for(sycl::range{N, N}, [=](sycl::id<2> index)
     //                           {
@@ -36,6 +36,18 @@ void matrix_mutilply(sycl::queue &q, int *A, int *B, int *C, unsigned int N)
                 
     //                     } }); })
     //     .wait();
+    q.submit([&](sycl::handler &h) {
+        h.parallel_for<class matrix_mul>(sycl::nd_range<2>(sycl::range<2>{N, N}, sycl::range<2>{THREADS, THREADS}), [=](sycl::nd_item<2> itemID) {
+            int i = itemID.get_global_id(0);
+            int j = itemID.get_global_id(1);
+
+            if (i < N && j < N) {
+                for (int k = 0; k < N; ++k) {
+                    C[i * N + j] += A[i * N + k] * B[k * N + j];
+                }
+            }
+        });
+    }).wait();
 }
 
 int main()

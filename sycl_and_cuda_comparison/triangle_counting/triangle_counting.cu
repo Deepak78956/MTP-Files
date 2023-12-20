@@ -107,7 +107,7 @@ __device__ int isNeigh(struct Graph *graph, int t, int r)
     return 0;
 }
 
-__device__ float tc = 0;
+__device__ int tc = 0;
 
 __global__ void countTriangles(struct Graph *graph)
 {
@@ -134,7 +134,7 @@ __global__ void countTriangles(struct Graph *graph)
 
 __global__ void printTc()
 {
-    printf("Triangles got %f\n", tc / 6);
+    printf("Triangles got %d\n", tc / 6);
 }
 
 int main(int argc, char *argv[])
@@ -173,12 +173,12 @@ int main(int argc, char *argv[])
     {
         for (int i = 0; i < num_vertices + 1; i++)
         {
-            cout << csr.row_ptr[i] << " ";
+            cout << csr.offsetArr[i] << " ";
         }
         cout << endl;
         for (int i = 0; i < size; i++)
         {
-            cout << csr.col_ind[i] << " ";
+            cout << csr.edgeList[i] << " ";
         }
         cout << endl;
     }
@@ -189,12 +189,12 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < num_vertices + 1; i++)
     {
-        row_ptr[i] = csr.row_ptr[i];
+        row_ptr[i] = csr.offsetArr[i];
     }
 
     for (int i = 0; i < size; i++)
     {
-        col_index[i] = csr.col_ind[i];
+        col_index[i] = csr.edgeList[i];
     }
 
     int *dev_row_ptr, *dev_col_ind;
@@ -229,8 +229,8 @@ int main(int argc, char *argv[])
     cudaDeviceSynchronize();
     calcTime = clock() - calcTime;
 
-    printTc<<<1, 1>>>();
-    cudaDeviceSynchronize();
+    // printTc<<<1, 1>>>();
+    // cudaDeviceSynchronize();
     double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
     cout << "On graph: " << fileName << ", Time taken: " << t_time << endl;
     cout << endl;
