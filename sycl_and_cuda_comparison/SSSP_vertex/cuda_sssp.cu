@@ -23,33 +23,25 @@ __global__ void init_dist(int *dist, int vertices) {
     }
 }
 
-__global__ void sssp(int *dist, int *src, int *dest, int *weights, int num_edges, int *changed) {
-    unsigned id = blockDim.x * blockIdx.x + threadIdx.x;
-    if (id < num_edges) {
-        int u = src[id];
-        int v = dest[id];
-        int w = weights[id];
-
-        // printf("%d %d %d %d\n", u, v, w, dist[u]);
-        // int newVal = 0;
-        // atomicAdd(&newVal, dist[u]);
-        // atomicAdd(&newVal, w);
-        
-        if(dist[v] > dist[u] + w){
-            atomicMin(&dist[v], dist[u] + w);
-            printf("%d\n", dist[v]);
-            changed[0] = 1;
-        }
-        // if (dist[v] > newVal) {
-        //     dist[v] = newVal;
-        //     changed = true;
-        // }
-    }
-}
-
 __global__ void print_dist(int *dist, int num_vertices) {
     for (int i = 0; i < num_vertices; i++) {
         printf("node i = %d, dist = %d\n", i, dist[i]);
+    }
+}
+
+__global__ void sssp(int *dist, int *src, int *dest, int *weights, int num_vertices, int *changed) {
+    unsigned id = blockDim.x * blockIdx.x + threadIdx.x;
+    if (id < num_vertices) {
+        int u = id;
+        
+        for (int i = src[u]; i < src[u + 1]; i++) {
+            int v = dest[i];
+            int w = weights[i];
+            if(dist[v] > dist[u] + w){
+                atomicMin(&dist[v], dist[u] + w);
+                changed[0] = 1;
+            }
+        }
     }
 }
 
@@ -88,23 +80,27 @@ int main(int argc, char *argv[])
     
     int *src, *dest, *weights;
     int *dev_src, *dev_dest, *dev_weights;
-    src = (int *)malloc(sizeof(int) * num_edges);
+    src = (int *)malloc(sizeof(int) * (num_vertices + 1));
     dest = (int *)malloc(sizeof(int) * num_edges);
     weights = (int *)malloc(sizeof(int) * num_edges);
-    cudaMalloc(&dev_src, sizeof(int) * num_edges);
+
+    struct WeightCSR csr;
+    csr = CSRWeighted(num_vertices, num_edges, directed, fin);
+
+    cudaMalloc(&dev_src, sizeof(int) * (num_vertices + 1));
     cudaMalloc(&dev_dest, sizeof(int) * num_edges);
     cudaMalloc(&dev_weights, sizeof(int) * num_edges);
 
-    for (int i = 0; i < num_edges; i++) {
-        int u, v, w;
-        fin >> u >> v >> w;
-    
-        src[i] = u - 1;
-        dest[i] = v - 1;
-        weights[i] = w;
+    for (int i = 0; i < size; i++) {
+        dest[i] = csr.col_ind[i];
+        weights[i] = csr.weights[i];
     }
 
-    cudaMemcpy(dev_src, src, sizeof(int) * num_edges, cudaMemcpyHostToDevice);
+    for (int i = 0; i < num_vertices + 1; i++) {
+        src[i] = csr.row_ptr[i];
+    }
+
+    cudaMemcpy(dev_src, src, sizeof(int) * (num_vertices + 1), cudaMemcpyHostToDevice);
     cudaMemcpy(dev_dest, dest, sizeof(int) * num_edges, cudaMemcpyHostToDevice);
     cudaMemcpy(dev_weights, weights, sizeof(int) * num_edges, cudaMemcpyHostToDevice);
 
@@ -121,8 +117,8 @@ int main(int argc, char *argv[])
     
     while (true) {
         changed[0] = 0;
-        unsigned nBlocks_for_edges = ceil((float)num_edges / B_SIZE);
-        sssp<<<nBlocks_for_edges, B_SIZE>>>(dist, dev_src, dev_dest, dev_weights, num_edges, changed);
+        unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
+        sssp<<<nBlocks_for_vertices, B_SIZE>>>(dist, dev_src, dev_dest, dev_weights, num_vertices, changed);
         cudaDeviceSynchronize();
 
         if (changed[0] == 0) break;
