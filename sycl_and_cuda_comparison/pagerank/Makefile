@@ -1,6 +1,6 @@
 INPUT_DIR := ./sample_graphs
 
-FILENAMES := delaunay_n10.mtx delaunay_n12.mtx inf-luxembourg_osm.mtx inf-belgium_osm.mtx rgg_n_2_15_s0.mtx chesapeake.mtx
+FILENAMES := chesapeake.mtx
 
 CUDA_OUTPUT := output
 SYCL_OUTPUT := sycl_output
