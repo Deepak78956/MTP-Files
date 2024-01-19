@@ -71,7 +71,6 @@ int main() {
     istringstream header(line);
     int num_vertices, num_edges, x;
     header >> num_vertices >> x >> num_edges;
-    num_vertices += 1;
 
     int size = num_edges;
 

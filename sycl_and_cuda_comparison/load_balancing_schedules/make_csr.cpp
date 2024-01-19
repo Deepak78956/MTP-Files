@@ -141,8 +141,8 @@ struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed
     // cout << endl;
     csr.row_ptr = row_ptr;
     csr.col_ind = col_ind;
-    csr.num_edges = num_edges;
-    csr.num_vertices = num_vertices;
+    csr.edges = num_edges;
+    csr.vertices = num_vertices;
     
     return csr;
 }

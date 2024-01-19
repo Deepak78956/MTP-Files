@@ -33,7 +33,7 @@ struct NonWeightCSR convertToCSR(string fileName) {
     istringstream header(line);
     int num_vertices, num_edges, x;
     header >> num_vertices >> x >> num_edges;
-    num_vertices += 1;
+    // num_vertices += 1;
 
     int size;
     if (directed)
@@ -75,6 +75,9 @@ __device__ struct atomRange getAtomRange(unsigned t_id, long int totalWork, long
         range.end = range.start + workToEachThread;
     }
 
+    // printf("worktoeachth = %d, id = %d, range = %d %d\n", workToEachThread, t_id, range.start, range.end);
+    // printf("totalWork = %d, totalthr = %d\n", totalWork, totalThreads);
+
     return range;
 }
 
@@ -97,8 +100,11 @@ __device__ int binarySearch(long int searchItem, long int num_vertices, int *row
 __global__ void BFS(int *dist, int *src, int *dest, int num_vertices, int num_edges, int *changed) {
     unsigned id = blockDim.x * blockIdx.x + threadIdx.x;
     if (id < num_vertices) {
+        // printf("here, edges = %d, vertex = %d\n", num_edges, num_vertices);
         struct atomRange range = getAtomRange(id, num_edges, num_vertices);
         long int u = binarySearch(range.start, num_vertices, src); // get tile
+
+        // printf("t_id: %d, index = %d, range = %d %d\n", id, u, range.start, range.end);
 
         for (int i = range.start; i < range.end; i++) {
             int v = dest[i];
@@ -135,19 +141,19 @@ int main() {
     string fileName = "file.txt";
     
     struct NonWeightCSR csr = convertToCSR(fileName);
-    int size = csr.num_edges;
+    int size = csr.edges;
 
     int *dev_row_ptr, *dev_col_ind;
-    cudaMalloc(&dev_row_ptr, sizeof(int) * (csr.num_vertices + 1));
+    cudaMalloc(&dev_row_ptr, sizeof(int) * (csr.vertices + 1));
     cudaMalloc(&dev_col_ind, sizeof(int) * size);
-    cudaMemcpy(dev_row_ptr, csr.row_ptr, sizeof(int) * (csr.num_vertices + 1), cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_row_ptr, csr.row_ptr, sizeof(int) * (csr.vertices + 1), cudaMemcpyHostToDevice);
     cudaMemcpy(dev_col_ind, csr.col_ind, sizeof(int) * size, cudaMemcpyHostToDevice);
 
     int *dist;
-    cudaMalloc(&dist, sizeof(int) * csr.num_vertices);
+    cudaMalloc(&dist, sizeof(int) * csr.vertices);
 
-    unsigned nBlocks_for_vertices = ceil((float)csr.num_vertices / B_SIZE);
-    init_dist<<<nBlocks_for_vertices, B_SIZE>>>(dist, csr.num_vertices);
+    unsigned nBlocks_for_vertices = ceil((float)csr.vertices / B_SIZE);
+    init_dist<<<nBlocks_for_vertices, B_SIZE>>>(dist, csr.vertices);
     cudaDeviceSynchronize();
 
     int *changed;
@@ -156,15 +162,15 @@ int main() {
 
     while(true) {
         changed[0] = 0;
-        unsigned nBlocks_for_vertices = ceil((float)csr.num_vertices / B_SIZE);
+        unsigned nBlocks_for_vertices = ceil((float)csr.vertices / B_SIZE);
 
-        BFS<<<nBlocks_for_vertices, B_SIZE>>>(dist, dev_row_ptr, dev_col_ind, csr.num_vertices, csr.num_edges, changed);
+        BFS<<<nBlocks_for_vertices, B_SIZE>>>(dist, dev_row_ptr, dev_col_ind, csr.vertices, csr.edges, changed);
         cudaDeviceSynchronize();
 
         if (changed[0] == 0) break;
     }
 
-    print_dist<<<1, 1>>>(dist, csr.num_vertices);
+    print_dist<<<1, 1>>>(dist, csr.vertices);
     cudaDeviceSynchronize();
 
     return 0;

@@ -11,7 +11,7 @@ struct WeightCSR
 
 struct NonWeightCSR
 {
-    int *row_ptr, *col_ind, num_vertices, num_edges;
+    int *row_ptr, *col_ind, vertices, edges;
 };
 
 struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed, ifstream &fin);
