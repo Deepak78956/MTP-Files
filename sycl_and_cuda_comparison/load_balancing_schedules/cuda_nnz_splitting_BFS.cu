@@ -33,7 +33,6 @@ struct NonWeightCSR convertToCSR(string fileName) {
     istringstream header(line);
     int num_vertices, num_edges, x;
     header >> num_vertices >> x >> num_edges;
-    // num_vertices += 1;
 
     int size;
     if (directed)
@@ -75,8 +74,7 @@ __device__ struct atomRange getAtomRange(unsigned t_id, long int totalWork, long
         range.end = range.start + workToEachThread;
     }
 
-    // printf("worktoeachth = %d, id = %d, range = %d %d\n", workToEachThread, t_id, range.start, range.end);
-    // printf("totalWork = %d, totalthr = %d\n", totalWork, totalThreads);
+    if (DEBUG) printf("Inside atom range, worktoeachth = %d, id = %d, range = %d %d\n", workToEachThread, t_id, range.start, range.end);
 
     return range;
 }
@@ -97,36 +95,33 @@ __device__ int binarySearch(long int searchItem, long int num_vertices, int *row
     return index;
 }
 
+__global__ int updateTileIfReq(int i, int prevTile, int num_vertices, int *src) {
+    if (i >= src[prevTile + 1]) {
+        prevTile = binarySearch(i, num_vertices, src);
+    }
+
+    return prevTile;
+}
+
 __global__ void BFS(int *dist, int *src, int *dest, int num_vertices, int num_edges, int *changed) {
     unsigned id = blockDim.x * blockIdx.x + threadIdx.x;
     if (id < num_vertices) {
-        // printf("here, edges = %d, vertex = %d\n", num_edges, num_vertices);
         struct atomRange range = getAtomRange(id, num_edges, num_vertices);
         long int u = binarySearch(range.start, num_vertices, src); // get tile
 
-        // printf("t_id: %d, index = %d, range = %d %d\n", id, u, range.start, range.end);
+        if (DEBUG) printf("Inside BFS, t_id: %d, index = %d, range = %d %d\n", id, u, range.start, range.end);
 
         for (int i = range.start; i < range.end; i++) {
             int v = dest[i];
 
             // Check if assigned atom goes out of row offset range, if so.. then update the tile
-            if (i >= src[u + 1]) {
-                u = binarySearch(i, num_vertices, src);
-            }
+            u = updateTileIfReq(i, u, num_vertices, src);
 
             if(dist[v] > dist[u] + 1){
                 atomicMin(&dist[v], dist[u] + 1);
                 changed[0] = 1;
             }
         }
-        
-        // for (int i = src[u]; i < src[u + 1]; i++) {
-        //     int v = dest[i];
-        //     if(dist[v] > dist[u] + 1){
-        //         atomicMin(&dist[v], dist[u] + 1);
-        //         changed[0] = 1;
-        //     }
-        // }
     }
 }
 

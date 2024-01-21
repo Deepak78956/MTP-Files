@@ -1,0 +1,20 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CSRNonWeighted	make_csr.cpp	/^struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed, ifstream &fin)$/;"	f
+CSRWeighted	make_csr.cpp	/^struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifstream &fin)$/;"	f
+CUDA_OUTPUT	Makefile	/^CUDA_OUTPUT := output$/;"	m
+FILENAMES	Makefile	/^FILENAMES := file.txt$/;"	m
+INPUT_DIR	Makefile	/^INPUT_DIR := .\/sample_graphs$/;"	m
+MAKE_CSR_HPP	make_csr.hpp	2;"	d
+NonWeightCSR	make_csr.hpp	/^struct NonWeightCSR$/;"	s
+SYCL_OUTPUT	Makefile	/^SYCL_OUTPUT := sycl_output$/;"	m
+WeightCSR	make_csr.hpp	/^struct WeightCSR$/;"	s
+col_ind	make_csr.hpp	/^    vector<int> col_ind;$/;"	m	struct:NonWeightCSR
+col_ind	make_csr.hpp	/^    vector<int> col_ind;$/;"	m	struct:WeightCSR
+row_ptr	make_csr.hpp	/^    vector<int> row_ptr;$/;"	m	struct:NonWeightCSR
+row_ptr	make_csr.hpp	/^    vector<int> row_ptr;$/;"	m	struct:WeightCSR
+weights	make_csr.hpp	/^    vector<int> weights;$/;"	m	struct:WeightCSR

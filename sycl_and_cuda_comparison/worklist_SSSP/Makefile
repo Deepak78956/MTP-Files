@@ -5,11 +5,11 @@ FILENAMES := file.txt
 CUDA_OUTPUT := output
 SYCL_OUTPUT := sycl_output
 
-$(CUDA_OUTPUT): cuda_sssp.o make_csr.o
-	nvcc cuda_sssp.o make_csr.o -o $(CUDA_OUTPUT)
+$(CUDA_OUTPUT): cuda_worklist_sssp.o make_csr.o
+	nvcc cuda_worklist_sssp.o make_csr.o -o $(CUDA_OUTPUT)
 
-cuda_sssp.o: cuda_sssp.cu $(FILENAMES)
-	nvcc -c -DINPUT_FILENAME=\"$<\" cuda_sssp.cu
+cuda_worklist_sssp.o: cuda_worklist_sssp.cu $(FILENAMES)
+	nvcc -c -DINPUT_FILENAME=\"$<\" cuda_worklist_sssp.cu
 
 make_csr.o: make_csr.cpp make_csr.hpp
 	nvcc -c make_csr.cpp
