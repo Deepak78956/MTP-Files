@@ -4,7 +4,7 @@
 #include <bits/stdc++.h>
 #include "make_csr.hpp"
 
-struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifstream &fin)
+struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifstream &fin, string filename)
 {
     int size;
     struct WeightCSR csr;
@@ -13,18 +13,42 @@ struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifst
     else
         size = 2 * num_edges;
     vector<vector<int>> edges(size, vector<int>(3, 0));
+
+    // // manually add weight if not present in the input file
+    // vector<string> keywords = {"kron", "file"};
+
+    // bool keywordFound = false;
+
+    // for (const string& keyword : keywords) {
+    //     // Check if the keyword is present in the filename
+    //     if (filename.find(keyword) != string::npos) {
+    //         // Set the flag to true indicating the keyword is found
+    //         keywordFound = true;
+    //         break;
+    //     }
+    // }
+
     for (int i = 0; i < num_edges; i++)
     {
         int u, v, w;
-        fin >> u >> v >> w;
+
+        // if (keywordFound == false){
+        //     fin >> u >> v >> w;
+        // } 
+        // else {
+        //     fin >> u >> v;
+        //     w = 1;
+        // }
+        fin >> u >> v;
+        w = 1;
         edges[i][0] = u - 1;
         edges[i][1] = v - 1;
-        edges[i][2] = w;
+        edges[i][2] = 1;
         if (!directed)
         {
             edges[num_edges + i][0] = v - 1;
             edges[num_edges + i][1] = u - 1;
-            edges[num_edges + i][2] = w;
+            edges[num_edges + i][2] = 1;
         }
     }
 
