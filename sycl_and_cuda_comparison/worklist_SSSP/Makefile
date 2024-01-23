@@ -1,6 +1,6 @@
 INPUT_DIR := ./sample_graphs
 
-FILENAMES := file.txt
+FILENAMES := $(wildcard $(INPUT_DIR)/*.mtx)
 
 CUDA_OUTPUT := output
 SYCL_OUTPUT := sycl_output
@@ -14,8 +14,8 @@ cuda_worklist_sssp.o: cuda_worklist_sssp.cu $(FILENAMES)
 make_csr.o: make_csr.cpp make_csr.hpp
 	nvcc -c make_csr.cpp
 
-$(SYCL_OUTPUT): sycl_sssp.cpp make_csr.hpp make_csr.cpp
-	clang++ -fsycl sycl_sssp.cpp -fsycl-targets=nvptx64-nvidia-cuda make_csr.cpp -o $(SYCL_OUTPUT)
+$(SYCL_OUTPUT): sycl_sssp_edge.cpp make_csr.hpp make_csr.cpp
+	clang++ -fsycl sycl_sssp_edge.cpp -fsycl-targets=nvptx64-nvidia-cuda make_csr.cpp -o $(SYCL_OUTPUT)
 
 run_cuda: $(CUDA_OUTPUT)
 	@for file in $(FILENAMES); do \

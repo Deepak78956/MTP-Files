@@ -16,5 +16,5 @@ struct NonWeightCSR
 };
 
 struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed, ifstream &fin);
-struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifstream &fin);
+struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifstream &fin, string filename);
 #endif
