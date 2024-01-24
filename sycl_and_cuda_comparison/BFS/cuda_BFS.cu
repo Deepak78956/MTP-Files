@@ -11,10 +11,10 @@
 #define weighted 0
 #define inf 10000000
 
-__global__ void init_dist(int *dist, int vertices) {
+__global__ void init_dist(int *dist, int vertices, int s) {
     unsigned id = blockDim.x * blockIdx.x + threadIdx.x;
     if (id < vertices) {
-        if (id == 0) {
+        if (id == s) {
             dist[id] = 0;
         }
         else {
@@ -90,6 +90,17 @@ int main() {
         col_index[i] = csr.edgeList[i];
     }
 
+    // for (int i = 0; i < 4; i++) {
+    //     printf("%d ", row_ptr[i]);
+    // }
+
+    // cout << endl;
+
+    // for (int i = 0; i < 4; i++) {
+    //     printf("%d ", col_index[i]);
+    // }
+    // cout << endl;
+
     int *dev_row_ptr, *dev_col_ind;
     cudaMalloc(&dev_row_ptr, sizeof(int) * (num_vertices + 1));
     cudaMalloc(&dev_col_ind, sizeof(int) * size);
@@ -99,8 +110,9 @@ int main() {
     int *dist;
     cudaMalloc(&dist, sizeof(int) * num_vertices);
 
+    int source = num_vertices / 2;
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
-    init_dist<<<nBlocks_for_vertices, B_SIZE>>>(dist, num_vertices);
+    init_dist<<<nBlocks_for_vertices, B_SIZE>>>(dist, num_vertices, source);
     cudaDeviceSynchronize();
 
     int *changed;

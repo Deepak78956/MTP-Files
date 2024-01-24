@@ -11,14 +11,14 @@ using namespace std;
 #define weighted 0
 #define inf 1000000
 
-void init_dist(sycl::queue &Q, int *dist, int num_vertices) {
+void init_dist(sycl::queue &Q, int *dist, int num_vertices, int s) {
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
     auto range = sycl::nd_range<1>(sycl::range<1>(nBlocks_for_vertices * B_SIZE), sycl::range<1>(B_SIZE));
 
     Q.parallel_for(range, [=](sycl::nd_item<1> item){
         unsigned id =  item.get_global_id(0);
         if (id < num_vertices) {
-            if (id == 0) {
+            if (id == s) {
                 dist[id] = 0;
             }
             else {
@@ -114,7 +114,8 @@ int main(int argc, char *argv[]) {
     int *dist;
     dist = sycl::malloc_device<int>(num_vertices, Q);
     
-    init_dist(Q, dist, num_vertices);
+    int source = num_vertices / 2;
+    init_dist(Q, dist, num_vertices, source);
 
     int *changed;
     changed = sycl::malloc_shared<int>(1, Q);
