@@ -1,6 +1,6 @@
 INPUT_DIR := ./sample_graphs
 
-FILENAMES := file.txt
+FILENAMES := $(wildcard $(INPUT_DIR)/*.mtx)
 
 CUDA_OUTPUT := output
 SYCL_OUTPUT := sycl_output
@@ -14,8 +14,8 @@ cuda_nnz_splitting_BFS.o: cuda_nnz_splitting_BFS.cu $(FILENAMES)
 make_csr.o: make_csr.cpp make_csr.hpp
 	nvcc -c make_csr.cpp
 
-$(SYCL_OUTPUT): sycl_nnz_splittling_BFS.cpp make_csr.hpp make_csr.cpp
-	clang++ -fsycl sycl_nnz_splittling_BFS.cpp -fsycl-targets=nvptx64-nvidia-cuda make_csr.cpp -o $(SYCL_OUTPUT)
+$(SYCL_OUTPUT): sycl_nnz_splitting_BFS.cpp make_csr.hpp make_csr.cpp
+	clang++ -fsycl sycl_nnz_splitting_BFS.cpp -fsycl-targets=nvptx64-nvidia-cuda make_csr.cpp -o $(SYCL_OUTPUT)
 
 run_cuda: $(CUDA_OUTPUT)
 	@for file in $(FILENAMES); do \

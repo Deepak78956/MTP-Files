@@ -4,7 +4,7 @@
 #include <bits/stdc++.h>
 #include "make_csr.hpp"
 
-struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifstream &fin)
+struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifstream &fin, bool keywordFound)
 {
     int size;
     struct WeightCSR csr;
@@ -16,15 +16,23 @@ struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifst
     for (int i = 0; i < num_edges; i++)
     {
         int u, v, w;
-        fin >> u >> v;
+
+        if (keywordFound) {
+            fin >> u >> v >> w;
+        } 
+        else {
+            fin >> u >> v;
+            w = 1;
+        }
+
         edges[i][0] = u - 1;
         edges[i][1] = v - 1;
-        edges[i][2] = 1;
+        edges[i][2] = w;
         if (!directed)
         {
             edges[num_edges + i][0] = v - 1;
             edges[num_edges + i][1] = u - 1;
-            edges[num_edges + i][2] = 1;
+            edges[num_edges + i][2] = w;
         }
     }
 
@@ -79,7 +87,7 @@ struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifst
     return csr;
 }
 
-struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed, ifstream &fin)
+struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed, ifstream &fin, bool keywordFound)
 {
     int size;
     struct NonWeightCSR csr;
@@ -91,8 +99,13 @@ struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed
     vector<vector<int>> edges(size, vector<int>(2, 0));
     for (int i = 0; i < num_edges; i++)
     {
-        int u, v;
-        fin >> u >> v;
+        int u, v, w;
+        if (keywordFound) {
+            fin >> u >> v >> w;
+        }
+        else {
+            fin >> u >> v;
+        }
         edges[i][0] = u - 1;
         edges[i][1] = v - 1;
         if (!directed)

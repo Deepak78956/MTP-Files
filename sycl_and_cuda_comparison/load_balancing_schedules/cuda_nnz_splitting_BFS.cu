@@ -15,7 +15,7 @@ struct atomRange {
     long int start, end;
 };
 
-struct NonWeightCSR convertToCSR(string fileName) {
+struct NonWeightCSR convertToCSR(string fileName, bool keywordFound) {
     ifstream fin(fileName);
     string line;
     while (getline(fin, line))
@@ -38,7 +38,7 @@ struct NonWeightCSR convertToCSR(string fileName) {
     if (directed)
         size = num_edges;
 
-    struct NonWeightCSR csr = CSRNonWeighted(num_vertices, num_edges, directed, fin);
+    struct NonWeightCSR csr = CSRNonWeighted(num_vertices, num_edges, directed, fin, keywordFound);
 
     return csr;
 }
@@ -95,7 +95,7 @@ __device__ int binarySearch(long int searchItem, long int num_vertices, int *row
     return index;
 }
 
-__global__ int updateTileIfReq(int i, int prevTile, int num_vertices, int *src) {
+__device__ int updateTileIfReq(int i, int prevTile, int num_vertices, int *src) {
     if (i >= src[prevTile + 1]) {
         prevTile = binarySearch(i, num_vertices, src);
     }
@@ -125,17 +125,30 @@ __global__ void BFS(int *dist, int *src, int *dest, int num_vertices, int num_ed
     }
 }
 
-int main() {
-    // if (argc != 2)
-    // {
-    //     printf("Usage: %s <input_file>\n", argv[0]);
-    //     return 1;
-    // }
+int main(int argc, char *argv[]) {
+    if (argc != 2)
+    {
+        printf("Usage: %s <input_file>\n", argv[0]);
+        return 1;
+    }
 
-    // string fileName = argv[1];
-    string fileName = "file.txt";
+    string fileName = argv[1];
+    // string fileName = "file.txt";
+
+    vector<string> keywords = {"kron", "file"};
+
+    bool keywordFound = false;
+
+    for (const string& keyword : keywords) {
+        // Check if the keyword is present in the filename
+        if (fileName.find(keyword) != string::npos) {
+            // Set the flag to true indicating the keyword is found
+            keywordFound = true;
+            break;
+        }
+    }
     
-    struct NonWeightCSR csr = convertToCSR(fileName);
+    struct NonWeightCSR csr = convertToCSR(fileName, keywordFound);
     int size = csr.edges;
 
     int *dev_row_ptr, *dev_col_ind;
@@ -159,6 +172,9 @@ int main() {
 
     int TTL = min(csr.vertices, csr.edges);
 
+    clock_t calcTime;
+    calcTime = clock();
+
     while(true) {
         changed[0] = 0;
         unsigned nBlocks_for_vertices = ceil((float)csr.vertices / B_SIZE);
@@ -169,8 +185,61 @@ int main() {
         if (changed[0] == 0) break;
     }
 
-    print_dist<<<1, 1>>>(dist, csr.vertices);
-    cudaDeviceSynchronize();
+    calcTime = clock() - calcTime;
+
+    double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
+
+    // print_dist<<<1, 1>>>(dist, csr.vertices);
+    // cudaDeviceSynchronize();
+
+    // check answer
+    int *check_dist;
+    check_dist = (int *)malloc(sizeof(int) * csr.vertices);
+    for (int i = 0; i < csr.vertices; i++) {
+        check_dist[i] = inf;
+    }
+    check_dist[source] = 0;
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.push({0, source});
+
+    while(!pq.empty()) {
+        int u = pq.top().second;
+        pq.pop();
+
+        for (int i = csr.row_ptr[u]; i < csr.row_ptr[u + 1]; ++i) {
+            int v = csr.col_ind[i];
+            int w = 1;
+
+            if (check_dist[u] + w < check_dist[v]) {
+                check_dist[v] = check_dist[u] + w;
+                pq.push({check_dist[v], v});
+            }
+        }
+    }
+
+    // for (int i = 0; i < csr.vertices; ++i) {
+    //     if (check_dist[i] == inf)
+    //         cout << "Vertex " << i << ": INF\n";
+    //     else
+    //         cout << "Vertex " << i << ": " << check_dist[i] << "\n";
+    // }
+
+    int *deviceCopiedDist;
+    deviceCopiedDist = (int *)malloc(sizeof(int) * csr.vertices);
+
+    cudaMemcpy(deviceCopiedDist, dist, sizeof(int) * csr.vertices, cudaMemcpyDeviceToHost);
+
+    bool flag = false;
+    for (int i = 0; i < csr.vertices; ++i) {
+        if (check_dist[i] != deviceCopiedDist[i]) {
+            printf("Wrong ans, Expected = %d, Actual = %d on vertex: %d\n", check_dist[i], deviceCopiedDist[i], i);
+            flag = true;
+            break;
+        }
+    }
+    if (!flag) cout << "Correct ans, Time taken = " << t_time << endl;
+    cout << endl;
 
     return 0;
 }
