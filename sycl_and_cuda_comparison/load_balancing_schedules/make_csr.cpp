@@ -16,15 +16,15 @@ struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifst
     for (int i = 0; i < num_edges; i++)
     {
         int u, v, w;
-        fin >> u >> v >> w;
+        fin >> u >> v;
         edges[i][0] = u - 1;
         edges[i][1] = v - 1;
-        edges[i][2] = w;
+        edges[i][2] = 1;
         if (!directed)
         {
             edges[num_edges + i][0] = v - 1;
             edges[num_edges + i][1] = u - 1;
-            edges[num_edges + i][2] = w;
+            edges[num_edges + i][2] = 1;
         }
     }
 
