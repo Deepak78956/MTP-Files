@@ -43,10 +43,10 @@ struct NonWeightCSR convertToCSR(string fileName) {
     return csr;
 }
 
-__global__ void init_dist(int *dist, int vertices) {
+__global__ void init_dist(int *dist, int vertices, int s) {
     unsigned id = blockDim.x * blockIdx.x + threadIdx.x;
     if (id < vertices) {
-        if (id == 0) {
+        if (id == s) {
             dist[id] = 0;
         }
         else {
@@ -61,13 +61,13 @@ __global__ void print_dist(int *dist, int num_vertices) {
     }
 }
 
-__device__ struct atomRange getAtomRange(unsigned t_id, long int totalWork, long int totalThreads) {
+__device__ struct atomRange getAtomRange(unsigned t_id, long int totalWork, long int totalThreads, int ttl) {
     long int workToEachThread;
-    workToEachThread = totalWork / totalThreads;
+    workToEachThread = totalWork / ttl;
 
     struct atomRange range;
     range.start = t_id * workToEachThread;
-    if (t_id == totalThreads - 1) {
+    if (t_id == ttl - 1) {
         range.end = totalWork;
     }
     else {
@@ -103,10 +103,10 @@ __global__ int updateTileIfReq(int i, int prevTile, int num_vertices, int *src) 
     return prevTile;
 }
 
-__global__ void BFS(int *dist, int *src, int *dest, int num_vertices, int num_edges, int *changed) {
+__global__ void BFS(int *dist, int *src, int *dest, int num_vertices, int num_edges, int *changed, int TTL) {
     unsigned id = blockDim.x * blockIdx.x + threadIdx.x;
-    if (id < num_vertices) {
-        struct atomRange range = getAtomRange(id, num_edges, num_vertices);
+    if (id < TTL) {
+        struct atomRange range = getAtomRange(id, num_edges, num_vertices, TTL);
         long int u = binarySearch(range.start, num_vertices, src); // get tile
 
         if (DEBUG) printf("Inside BFS, t_id: %d, index = %d, range = %d %d\n", id, u, range.start, range.end);
@@ -148,18 +148,22 @@ int main() {
     cudaMalloc(&dist, sizeof(int) * csr.vertices);
 
     unsigned nBlocks_for_vertices = ceil((float)csr.vertices / B_SIZE);
-    init_dist<<<nBlocks_for_vertices, B_SIZE>>>(dist, csr.vertices);
+
+    int source = csr.vertices / 2;
+    init_dist<<<nBlocks_for_vertices, B_SIZE>>>(dist, csr.vertices, source);
     cudaDeviceSynchronize();
 
     int *changed;
     cudaMalloc(&changed, sizeof(int));
     cudaMallocManaged(&changed, sizeof(int));
 
+    int TTL = min(csr.vertices, csr.edges);
+
     while(true) {
         changed[0] = 0;
         unsigned nBlocks_for_vertices = ceil((float)csr.vertices / B_SIZE);
 
-        BFS<<<nBlocks_for_vertices, B_SIZE>>>(dist, dev_row_ptr, dev_col_ind, csr.vertices, csr.edges, changed);
+        BFS<<<nBlocks_for_vertices, B_SIZE>>>(dist, dev_row_ptr, dev_col_ind, csr.vertices, csr.edges, changed, TTL);
         cudaDeviceSynchronize();
 
         if (changed[0] == 0) break;

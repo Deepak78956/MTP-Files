@@ -43,14 +43,15 @@ struct NonWeightCSR convertToCSR(string fileName) {
     return csr;
 }
 
-void init_dist(int *dist, int num_vertices, sycl::queue &q){
+void init_dist(int *dist, int num_vertices, sycl::queue &q, int s){
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
     auto range = sycl::nd_range<1>(sycl::range<1>(nBlocks_for_vertices * B_SIZE), sycl::range<1>(B_SIZE));
 
     q.parallel_for(range, [=](sycl::nd_item<1> item){
         unsigned id = item.get_global_id(0);
         if (id < num_vertices) {
-            if (id == 0) {
+            if (id == s) {
+                printf("source is %d\n", s);
                 dist[id] = 0;
             }
             else {
@@ -60,13 +61,14 @@ void init_dist(int *dist, int num_vertices, sycl::queue &q){
     }).wait();
 }
 
-struct atomRange getAtomRange(unsigned t_id, long int totalWork, long int totalThreads) {
+struct atomRange getAtomRange(unsigned t_id, long int totalWork, long int totalThreads, int ttl) {
     long int workToEachThread;
-    workToEachThread = totalWork / totalThreads;
+    
+    workToEachThread = totalWork / ttl;
 
     struct atomRange range;
     range.start = t_id * workToEachThread;
-    if (t_id == totalThreads - 1) {
+    if (t_id == ttl - 1) {
         range.end = totalWork;
     }
     else {
@@ -102,9 +104,9 @@ int updateTileIfReq(int i, int prevTile, int num_vertices, int *src) {
     return prevTile;
 }
 
-void BFS(unsigned id, int *dist, int *src, int *dest, int num_vertices, int num_edges, int *changed) {
-    if (id < num_vertices) {
-        struct atomRange range = getAtomRange(id, num_edges, num_vertices);
+void BFS(unsigned id, int *dist, int *src, int *dest, int num_vertices, int num_edges, int *changed, int TTL) {
+    if (id < TTL) {
+        struct atomRange range = getAtomRange(id, num_edges, num_vertices, TTL);
         long int u = binarySearch(range.start, num_vertices, src); // get tile
 
         if (DEBUG) printf("Inside BFS, t_id: %d, index = %d, range = %d %d\n", id, u, range.start, range.end);
@@ -148,10 +150,13 @@ int main() {
     int *dist;
     dist = sycl::malloc_device<int>(sizeof(int) * (csr.vertices), q);
 
-    init_dist(dist, csr.vertices, q);
+    int source = csr.vertices / 2;
+    init_dist(dist, csr.vertices, q, source);
 
     int *changed;
     changed = sycl::malloc_shared<int>(1, q);
+
+    int TTL = min(csr.vertices, csr.edges);
 
     while(true) {
         changed[0] = 0;
@@ -162,7 +167,7 @@ int main() {
 
         q.parallel_for(range, [=](sycl::nd_item<1> item){
             unsigned id = item.get_global_id(0);
-            BFS(id, dist, dev_row_ptr, dev_col_ind, csr.vertices, csr.edges, changed);
+            BFS(id, dist, dev_row_ptr, dev_col_ind, csr.vertices, csr.edges, changed, TTL);
         }).wait();
 
         if (changed[0] == 0) break;
