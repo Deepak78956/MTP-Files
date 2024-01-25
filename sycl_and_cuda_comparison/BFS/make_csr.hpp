@@ -15,6 +15,6 @@ struct NonWeightCSR
     int *edgeList;
 };
 
-struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed, ifstream &fin);
+struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed, ifstream &fin, bool keywordFound);
 struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifstream &fin);
 #endif

@@ -44,16 +44,16 @@ __global__ void BFS(int *dist, int *src, int *dest, int num_vertices, int *chang
     }
 }
 
-int main() {
-    // if (argc != 2)
-    // {
-    //     printf("Usage: %s <input_file>\n", argv[0]);
-    //     return 1;
-    // }
+int main(int argc, char *argv[]) {
+    if (argc != 2)
+    {
+        printf("Usage: %s <input_file>\n", argv[0]);
+        return 1;
+    }
 
-    // string fileName = argv[1];
+    string fileName = argv[1];
 
-    string fileName = "file.txt";
+    // string fileName = "file.txt";
     ifstream fin(fileName);
     string line;
     while (getline(fin, line))
@@ -72,9 +72,22 @@ int main() {
     int num_vertices, num_edges, x;
     header >> num_vertices >> x >> num_edges;
 
+    vector<string> keywords = {"kron", "file"};
+
+    bool keywordFound = false;
+
+    for (const string& keyword : keywords) {
+        // Check if the keyword is present in the filename
+        if (fileName.find(keyword) != string::npos) {
+            // Set the flag to true indicating the keyword is found
+            keywordFound = true;
+            break;
+        }
+    }
+
     int size = num_edges;
 
-    struct NonWeightCSR csr = CSRNonWeighted(num_vertices, num_edges, directed, fin);
+    struct NonWeightCSR csr = CSRNonWeighted(num_vertices, num_edges, directed, fin, keywordFound);
 
     int *row_ptr, *col_index;
     row_ptr = (int *)malloc(sizeof(int) * (num_vertices + 1));
@@ -119,6 +132,9 @@ int main() {
     cudaMalloc(&changed, sizeof(int));
     cudaMallocManaged(&changed, sizeof(int));
 
+    clock_t calcTime;
+    calcTime = clock();
+
     while(true) {
         changed[0] = 0;
         unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
@@ -129,8 +145,15 @@ int main() {
         if (changed[0] == 0) break;
     }
 
-    print_dist<<<1, 1>>>(dist, num_vertices);
-    cudaDeviceSynchronize();
+    // print_dist<<<1, 1>>>(dist, num_vertices);
+    // cudaDeviceSynchronize();
+
+    calcTime = clock() - calcTime;
+
+    double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
+
+    cout << "On graph " << fileName << " Time taken = " << t_time << endl;
+    cout << endl;
 
     return 0;
 }

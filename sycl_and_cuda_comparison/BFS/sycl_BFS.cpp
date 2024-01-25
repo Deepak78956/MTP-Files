@@ -50,14 +50,14 @@ void BFS(sycl::queue &Q, int *dist, int *src, int *dest, int num_vertices, int *
 }
 
 int main(int argc, char *argv[]) {
-    // if (argc != 2)
-    // {
-    //     printf("Usage: %s <input_file>\n", argv[0]);
-    //     return 1;
-    // }
+    if (argc != 2)
+    {
+        printf("Usage: %s <input_file>\n", argv[0]);
+        return 1;
+    }
 
-    // string fileName = argv[1];
-    string fileName = "file.txt";
+    string fileName = argv[1];
+    // string fileName = "file.txt";
     ifstream fin(fileName);
     string line;
     while (getline(fin, line))
@@ -72,10 +72,22 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    vector<string> keywords = {"kron", "file"};
+
+    bool keywordFound = false;
+
+    for (const string& keyword : keywords) {
+        // Check if the keyword is present in the filename
+        if (fileName.find(keyword) != string::npos) {
+            // Set the flag to true indicating the keyword is found
+            keywordFound = true;
+            break;
+        }
+    }
+
     istringstream header(line);
     int num_vertices, num_edges, x;
     header >> num_vertices >> x >> num_edges;
-    // num_vertices += 1;
 
     int size;
     if (directed)
@@ -88,7 +100,7 @@ int main(int argc, char *argv[]) {
     weights = (int *)malloc(sizeof(int) * num_edges);
 
     struct NonWeightCSR csr;
-    csr = CSRNonWeighted(num_vertices, num_edges, directed, fin);
+    csr = CSRNonWeighted(num_vertices, num_edges, directed, fin, keywordFound);
 
     int *row_ptr, *col_index;
     row_ptr = (int *)malloc(sizeof(int) * (num_vertices + 1));
@@ -120,6 +132,9 @@ int main(int argc, char *argv[]) {
     int *changed;
     changed = sycl::malloc_shared<int>(1, Q);
 
+    clock_t calcTime;
+    calcTime = clock();
+
     while(true) {
         changed[0] = 0;
         BFS(Q, dist, dev_src, dev_dest, num_vertices, changed);
@@ -127,11 +142,18 @@ int main(int argc, char *argv[]) {
         if (changed[0] == 0) break;
     }
 
+    calcTime = clock() - calcTime;
+
+    double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
+
     // To print distances
-    Q.parallel_for(sycl::range<1>(1), [=](sycl::id<1> idx) {
-        for (int i = 0; i < num_vertices; i++) {
-            printf("node i = %d, dist = %d\n", i, dist[i]);
-        }
-    }).wait();
+    // Q.parallel_for(sycl::range<1>(1), [=](sycl::id<1> idx) {
+    //     for (int i = 0; i < num_vertices; i++) {
+    //         printf("node i = %d, dist = %d\n", i, dist[i]);
+    //     }
+    // }).wait();
+
+    cout << "On graph " << fileName << " Time taken = " << t_time << endl;
+    cout << endl;
     return 0;
 }

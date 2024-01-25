@@ -1,6 +1,6 @@
 INPUT_DIR := ./sample_graphs
 
-FILENAMES := file.txt
+FILENAMES := $(wildcard $(INPUT_DIR)/*.mtx)
 
 CUDA_OUTPUT := output
 SYCL_OUTPUT := sycl_output
