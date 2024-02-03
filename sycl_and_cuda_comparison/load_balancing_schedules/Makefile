@@ -6,16 +6,16 @@ CUDA_OUTPUT := output
 SYCL_OUTPUT := sycl_output
 
 $(CUDA_OUTPUT): cuda_nnz_splitting_BFS.o make_csr.o
-	nvcc cuda_nnz_splitting_BFS.o make_csr.o -o $(CUDA_OUTPUT)
+	nvcc -O3 cuda_nnz_splitting_BFS.o make_csr.o -o $(CUDA_OUTPUT)
 
 cuda_nnz_splitting_BFS.o: cuda_nnz_splitting_BFS.cu $(FILENAMES)
-	nvcc -c -DINPUT_FILENAME=\"$<\" cuda_nnz_splitting_BFS.cu
+	nvcc -c -O3 -DINPUT_FILENAME=\"$<\" cuda_nnz_splitting_BFS.cu
 
 make_csr.o: make_csr.cpp make_csr.hpp
-	nvcc -c make_csr.cpp
+	nvcc -c -O3 make_csr.cpp
 
 $(SYCL_OUTPUT): sycl_nnz_splitting_BFS.cpp make_csr.hpp make_csr.cpp
-	clang++ -fsycl sycl_nnz_splitting_BFS.cpp -fsycl-targets=nvptx64-nvidia-cuda make_csr.cpp -o $(SYCL_OUTPUT)
+	clang++ -O3 -fsycl sycl_nnz_splitting_BFS.cpp -fsycl-targets=nvptx64-nvidia-cuda make_csr.cpp -o $(SYCL_OUTPUT)
 
 run_cuda: $(CUDA_OUTPUT)
 	@for file in $(FILENAMES); do \

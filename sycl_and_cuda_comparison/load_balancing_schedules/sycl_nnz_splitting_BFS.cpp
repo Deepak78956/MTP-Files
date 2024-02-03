@@ -142,7 +142,7 @@ int main(int argc, char *argv[]) {
     for (const string& keyword : keywords) {
         // Check if the keyword is present in the filename
         if (fileName.find(keyword) != string::npos) {
-            // Set the flag to true indicating the keyword is found
+            // Set the flag to true indicating the keyword is found//
             keywordFound = true;
             break;
         }

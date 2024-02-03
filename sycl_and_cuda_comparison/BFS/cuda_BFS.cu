@@ -147,6 +147,7 @@ int main(int argc, char *argv[]) {
 
     // print_dist<<<1, 1>>>(dist, num_vertices);
     // cudaDeviceSynchronize();
+    ////
 
     calcTime = clock() - calcTime;
 
