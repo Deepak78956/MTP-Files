@@ -45,6 +45,7 @@ __global__ void BFS(int *dist, int *src, int *dest, int num_vertices, int *chang
 }
 
 int main(int argc, char *argv[]) {
+    cudaSetDevice(0);
     if (argc != 2)
     {
         printf("Usage: %s <input_file>\n", argv[0]);
@@ -89,19 +90,19 @@ int main(int argc, char *argv[]) {
 
     struct NonWeightCSR csr = CSRNonWeighted(num_vertices, num_edges, directed, fin, keywordFound);
 
-    int *row_ptr, *col_index;
-    row_ptr = (int *)malloc(sizeof(int) * (num_vertices + 1));
-    col_index = (int *)malloc(sizeof(int) * size);
+    // int *row_ptr, *col_index;
+    // row_ptr = (int *)malloc(sizeof(int) * (num_vertices + 1));
+    // col_index = (int *)malloc(sizeof(int) * size);
 
-    for (int i = 0; i < num_vertices + 1; i++)
-    {
-        row_ptr[i] = csr.offsetArr[i];
-    }
+    // for (int i = 0; i < num_vertices + 1; i++)
+    // {
+    //     row_ptr[i] = csr.offsetArr[i];
+    // }
 
-    for (int i = 0; i < size; i++)
-    {
-        col_index[i] = csr.edgeList[i];
-    }
+    // for (int i = 0; i < size; i++)
+    // {
+    //     col_index[i] = csr.edgeList[i];
+    // }
 
     // for (int i = 0; i < 4; i++) {
     //     printf("%d ", row_ptr[i]);
@@ -117,8 +118,8 @@ int main(int argc, char *argv[]) {
     int *dev_row_ptr, *dev_col_ind;
     cudaMalloc(&dev_row_ptr, sizeof(int) * (num_vertices + 1));
     cudaMalloc(&dev_col_ind, sizeof(int) * size);
-    cudaMemcpy(dev_row_ptr, row_ptr, sizeof(int) * (num_vertices + 1), cudaMemcpyHostToDevice);
-    cudaMemcpy(dev_col_ind, col_index, sizeof(int) * size, cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_row_ptr, csr.offsetArr, sizeof(int) * (num_vertices + 1), cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_col_ind, csr.edgeList, sizeof(int) * size, cudaMemcpyHostToDevice);
 
     int *dist;
     cudaMalloc(&dist, sizeof(int) * num_vertices);

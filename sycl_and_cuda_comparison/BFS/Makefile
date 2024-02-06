@@ -18,16 +18,21 @@ $(SYCL_OUTPUT): sycl_BFS.cpp make_csr.hpp make_csr.cpp
 	clang++ -O3 -fsycl sycl_BFS.cpp -fsycl-targets=nvptx64-nvidia-cuda make_csr.cpp -o $(SYCL_OUTPUT)
 
 run_cuda: $(CUDA_OUTPUT)
-	@for file in $(FILENAMES); do \
-		echo "Running ./$(CUDA_OUTPUT) $$file:"; \
-		./$(CUDA_OUTPUT) "$$file"; \
+	for i in 1 2 3; do \
+		echo "Running iteration $$i"; \
+		for file in $(FILENAMES); do \
+			echo "Running ./$(CUDA_OUTPUT) $$file:"; \
+			./$(CUDA_OUTPUT) "$$file"; \
+		done \
 	done
 
 run_sycl: $(SYCL_OUTPUT)
-	@for file in $(FILENAMES); do \
-		echo "Running ./$(SYCL_OUTPUT) $$file:"; \
-		./$(SYCL_OUTPUT) "$$file"; \
-	done
+	@for i in {1..3}; do \
+		for file in $(FILENAMES); do \
+			echo "Running ./$(SYCL_OUTPUT) $$file:"; \
+			./$(SYCL_OUTPUT) "$$file"; \
+		done \
+	done 
 
 clean:
 	rm -f *.o $(CUDA_OUTPUT) $(SYCL_OUTPUT)

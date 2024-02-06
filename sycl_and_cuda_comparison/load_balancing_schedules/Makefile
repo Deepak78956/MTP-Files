@@ -18,15 +18,21 @@ $(SYCL_OUTPUT): sycl_nnz_splitting_BFS.cpp make_csr.hpp make_csr.cpp
 	clang++ -O3 -fsycl sycl_nnz_splitting_BFS.cpp -fsycl-targets=nvptx64-nvidia-cuda make_csr.cpp -o $(SYCL_OUTPUT)
 
 run_cuda: $(CUDA_OUTPUT)
-	@for file in $(FILENAMES); do \
-		echo "Running ./$(CUDA_OUTPUT) $$file:"; \
-		./$(CUDA_OUTPUT) "$$file"; \
+	for i in 1 2 3 4; do \
+		echo "Running iteration $$i"; \
+		for file in $(FILENAMES); do \
+			echo "Running ./$(CUDA_OUTPUT) $$file:"; \
+			./$(CUDA_OUTPUT) "$$file"; \
+		done \
 	done
 
 run_sycl: $(SYCL_OUTPUT)
-	@for file in $(FILENAMES); do \
-		echo "Running ./$(SYCL_OUTPUT) $$file:"; \
-		./$(SYCL_OUTPUT) "$$file"; \
+	for i in 1 2 3 4; do \
+	echo "Running iteration $$i"; \
+		for file in $(FILENAMES); do \
+			echo "Running ./$(SYCL_OUTPUT) $$file:"; \
+			./$(SYCL_OUTPUT) "$$file"; \
+		done \
 	done
 
 clean:

@@ -19,7 +19,7 @@ void device_memory_alloc(sycl::queue &Q) {
     timer = clock();
 
     for (int i = 0; i < it; i++) {
-        auto m_device = sycl::malloc_device<double>(size*sizeof(double),Q);
+        auto m_device = sycl::malloc_device<double>(65536*65536,Q);
         Q.wait();
 
         sycl::free(m_device, Q);

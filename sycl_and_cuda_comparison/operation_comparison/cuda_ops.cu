@@ -13,6 +13,7 @@
 using namespace std;
 
 void device_memory_alloc() {
+    
     clock_t timer;
     double t_time;
 
@@ -98,6 +99,9 @@ void atomic_add_time() {
 }
 
 int main(int argc, char *argv[]) {
+
+    cudaSetDevice(4);
+
     device_memory_alloc();
 
     kernel_offload();

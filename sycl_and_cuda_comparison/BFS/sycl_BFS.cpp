@@ -102,26 +102,26 @@ int main(int argc, char *argv[]) {
     struct NonWeightCSR csr;
     csr = CSRNonWeighted(num_vertices, num_edges, directed, fin, keywordFound);
 
-    int *row_ptr, *col_index;
-    row_ptr = (int *)malloc(sizeof(int) * (num_vertices + 1));
-    col_index = (int *)malloc(sizeof(int) * size);
+    // int *row_ptr, *col_index;
+    // row_ptr = (int *)malloc(sizeof(int) * (num_vertices + 1));
+    // col_index = (int *)malloc(sizeof(int) * size);
 
-    for (int i = 0; i < num_vertices + 1; i++)
-    {
-        row_ptr[i] = csr.offsetArr[i];
-    }
+    // for (int i = 0; i < num_vertices + 1; i++)
+    // {
+    //     row_ptr[i] = csr.offsetArr[i];
+    // }
 
-    for (int i = 0; i < size; i++)
-    {
-        col_index[i] = csr.edgeList[i];
-    }
+    // for (int i = 0; i < size; i++)
+    // {
+    //     col_index[i] = csr.edgeList[i];
+    // }
 
     sycl::queue Q{sycl::gpu_selector{}};
     dev_src = sycl::malloc_device<int>(num_vertices + 1, Q);
     dev_dest = sycl::malloc_device<int>(num_edges, Q);
 
-    Q.memcpy(dev_src, row_ptr, sizeof(int) * (num_vertices + 1)).wait();
-    Q.memcpy(dev_dest, col_index, sizeof(int) * num_edges).wait();
+    Q.memcpy(dev_src, csr.offsetArr, sizeof(int) * (num_vertices + 1)).wait();
+    Q.memcpy(dev_dest, csr.edgeList, sizeof(int) * num_edges).wait();
 
     int *dist;
     dist = sycl::malloc_device<int>(num_vertices, Q);
