@@ -4,7 +4,7 @@
 #include <bits/stdc++.h>
 #include "make_csr.hpp"
 
-struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifstream &fin)
+struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifstream &fin, bool keywordFound)
 {
     int size;
     struct WeightCSR csr;
@@ -16,7 +16,15 @@ struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifst
     for (int i = 0; i < num_edges; i++)
     {
         int u, v, w;
-        fin >> u >> v >> w;
+
+        if (keywordFound) {
+            fin >> u >> v >> w;
+        } 
+        else {
+            fin >> u >> v;
+            w = 1;
+        }
+
         edges[i][0] = u - 1;
         edges[i][1] = v - 1;
         edges[i][2] = w;
@@ -30,10 +38,16 @@ struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifst
 
     sort(edges.begin(), edges.end());
 
-    vector<int> row_ptr(num_vertices + 1);
-    vector<int> col_ind;
-    vector<int> weights;
+    int *row_ptr, *col_ind, *weights;
+    row_ptr = (int *)malloc(sizeof(int) * (num_vertices + 1));
+    col_ind = (int *)malloc(sizeof(int) * num_edges);
+    weights = (int *)malloc(sizeof(int) * num_edges);
 
+    // vector<int> row_ptr(num_vertices + 1);
+    // vector<int> col_ind;
+    // vector<int> weights;
+
+    int e = 0;
     for (const auto &edge : edges)
     {
         int u, v, w;
@@ -43,8 +57,10 @@ struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifst
 
         row_ptr[u + 1] += 1;
 
-        col_ind.push_back(v);
-        weights.push_back(w);
+        col_ind[e] = v;
+        weights[e] = w;
+
+        e++;
     }
 
     for (int i = 1; i < num_vertices + 1; i++)
@@ -71,7 +87,7 @@ struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifst
     return csr;
 }
 
-struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed, ifstream &fin)
+struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed, ifstream &fin, bool keywordFound)
 {
     int size;
     struct NonWeightCSR csr;
@@ -83,22 +99,32 @@ struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed
     vector<vector<int>> edges(size, vector<int>(2, 0));
     for (int i = 0; i < num_edges; i++)
     {
-        int u, v;
-        fin >> u >> v;
-        edges[i][0] = u;
-        edges[i][1] = v;
+        int u, v, w;
+        if (keywordFound) {
+            fin >> u >> v >> w;
+        }
+        else {
+            fin >> u >> v;
+        }
+        edges[i][0] = u - 1;
+        edges[i][1] = v - 1;
         if (!directed)
         {
-            edges[num_edges + i][0] = v;
-            edges[num_edges + i][1] = u;
+            edges[num_edges + i][0] = v - 1;
+            edges[num_edges + i][1] = u - 1;
         }
     }
 
     sort(edges.begin(), edges.end());
 
-    vector<int> row_ptr(num_vertices + 1);
-    vector<int> col_ind;
+    // vector<int> row_ptr(num_vertices + 1);
+    // vector<int> col_ind;
 
+    int *row_ptr, *col_ind;
+    row_ptr = (int *)malloc(sizeof(int) * (num_vertices + 1));
+    col_ind = (int *)malloc(sizeof(int) * num_edges);
+
+    int e = 0;
     for (const auto &edge : edges)
     {
         int u, v;
@@ -106,7 +132,9 @@ struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed
         v = edge[1];
 
         row_ptr[u + 1] += 1;
-        col_ind.push_back(v);
+        col_ind[e] = v;
+
+        e++;
     }
 
     for (int i = 1; i < num_vertices + 1; i++)
@@ -124,6 +152,10 @@ struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed
     //     cout << col_ind[i] << " ";
     // }
     // cout << endl;
-    csr = {row_ptr, col_ind};
+    csr.row_ptr = row_ptr;
+    csr.col_ind = col_ind;
+    csr.edges = num_edges;
+    csr.vertices = num_vertices;
+    
     return csr;
 }

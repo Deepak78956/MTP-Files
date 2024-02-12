@@ -8,7 +8,7 @@ using namespace std;
 #define weighted 0
 #define DEBUG false
 #define B_SIZE 1024
-#define USE_RANGE 1
+#define USE_RANGE 0
 
 struct CSR
 {
@@ -225,12 +225,30 @@ int main(int argc, char *argv[]) {
         exit(0);
     }
 
+    vector<string> keywords = {"kron", "file"};
+
+    bool keywordFound = false;
+
+    for (const string& keyword : keywords) {
+        // Check if the keyword is present in the filename//
+        if (fileName.find(keyword) != string::npos) {
+            // Set the flag to true indicating the keyword is found
+            keywordFound = true;
+            break;
+        }
+    }
+
     vector<vector<int>> edges(size, vector<int>(2, 0));
     vector<vector<int>> in_neigh(size, vector<int>(2, 0));
     for (int i = 0; i < num_edges; i++)
     {
-        int u, v;
-        fin >> u >> v;
+        int u, v, w;
+        if (keywordFound) {
+            fin >> u >> v >> w;    
+        }
+        else {
+            fin >> u >> v;
+        }
         edges[i][0] = u - 1;
         edges[i][1] = v - 1;
 
@@ -375,20 +393,21 @@ int main(int argc, char *argv[]) {
     int max_iter = 3;
 
     
-    calcTime = 0;
+    calcTime = clock();
     for (int i = 1; i < max_iter + 1; i++)
     {
         if (i % 2 == 0)
         {
-            if (USE_RANGE == 0) calcTime += computePR(q, dev_csr, dev_in_csr, pr, prCopy, nBlocks_for_vertices);
-            else calcTime += computePR_range(q, dev_csr, dev_in_csr, pr, prCopy, nBlocks_for_vertices);
+            if (USE_RANGE == 0) computePR(q, dev_csr, dev_in_csr, pr, prCopy, nBlocks_for_vertices);
+            else computePR_range(q, dev_csr, dev_in_csr, pr, prCopy, nBlocks_for_vertices);
         }
         else
         {
-            if (USE_RANGE == 0) calcTime += computePR(q, dev_csr, dev_in_csr, prCopy, pr, nBlocks_for_vertices);
-            else calcTime += computePR_range(q, dev_csr, dev_in_csr, prCopy, pr, nBlocks_for_vertices);
+            if (USE_RANGE == 0) computePR(q, dev_csr, dev_in_csr, prCopy, pr, nBlocks_for_vertices);
+            else computePR_range(q, dev_csr, dev_in_csr, prCopy, pr, nBlocks_for_vertices);
         }
     }
+    calcTime = clock() - calcTime;
 
     if (DEBUG) {
         if (max_iter % 2 == 0)

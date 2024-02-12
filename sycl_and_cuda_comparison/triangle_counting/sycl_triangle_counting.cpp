@@ -208,9 +208,21 @@ int main(int argc, char *argv[])
     int num_vertices, num_edges, x;
     istringstream header(line);
     header >> num_vertices >> x >> num_edges;
-    num_vertices += 1;
+    
+    vector<string> keywords = {"kron", "file"};
 
-    struct NonWeightCSR csr = CSRNonWeighted(num_vertices, num_edges, directed, fin);
+    bool keywordFound = false;
+
+    for (const string& keyword : keywords) {
+        // Check if the keyword is present in the filename//
+        if (fileName.find(keyword) != string::npos) {
+            // Set the flag to true indicating the keyword is found
+            keywordFound = true;
+            break;
+        }
+    }
+
+    struct NonWeightCSR csr = CSRNonWeighted(num_vertices, num_edges, directed, fin, keywordFound);
 
     int size = 2 * num_edges;
 

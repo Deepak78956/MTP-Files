@@ -27,7 +27,7 @@ run_cuda: $(CUDA_OUTPUT)
 	done
 
 run_sycl: $(SYCL_OUTPUT)
-	@for i in {1..3}; do \
+	for i in {1..3}; do \
 		for file in $(FILENAMES); do \
 			echo "Running ./$(SYCL_OUTPUT) $$file:"; \
 			./$(SYCL_OUTPUT) "$$file"; \

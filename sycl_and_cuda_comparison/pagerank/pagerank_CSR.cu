@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
     istringstream header(line);
     int num_vertices, num_edges, x;
     header >> num_vertices >> x >> num_edges;
-    num_vertices += 1;
+    // num_vertices += 1;
 
     int size;
     if (directed)
@@ -153,17 +153,35 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
+    vector<string> keywords = {"kron", "file"};
+
+    bool keywordFound = false;
+
+    for (const string& keyword : keywords) {
+        // Check if the keyword is present in the filename//
+        if (fileName.find(keyword) != string::npos) {
+            // Set the flag to true indicating the keyword is found
+            keywordFound = true;
+            break;
+        }
+    }
+
     vector<vector<int>> edges(size, vector<int>(2, 0));
     vector<vector<int>> in_neigh(size, vector<int>(2, 0));
     for (int i = 0; i < num_edges; i++)
     {
-        int u, v;
-        fin >> u >> v;
-        edges[i][0] = u;
-        edges[i][1] = v;
+        int u, v, w;
+        if (keywordFound) {
+            fin >> u >> v >> w;
+        }
+        else {
+            fin >> u >> v;
+        }
+        edges[i][0] = u - 1;
+        edges[i][1] = v - 1;
 
-        in_neigh[i][0] = v;
-        in_neigh[i][1] = u;
+        in_neigh[i][0] = v - 1;
+        in_neigh[i][1] = u - 1;
     }
 
     sort(edges.begin(), edges.end(), [](const vector<int> &a, const vector<int> &b)
@@ -292,7 +310,7 @@ int main(int argc, char *argv[])
     //     cudaDeviceSynchronize();
     // }
 
-    int max_iter = 3;
+    int max_iter = 10;
     // 3rd and 4th param for oldPr and newpr
     calcTime = clock();
 
@@ -311,7 +329,7 @@ int main(int argc, char *argv[])
 
     calcTime = clock() - calcTime;
 
-    double t_time = ((double)calcTime + (double)initTime + (double)assignTime + (double)initialMemOP + (double)prMem) / CLOCKS_PER_SEC * 1000;
+    double t_time = ((double)calcTime + (double)initTime + (double)assignTime) / CLOCKS_PER_SEC * 1000;
     cout << "On graph: " << fileName << ", Time taken: " << t_time << endl;
     cout << endl;
 

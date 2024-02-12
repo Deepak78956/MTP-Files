@@ -6,28 +6,34 @@ CUDA_OUTPUT := output
 SYCL_OUTPUT := sycl_output
 
 $(CUDA_OUTPUT): cuda_sssp_edge.o make_csr.o
-	nvcc cuda_sssp_edge.o make_csr.o -o $(CUDA_OUTPUT)
+	nvcc -O3 cuda_sssp_edge.o make_csr.o -o $(CUDA_OUTPUT)
 
 cuda_sssp_edge.o: cuda_sssp_edge.cu $(FILENAMES)
-	nvcc -c -DINPUT_FILENAME=\"$<\" cuda_sssp_edge.cu
+	nvcc -c -O3 -DINPUT_FILENAME=\"$<\" cuda_sssp_edge.cu
 
 make_csr.o: make_csr.cpp make_csr.hpp
-	nvcc -c make_csr.cpp
+	nvcc -c -O3 make_csr.cpp
 
 $(SYCL_OUTPUT): sycl_sssp_edge.cpp make_csr.hpp make_csr.cpp
-	clang++ -fsycl sycl_sssp_edge.cpp -fsycl-targets=nvptx64-nvidia-cuda make_csr.cpp -o $(SYCL_OUTPUT)
+	clang++ -O3 -fsycl sycl_sssp_edge.cpp -fsycl-targets=nvptx64-nvidia-cuda make_csr.cpp -o $(SYCL_OUTPUT)
 
 run_cuda: $(CUDA_OUTPUT)
-	@for file in $(FILENAMES); do \
-		echo "Running ./$(CUDA_OUTPUT) $$file:"; \
-		./$(CUDA_OUTPUT) "$$file"; \
+	for i in 1 2 3 4 5; do \
+		echo "Running iteration $$i"; \
+		for file in $(FILENAMES); do \
+			echo "Running ./$(CUDA_OUTPUT) $$file:"; \
+			./$(CUDA_OUTPUT) "$$file"; \
+		done \
 	done
 
 run_sycl: $(SYCL_OUTPUT)
-	@for file in $(FILENAMES); do \
-		echo "Running ./$(SYCL_OUTPUT) $$file:"; \
-		./$(SYCL_OUTPUT) "$$file"; \
-	done
+	for i in 1 2 3 4 5; do \
+		echo "Running iteration $$i"; \
+		for file in $(FILENAMES); do \
+			echo "Running ./$(SYCL_OUTPUT) $$file:"; \
+			./$(SYCL_OUTPUT) "$$file"; \
+		done \
+	done 
 
 clean:
 	rm -f *.o $(CUDA_OUTPUT) $(SYCL_OUTPUT)

@@ -11,14 +11,42 @@
 #define weighted 1
 #define inf 10000000
 
-void init_dist(sycl::queue &Q, int *dist, int num_vertices) {
+struct WeightCSR convertToCSR(string fileName, bool keywordFound) {
+    ifstream fin(fileName);
+    string line;
+    while (getline(fin, line))
+    {
+        if (line[0] == '%')
+        {
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    istringstream header(line);
+    int num_vertices, num_edges, x;
+    header >> num_vertices >> x >> num_edges;
+
+    int size;
+    if (directed)
+        size = num_edges;
+
+    struct WeightCSR csr = CSRWeighted(num_vertices, num_edges, directed, fin, keywordFound);
+
+    return csr;
+}
+
+void init_dist(sycl::queue &Q, int *dist, int num_vertices, int source) {
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
     auto range = sycl::nd_range<1>(sycl::range<1>(nBlocks_for_vertices * B_SIZE), sycl::range<1>(B_SIZE));
 
     Q.parallel_for(range, [=](sycl::nd_item<1> item){
         unsigned id =  item.get_global_id(0);
         if (id < num_vertices) {
-            if (id == 0) {
+            if (id == source) {
                 dist[id] = 0;
             }
             else {
@@ -47,6 +75,8 @@ void sssp(sycl::queue &Q, int *dist, int *src, int *dest, int *weights, int num_
     }).wait();
 }
 
+
+
 int main(int argc, char *argv[]) {
     if (argc != 2)
     {
@@ -73,7 +103,6 @@ int main(int argc, char *argv[]) {
     istringstream header(line);
     int num_vertices, num_edges, x;
     header >> num_vertices >> x >> num_edges;
-    // num_vertices += 1;
 
     sycl::queue Q{sycl::gpu_selector{}};
 
@@ -130,8 +159,9 @@ int main(int argc, char *argv[]) {
 
     int *dist;
     dist = sycl::malloc_device<int>(num_vertices, Q);
-
-    init_dist(Q, dist, num_vertices);
+    
+    int source = num_vertices / 2;
+    init_dist(Q, dist, num_vertices, source);
 
     int *changed;
     changed = sycl::malloc_shared<int>(1, Q);

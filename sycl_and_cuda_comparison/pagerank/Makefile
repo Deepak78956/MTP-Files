@@ -1,32 +1,38 @@
 INPUT_DIR := ./sample_graphs
 
-FILENAMES := chesapeake.mtx
+FILENAMES := $(wildcard $(INPUT_DIR)/*.mtx)
 
 CUDA_OUTPUT := output
 SYCL_OUTPUT := sycl_output
 
-$(CUDA_OUTPUT): page_rank_CSR.o make_csr.o
-	nvcc page_rank_CSR.o make_csr.o -o $(CUDA_OUTPUT)
+$(CUDA_OUTPUT): pagerank_CSR.o make_csr.o
+	nvcc -O3 pagerank_CSR.o make_csr.o -o $(CUDA_OUTPUT)
 
-page_rank_CSR.o: page_rank_CSR.cu $(FILENAMES)
-	nvcc -c -DINPUT_FILENAME=\"$<\" page_rank_CSR.cu
+pagerank_CSR.o: pagerank_CSR.cu $(FILENAMES)
+	nvcc -c -O3 -DINPUT_FILENAME=\"$<\" pagerank_CSR.cu
 
 make_csr.o: make_csr.cpp make_csr.hpp
-	nvcc -c make_csr.cpp
+	nvcc -c -O3 make_csr.cpp
 
-$(SYCL_OUTPUT): sycl_pagerank.cpp
-	clang++ -fsycl -fsycl-targets=nvptx64-nvidia-cuda $< -o $(SYCL_OUTPUT)
+$(SYCL_OUTPUT): sycl_pagerank.cpp make_csr.hpp make_csr.cpp
+	clang++ -O3 -fsycl sycl_pagerank.cpp -fsycl-targets=nvptx64-nvidia-cuda make_csr.cpp -o $(SYCL_OUTPUT)
 
 run_cuda: $(CUDA_OUTPUT)
-	@for file in $(FILENAMES); do \
-		echo "Running ./$(CUDA_OUTPUT) $$file:"; \
-		./$(CUDA_OUTPUT) "$$file"; \
+	for i in 1 2 3 4 5; do \
+		echo "Running iteration $$i"; \
+		for file in $(FILENAMES); do \
+			echo "Running ./$(CUDA_OUTPUT) $$file:"; \
+			./$(CUDA_OUTPUT) "$$file"; \
+		done \
 	done
 
 run_sycl: $(SYCL_OUTPUT)
-	@for file in $(FILENAMES); do \
-		echo "Running ./$(SYCL_OUTPUT) $$file:"; \
-		./$(SYCL_OUTPUT) "$$file"; \
+	for i in 1 2 3 4 5; do \
+	echo "Running iteration $$i"; \
+		for file in $(FILENAMES); do \
+			echo "Running ./$(SYCL_OUTPUT) $$file:"; \
+			./$(SYCL_OUTPUT) "$$file"; \
+		done \
 	done
 
 clean:

@@ -11,14 +11,50 @@
 #define weighted 1
 #define inf 10000000
 
-__global__ void init_dist(int *dist, int vertices) {
+__global__ void ker(int *dist) {
+    for (int i = 0; i < 3; i++) {
+        printf("%d ", dist[i]);
+    }
+    printf("\n");
+}
+
+struct WeightCSR convertToCSR(string fileName, bool keywordFound) {
+    ifstream fin(fileName);
+    string line;
+    while (getline(fin, line))
+    {
+        if (line[0] == '%')
+        {
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    istringstream header(line);
+    int num_vertices, num_edges, x;
+    header >> num_vertices >> x >> num_edges;
+
+    int size;
+    if (directed)
+        size = num_edges;
+
+    struct WeightCSR csr = CSRWeighted(num_vertices, num_edges, directed, fin, keywordFound);
+
+    return csr;
+}
+
+
+__global__ void init_dist(int *dist, int vertices, int source) {
     unsigned id = blockDim.x * blockIdx.x + threadIdx.x;
     if (id < vertices) {
-        if (id == 0) {
+        if (id == source) {
             dist[id] = 0;
         }
         else {
-            dist[id] = 1000000;
+            dist[id] = inf;
         }
     }
 }
@@ -136,8 +172,10 @@ int main(int argc, char *argv[])
     int *dist;
     cudaMalloc(&dist, sizeof(int) * num_vertices);
 
+    int source = num_vertices / 2;
+
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
-    init_dist<<<nBlocks_for_vertices, B_SIZE>>>(dist, num_vertices);
+    init_dist<<<nBlocks_for_vertices, B_SIZE>>>(dist, num_vertices, source);
     cudaDeviceSynchronize();
 
     int *changed;
@@ -162,6 +200,7 @@ int main(int argc, char *argv[])
     // printf("here\n");
     // print_dist<<<1, 1>>>(dist, num_vertices);
     // cudaDeviceSynchronize();
+
 
     return 0;
 }

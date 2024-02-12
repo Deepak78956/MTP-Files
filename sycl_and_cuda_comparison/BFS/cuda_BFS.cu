@@ -44,6 +44,13 @@ __global__ void BFS(int *dist, int *src, int *dest, int num_vertices, int *chang
     }
 }
 
+__global__ void ker(int *dist) {
+    for (int i = 0; i < 3; i++) {
+        printf("%d ", dist[i]);
+    }
+    printf("\n");
+}
+
 int main(int argc, char *argv[]) {
     cudaSetDevice(0);
     if (argc != 2)
@@ -155,6 +162,8 @@ int main(int argc, char *argv[]) {
     double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
 
     cout << "On graph " << fileName << " Time taken = " << t_time << endl;
+    ker<<<1,1>>>(dist);
+    cudaDeviceSynchronize();
     cout << endl;
 
     return 0;

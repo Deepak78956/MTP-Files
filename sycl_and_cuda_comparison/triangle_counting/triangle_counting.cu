@@ -163,9 +163,22 @@ int main(int argc, char *argv[])
     int num_vertices, num_edges, x;
     istringstream header(line);
     header >> num_vertices >> x >> num_edges;
-    num_vertices += 1;
+    // num_vertices += 1;
 
-    struct NonWeightCSR csr = CSRNonWeighted(num_vertices, num_edges, directed, fin);
+    vector<string> keywords = {"kron", "file"};
+
+    bool keywordFound = false;
+
+    for (const string& keyword : keywords) {
+        // Check if the keyword is present in the filename//
+        if (fileName.find(keyword) != string::npos) {
+            // Set the flag to true indicating the keyword is found
+            keywordFound = true;
+            break;
+        }
+    }
+
+    struct NonWeightCSR csr = CSRNonWeighted(num_vertices, num_edges, directed, fin, keywordFound);
 
     int size = 2 * num_edges;
 
@@ -183,25 +196,25 @@ int main(int argc, char *argv[])
         cout << endl;
     }
 
-    int *row_ptr, *col_index;
-    row_ptr = (int *)malloc(sizeof(int) * (num_vertices + 1));
-    col_index = (int *)malloc(sizeof(int) * size);
+    // int *row_ptr, *col_index;
+    // row_ptr = (int *)malloc(sizeof(int) * (num_vertices + 1));
+    // col_index = (int *)malloc(sizeof(int) * size);
 
-    for (int i = 0; i < num_vertices + 1; i++)
-    {
-        row_ptr[i] = csr.offsetArr[i];
-    }
+    // for (int i = 0; i < num_vertices + 1; i++)
+    // {
+    //     row_ptr[i] = csr.offsetArr[i];
+    // }
 
-    for (int i = 0; i < size; i++)
-    {
-        col_index[i] = csr.edgeList[i];
-    }
+    // for (int i = 0; i < size; i++)
+    // {
+    //     col_index[i] = csr.edgeList[i];
+    // }
 
     int *dev_row_ptr, *dev_col_ind;
     cudaMalloc(&dev_row_ptr, sizeof(int) * (num_vertices + 1));
     cudaMalloc(&dev_col_ind, sizeof(int) * size);
-    cudaMemcpy(dev_row_ptr, row_ptr, sizeof(int) * (num_vertices + 1), cudaMemcpyHostToDevice);
-    cudaMemcpy(dev_col_ind, col_index, sizeof(int) * size, cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_row_ptr, csr.offsetArr, sizeof(int) * (num_vertices + 1), cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_col_ind, csr.edgeList, sizeof(int) * size, cudaMemcpyHostToDevice);
 
     struct Graph *graph;
     struct Node **adjLists;

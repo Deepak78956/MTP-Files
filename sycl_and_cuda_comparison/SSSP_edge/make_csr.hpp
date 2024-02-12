@@ -4,17 +4,16 @@ using namespace std;
 
 struct WeightCSR
 {
-    vector<int> row_ptr;
-    vector<int> col_ind;
-    vector<int> weights;
+    int *row_ptr;
+    int *col_ind;
+    int *weights;
 };
 
 struct NonWeightCSR
 {
-    vector<int> row_ptr;
-    vector<int> col_ind;
+    int *row_ptr, *col_ind, vertices, edges;
 };
 
-struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed, ifstream &fin);
-struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifstream &fin);
+struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed, ifstream &fin, bool keywordFound);
+struct WeightCSR CSRWeighted(int num_vertices, int num_edges, int directed, ifstream &fin, bool keywordFound);
 #endif
