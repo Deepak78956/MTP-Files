@@ -3,11 +3,10 @@
 #include <cstdlib>
 #include <ctime>
 
-// Define the value of N using a macro
-#define N 2048
-
-int main()
+int main(int argc, char *argv[])
 {
+    std::string nStr = argv[1];
+    int N = std::stoi(nStr);
     // Seed the random number generator
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 

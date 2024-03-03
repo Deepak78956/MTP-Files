@@ -6,7 +6,7 @@ using namespace std;
 
 #define THREADS 32
 
-void matrix_mutilply(sycl::queue &q, int *A, int *B, int *C, unsigned int N)
+clock_t matrix_mutilply(sycl::queue &q, int *A, int *B, int *C, unsigned int N)
 {
     // q.submit([&](sycl::handler &cgh){
     //     sycl::range<2> globalRange{ N , N };
@@ -36,18 +36,26 @@ void matrix_mutilply(sycl::queue &q, int *A, int *B, int *C, unsigned int N)
                 
     //                     } }); })
     //     .wait();
+    clock_t calcTime;
+    calcTime = clock();
+
     q.submit([&](sycl::handler &h) {
         h.parallel_for<class matrix_mul>(sycl::nd_range<2>(sycl::range<2>{N, N}, sycl::range<2>{THREADS, THREADS}), [=](sycl::nd_item<2> itemID) {
             int i = itemID.get_global_id(0);
             int j = itemID.get_global_id(1);
 
             if (i < N && j < N) {
+                [[clang::loop_unroll]]
                 for (int k = 0; k < N; ++k) {
                     C[i * N + j] += A[i * N + k] * B[k * N + j];
                 }
             }
         });
     }).wait();
+
+    calcTime = clock() - calcTime;
+
+    return calcTime;
 }
 
 int main()
@@ -107,9 +115,7 @@ int main()
     // q.submit([&](sycl::handler &cgh)
     //          { cgh.memcpy(dev_mat_B, mat_B, N * N * sizeof(int)); });
 
-    calcTime = clock();
-    matrix_mutilply(q, dev_mat_A, dev_mat_B, dev_mat_C, N);
-    calcTime = clock() - calcTime;
+    calcTime = matrix_mutilply(q, dev_mat_A, dev_mat_B, dev_mat_C, N);
 
     q.memcpy(dev_res, dev_mat_C,  N * N * sizeof(int)).wait();
 
@@ -146,7 +152,7 @@ int main()
     }
 
     cout << "COMPLETED SUCCESSFULLY\n";
-    double t_time = ((double)calcTime + (double)memTime) / CLOCKS_PER_SEC * 1000;
+    double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
     cout << t_time << endl;
     cout << endl;
 

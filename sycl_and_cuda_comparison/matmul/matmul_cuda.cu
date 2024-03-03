@@ -103,7 +103,7 @@ int main()
     verify_result(h_a, h_b, h_c, N);
 
     cout << "COMPLETED SUCCESSFULLY\n";
-    double t_time = ((double)calcTime + (double)memTime) / CLOCKS_PER_SEC * 1000;
+    double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
     cout << t_time << endl;
     cout << endl;
 

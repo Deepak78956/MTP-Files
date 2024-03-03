@@ -181,7 +181,7 @@ int main(int argc, char *argv[]) {
 
         auto range = sycl::nd_range<1>(sycl::range<1>(nBlocks_for_vertices * B_SIZE), sycl::range<1>(B_SIZE));
 
-        q.parallel_for(range, [=](sycl::nd_item<1> item){
+        q.parallel_for(range, [=](sycl::nd_item<1> item)[[sycl::reqd_sub_group_size(32)]]{
             unsigned id = item.get_global_id(0);
             BFS(id, dist, dev_row_ptr, dev_col_ind, csr.vertices, csr.edges, changed, TTL);
         }).wait();

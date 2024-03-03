@@ -126,14 +126,14 @@ __global__ void BFS(int *dist, int *src, int *dest, int num_vertices, int num_ed
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 2)
-    {
-        printf("Usage: %s <input_file>\n", argv[0]);
-        return 1;
-    }
+    // if (argc != 2)
+    // {
+    //     printf("Usage: %s <input_file>\n", argv[0]);
+    //     return 1;
+    // }
 
-    string fileName = argv[1];
-    // string fileName = "file.txt";
+    // string fileName = argv[1];
+    string fileName = "./sample_graphs/rgg_n_2_18_s0.mtx";
 
     vector<string> keywords = {"kron", "file"};
 
