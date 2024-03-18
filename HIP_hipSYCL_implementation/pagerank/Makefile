@@ -19,7 +19,7 @@ make_csr.o: make_csr.cpp make_csr.hpp
 	nvcc -c -O3 make_csr.cpp
 
 $(SYCL_OUTPUT): sycl_pagerank.cpp make_csr.hpp make_csr.cpp
-	acpp -O3 sycl_pagerank.cpp --acpp-platform=rocm make_csr.cpp -o $(SYCL_OUTPUT)
+	acpp -O3 sycl_pagerank.cpp make_csr.cpp -o $(SYCL_OUTPUT)
 
 run_cuda: $(CUDA_OUTPUT)
 	for i in 1 2 3 4 5; do \

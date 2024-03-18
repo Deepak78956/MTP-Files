@@ -1,2 +1,6 @@
 *.mtx
 *.txt
+comgr_tmp_
+hip_output
+sycl_output
+a.out

@@ -339,9 +339,9 @@ int main(int argc, char *argv[]) {
     sycl::device dev = q.get_device();
 
     //Get information about the device
-    cout << "Device Name: " << dev.get_info<sycl::info::device::name>() << endl;
-    cout << "Device Vendor: " << dev.get_info<sycl::info::device::vendor>() << endl;
-    cout << "Device Type: " << dev.is_gpu() << endl;
+    // cout << "Device Name: " << dev.get_info<sycl::info::device::name>() << endl;
+    // cout << "Device Vendor: " << dev.get_info<sycl::info::device::vendor>() << endl;
+    // cout << "Device Type: " << dev.is_gpu() << endl;
 
 
     initialMemOP = clock();

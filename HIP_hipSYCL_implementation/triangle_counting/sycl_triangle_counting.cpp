@@ -11,7 +11,7 @@ using namespace std;
 #define DEBUG false
 #define directed 0
 #define weighted 0
-#define USE_RANGE 1
+#define USE_RANGE 0
 
 struct Node
 {

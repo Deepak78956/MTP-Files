@@ -2,7 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include <algorithm>
+// #include <algorithm>//
 #include <numeric>
 #include <sycl/sycl.hpp>
 #include "make_csr.hpp"
@@ -52,7 +52,7 @@ void init_dist(int *dist, int num_vertices, sycl::queue &q, int s){
         unsigned id = item.get_global_id(0);
         if (id < num_vertices) {
             if (id == s) {
-                printf("source is %d\n", s);
+                // printf("source is %d\n", s);
                 dist[id] = 0;
             }
             else {
@@ -193,62 +193,8 @@ int main(int argc, char *argv[]) {
     calcTime = clock() - calcTime;
 
     double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
-    
 
-    // To print distances
-    // q.parallel_for(sycl::range<1>(1), [=](sycl::id<1> idx) {
-    //     for (int i = 0; i < csr.vertices; i++) {
-    //         printf("node i = %d, dist = %d\n", i, dist[i]);
-    //     }
-    // }).wait();
-    
-    // check answer
-    // int *check_dist;
-    // check_dist = (int *)malloc(sizeof(int) * csr.vertices);
-    // for (int i = 0; i < csr.vertices; i++) {
-    //     check_dist[i] = inf;
-    // }
-    // check_dist[source] = 0;
-
-    // priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-    // pq.push({0, source});
-
-    // while(!pq.empty()) {
-    //     int u = pq.top().second;
-    //     pq.pop();
-
-    //     for (int i = csr.row_ptr[u]; i < csr.row_ptr[u + 1]; ++i) {
-    //         int v = csr.col_ind[i];
-    //         int w = 1;
-
-    //         if (check_dist[u] + w < check_dist[v]) {
-    //             check_dist[v] = check_dist[u] + w;
-    //             pq.push({check_dist[v], v});
-    //         }
-    //     }
-    // }
-
-    // for (int i = 0; i < csr.vertices; ++i) {
-    //     if (check_dist[i] == inf)
-    //         cout << "Vertex " << i << ": INF\n";
-    //     else
-    //         cout << "Vertex " << i << ": " << check_dist[i] << "\n";
-    // }
-    // int *deviceCopiedDist;
-    // deviceCopiedDist = (int *)malloc(sizeof(int) * csr.vertices);
-
-    // q.memcpy(deviceCopiedDist, dist, sizeof(int) * csr.vertices);
-
-    // bool flag = false;
-    // for (int i = 0; i < csr.vertices; ++i) {
-    //     if (check_dist[i] != deviceCopiedDist[i]) {
-    //         printf("Wrong ans, Expected = %d, Actual = %d on vertex: %d\n", check_dist[i], deviceCopiedDist[i], i);
-    //         flag = true;
-    //         break;
-    //     }
-    // }
-
-    cout << "Correct ans, Time taken = " << t_time << endl;
+    cout << "Time taken = " << t_time << endl;
     cout << endl;
 
     return 0;

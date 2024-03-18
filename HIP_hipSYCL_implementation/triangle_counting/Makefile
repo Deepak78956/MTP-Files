@@ -19,7 +19,7 @@ make_csr.o: make_csr.cpp make_csr.hpp
 # 	clang++ -O3 -fsycl sycl_triangle_counting.cpp -fsycl-targets=nvptx64-nvidia-cuda make_csr.cpp -o $(SYCL_OUTPUT)
 
 $(SYCL_OUTPUT): sycl_triangle_counting.cpp make_csr.hpp make_csr.cpp
-	acpp -O3 sycl_triangle_counting.cpp --acpp-platform=rocm make_csr.cpp -o $(SYCL_OUTPUT)
+	acpp -O3 sycl_triangle_counting.cpp make_csr.cpp -o $(SYCL_OUTPUT)
 
 $(HIP_OUTPUT): hip_triangle_counting.cpp make_csr.hpp make_csr.cpp
 	hipcc -O3 hip_triangle_counting.cpp make_csr.cpp -o $(HIP_OUTPUT)
