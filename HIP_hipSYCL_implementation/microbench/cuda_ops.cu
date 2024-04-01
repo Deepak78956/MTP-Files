@@ -106,6 +106,49 @@ void atomic_add_time() {
     cout << host_x[0] << endl;
 }
 
+__global__ void DRAM_kernel(long int gb, float *input_dev_arr, float *output_dev_arr) {
+    unsigned id = blockIdx.x * blockDim.x + threadIdx.x;
+    if (id < gb) {
+        output_dev_arr[id] = input_dev_arr[id];
+    }
+}
+
+void DRAM(){
+    long int gb = 1024*1024*1024;
+    float *input_dev_arr, *output_dev_arr;
+
+    float *arr;
+    arr = (float *)malloc(sizeof(float) * gb);
+
+    for(int i = 0; i < gb; i++) {
+        arr[i] = i;
+    }
+
+    cudaMalloc(&input_dev_arr, sizeof(float) * gb);
+    cudaMalloc(&output_dev_arr, sizeof(float) * gb);
+
+    cudaMemcpy(input_dev_arr, arr, sizeof(float) * gb, cudaMemcpyHostToDevice);
+
+    unsigned nBlocks = ceil((float)gb / B_SIZE);
+
+    clock_t timer;
+    timer = clock();
+
+    DRAM_kernel<<<nBlocks, B_SIZE>>>(gb, input_dev_arr, output_dev_arr);
+    cudaDeviceSynchronize();
+
+    timer = clock() - timer;
+    float t_time = ((float)timer) / CLOCKS_PER_SEC;
+
+    float bw = (sizeof(float) * gb) / t_time;
+
+    int div = 1000000000;
+    cout << "Bandwidth achieved: " << bw / div << " GBps" << endl;
+
+    cudaFree(input_dev_arr);
+    cudaFree(output_dev_arr);
+}
+
 int main(int argc, char *argv[]) {
 
     device_memory_alloc();

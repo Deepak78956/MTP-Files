@@ -81,19 +81,12 @@ __global__ void kernel_add(int *x) {
     atomicAdd(x, 1);
 }
 
-__global__ void setOne(int *x) {
-    x[0] = 1;
-}
-
 void atomic_add_time() {
     int *x;
     hipMalloc(&x, sizeof(int));
 
     clock_t timer;
     double t_time;
-
-    setOne<<<1,1>>>(x);
-    hipDeviceSynchronize();
 
     timer = clock();
 
@@ -113,6 +106,57 @@ void atomic_add_time() {
     cout << host_x[0] << endl;
 }
 
+__global__ void DRAM_kernel(long int gb, float *input_dev_arr, float *output_dev_arr) {
+    unsigned id = blockIdx.x * blockDim.x + threadIdx.x;
+    if (id < gb) {
+        output_dev_arr[id] = input_dev_arr[id];
+    }
+}
+
+void DRAM(){
+    long int gb = 1024*1024*1024;
+    float *input_dev_arr, *output_dev_arr;
+
+    float *arr;
+    arr = (float *)malloc(sizeof(float) * gb);
+
+    for(int i = 0; i < gb; i++) {
+        arr[i] = float(i) + 0.1;
+    }
+
+
+    
+    auto err = hipMalloc(&input_dev_arr, sizeof(float) * gb);
+    cout << err << endl;
+
+    err = hipMalloc(&output_dev_arr, sizeof(float) * gb);
+    cout << err << endl;
+
+    hipDeviceSynchronize();
+    cout << "here" << endl;
+
+    hipMemcpy(input_dev_arr, arr, sizeof(float) * gb, hipMemcpyHostToDevice);
+
+    unsigned nBlocks = ceil((float)gb / B_SIZE);
+
+    clock_t timer;
+    timer = clock();
+
+    DRAM_kernel<<<nBlocks, B_SIZE>>>(gb, input_dev_arr, output_dev_arr);
+    hipDeviceSynchronize();
+
+    timer = clock() - timer;
+    float t_time = ((float)timer) / CLOCKS_PER_SEC;
+
+    float bw = (sizeof(float) * gb) / t_time;
+
+    int div = 1000000000;
+    cout << "Bandwidth achieved: " << bw / div << " GBps" << endl;
+
+    hipFree(input_dev_arr);
+    hipFree(output_dev_arr);
+}
+
 int main(int argc, char *argv[]) {
 
     // device_memory_alloc();
@@ -121,7 +165,9 @@ int main(int argc, char *argv[]) {
 
     // host_to_dev_copy();
 
-    atomic_add_time();
+    // atomic_add_time();
+
+    DRAM();
 
     return 0;
 }

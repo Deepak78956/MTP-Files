@@ -129,11 +129,9 @@ void countTriangles(sycl::queue &Q, struct Graph *graph, int num_vertices) {
                 {
                     if (t != r && isNeigh(graph, t->data, r->data))
                     {
-                        // atomicAdd(&tc, 1);
-                        // sycl::atomic_ref<int, sycl::memory_order::relaxed, sycl::memory_scope::system,
-                        // sycl::access::address_space::global_space> atomic_data(tc[0]);
-                        // tc[0] +=1 ;
-                        sycl::atomic<int, sycl::access::address_space::global_space>(sycl::global_ptr<int>(tc)).fetch_add(1);
+                        sycl::atomic_ref<int, sycl::memory_order::relaxed, sycl::memory_scope::device, sycl::access::address_space::global_space> atomic_tc(*tc);
+                        atomic_tc += 1;
+                        // sycl::atomic<int, sycl::access::address_space::global_space>(sycl::global_ptr<int>(tc)).fetch_add(1);
                         // sycl::atomic_fetch_add()
                     }
                     r = r->next;
@@ -165,11 +163,9 @@ void countTriangles_usingRange(sycl::queue &Q, struct Graph *graph, int num_vert
                 {
                     if (t != r && isNeigh(graph, t->data, r->data))
                     {
-                        // atomicAdd(&tc, 1);
-                        // sycl::atomic_ref<int, sycl::memory_order::relaxed, sycl::memory_scope::system,
-                        // sycl::access::address_space::global_space> atomic_data(tc[0]);
-                        // tc[0] +=1 ;
-                        sycl::atomic<int, sycl::access::address_space::global_space>(sycl::global_ptr<int>(tc)).fetch_add(1);
+                        sycl::atomic_ref<int, sycl::memory_order::relaxed, sycl::memory_scope::device, sycl::access::address_space::global_space> atomic_tc(*tc);
+                        atomic_tc += 1;
+                        // sycl::atomic<int, sycl::access::address_space::global_space>(sycl::global_ptr<int>(tc)).fetch_add(1);
                         // sycl::atomic_fetch_add()
                     }
                     r = r->next;

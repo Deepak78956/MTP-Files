@@ -7,7 +7,7 @@
 #include <sys/time.h>
 
 #define it 10000
-#define size 134217728
+#define size 1024
 #define B_SIZE 1024
 
 using namespace std;
@@ -91,7 +91,10 @@ void atomic_add_time(sycl::queue &Q) {
 
     for (int i = 0; i < it; i++) {
         Q.parallel_for(sycl::nd_range<1>(totalItems, itemsInWG), [=](sycl::nd_item<1> item){
-            sycl::atomic<int, sycl::access::address_space::global_space>(sycl::global_ptr<int>(x)).fetch_add(1);
+            sycl::atomic_ref<int, sycl::memory_order::relaxed, sycl::memory_scope::device, sycl::access::address_space::global_space> atomic_x(*x);
+            atomic_x += 1;
+            // sycl::atomic<int, sycl::access::address_space::global_space>(sycl::global_ptr<int>(x)).fetch_add(1);
+            // sycl::atomic_fetch_add<int>(sycl::atomic<int>(sycl::global_ptr<int>(x)), 1);
         }).wait();
     }
 
@@ -107,6 +110,50 @@ void atomic_add_time(sycl::queue &Q) {
     cout << host_x[0] << endl;
 }
 
+void DRAM(sycl::queue &Q){
+    long int gb = 1024;
+    float *input_dev_arr, *output_dev_arr;
+
+    float *arr;
+    arr = (float *)malloc(sizeof(float) * gb);
+
+    for(int i = 0; i < gb; i++) {
+        arr[i] = i;
+    }
+
+    input_dev_arr = sycl::malloc_device<float>(gb * sizeof(float), Q);
+    Q.wait();
+    output_dev_arr = sycl::malloc_device<float>(gb * sizeof(float), Q);
+    Q.wait();
+
+    Q.memcpy(input_dev_arr, arr, sizeof(float) * gb);
+    Q.wait();
+
+    auto totalItems = sycl::range<1>(gb);
+    auto itemsInWG = sycl::range<1>(B_SIZE);
+
+    clock_t timer;
+    timer = clock();
+
+    Q.parallel_for(sycl::nd_range<1>(totalItems, itemsInWG), [=](sycl::nd_item<1> item){
+        unsigned id = item.get_global_id(0);
+        if (id < gb) {
+            output_dev_arr[id] = input_dev_arr[id];
+        }
+    }).wait();
+
+    timer = clock() - timer;
+    double t_time = ((double)timer) / CLOCKS_PER_SEC * 1000;
+    
+    double bw = (sizeof(float) * gb) / t_time;
+
+    int div = 1000000000;
+    cout << "Bandwidth achieved: " << bw / div << " GBps" << endl;
+
+    free(output_dev_arr, Q);
+    free(input_dev_arr, Q);
+}
+
 int main(int argc, char *argv[]) {
     sycl::queue Q{sycl::gpu_selector{}}; 
     
@@ -117,6 +164,8 @@ int main(int argc, char *argv[]) {
     // host_to_dev_copy(Q);
 
     atomic_add_time(Q);
+
+    // DRAM(Q);
 
     return 0;
 }

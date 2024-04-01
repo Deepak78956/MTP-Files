@@ -29,10 +29,10 @@ if __name__ == "__main__":
     
     print()
     
-    for _ in range(5):
-        print("Output from running 'hip_output':")
-        run_hip_output()
-        print("-" * 30)  # Separating each run output for clarity
+    # for _ in range(5):
+    #     print("Output from running 'hip_output':")
+    #     run_hip_output()
+    #     print("-" * 30)  # Separating each run output for clarity
     
     # for _ in range(5):
     #     print("Output from running 'cuda_output':")
