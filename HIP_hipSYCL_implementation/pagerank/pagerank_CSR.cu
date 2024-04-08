@@ -261,23 +261,25 @@ int main(int argc, char *argv[])
     int *dev_offsetArr, *dev_edgeList;
     int *dev_in_offsetArr, *dev_in_edgeList;
 
-    clock_t calcTime, assignTime, initTime, initialMemOP, prMem;
+    clock_t calcTime, assignTime, initTime, copyTime, prMem, mallocTime;
 
-    initialMemOP = clock();
+    mallocTime = clock();
     cudaMalloc(&dev_offsetArr, sizeof(int) * (num_vertices + 1));
     cudaMalloc(&dev_in_offsetArr, sizeof(int) * (num_vertices + 1));
     cudaMalloc(&dev_edgeList, sizeof(int) * size);
     cudaMalloc(&dev_in_edgeList, sizeof(int) * size);
 
+    struct CSR *dev_csr, *dev_in_csr;
+    cudaMalloc(&dev_csr, sizeof(struct CSR));
+    cudaMalloc(&dev_in_csr, sizeof(struct CSR));
+    mallocTime = clock() - mallocTime;
+
+    copyTime = clock();
     cudaMemcpy(dev_offsetArr, csr.offsetArr, sizeof(int) * (num_vertices + 1), cudaMemcpyHostToDevice);
     cudaMemcpy(dev_in_offsetArr, in_csr.offsetArr, sizeof(int) * (num_vertices + 1), cudaMemcpyHostToDevice);
     cudaMemcpy(dev_in_edgeList, in_csr.edgeList, sizeof(int) * num_edges, cudaMemcpyHostToDevice);
     cudaMemcpy(dev_edgeList, csr.edgeList, sizeof(int) * num_edges, cudaMemcpyHostToDevice);
-
-    struct CSR *dev_csr, *dev_in_csr;
-    cudaMalloc(&dev_csr, sizeof(struct CSR));
-    cudaMalloc(&dev_in_csr, sizeof(struct CSR));
-    initialMemOP = clock() - initialMemOP;
+    copyTime = clock() - copyTime;
 
     assignTime = clock();
     assignToCSR<<<1, 1>>>(dev_offsetArr, dev_edgeList, num_vertices, num_edges, dev_csr);
@@ -298,6 +300,7 @@ int main(int argc, char *argv[])
     cudaMalloc(&pr, sizeof(float) * num_vertices);
     cudaMalloc(&prCopy, sizeof(float) * num_vertices);
     prMem = clock() - prMem;
+    mallocTime += prMem;
 
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
 
@@ -331,21 +334,28 @@ int main(int argc, char *argv[])
     }
 
     calcTime = clock() - calcTime;
+    calcTime += assignTime + initTime;
 
-    double t_time = ((double)calcTime + (double)initTime + (double)assignTime) / CLOCKS_PER_SEC * 1000;
-    cout << "On graph: " << fileName << ", Time taken: " << t_time << endl;
+    double kernelTime = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
+    double allocTime = ((double)mallocTime) / CLOCKS_PER_SEC * 1000;
+    double cpyTime = ((double)copyTime) / CLOCKS_PER_SEC * 1000;
+
+    cout << "On graph: " << fileName << endl;
+    cout << "Kernel Time: " << kernelTime << endl;
+    cout << "Malloc time: " << allocTime << endl;
+    cout << "Memcpy time: " << cpyTime << endl;
     cout << endl;
 
-    if (max_iter % 2 == 0)
-    {
-        printPR<<<1, 1>>>(prCopy, num_vertices);
-        cudaDeviceSynchronize();
-    }
-    else
-    {
-        printPR<<<1, 1>>>(pr, num_vertices);
-        cudaDeviceSynchronize();
-    }
+    // if (max_iter % 2 == 0)
+    // {
+    //     printPR<<<1, 1>>>(prCopy, num_vertices);
+    //     cudaDeviceSynchronize();
+    // }
+    // else
+    // {
+    //     printPR<<<1, 1>>>(pr, num_vertices);
+    //     cudaDeviceSynchronize();
+    // }
 
     return 0;
 }

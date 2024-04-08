@@ -232,23 +232,23 @@ int main(int argc, char *argv[])
     if (DEBUG == true)
     {
         cout << "For normal CSR" << endl;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < num_vertices + 1; i++)
         {
             cout << offsetArr[i] << " ";
         }
         cout << endl;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < size; i++)
         {
             cout << edgeList[i] << " ";
         }
         cout << endl;
         cout << "For in neigh CSR" << endl;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < num_vertices + 1; i++)
         {
             cout << in_offsetArr[i] << " ";
         }
         cout << endl;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < size; i++)
         {
             cout << in_edgeList[i] << " ";
         }
@@ -261,23 +261,25 @@ int main(int argc, char *argv[])
     int *dev_offsetArr, *dev_edgeList;
     int *dev_in_offsetArr, *dev_in_edgeList;
 
-    clock_t calcTime, assignTime, initTime, initialMemOP, prMem;
+    clock_t calcTime, assignTime, initTime, copyTime, prMem, mallocTime;
 
-    initialMemOP = clock();
+    mallocTime = clock();
     hipMalloc(&dev_offsetArr, sizeof(int) * (num_vertices + 1));
     hipMalloc(&dev_in_offsetArr, sizeof(int) * (num_vertices + 1));
     hipMalloc(&dev_edgeList, sizeof(int) * size);
     hipMalloc(&dev_in_edgeList, sizeof(int) * size);
 
+    struct CSR *dev_csr, *dev_in_csr;
+    hipMalloc(&dev_csr, sizeof(struct CSR));
+    hipMalloc(&dev_in_csr, sizeof(struct CSR));
+    mallocTime = clock() - mallocTime;
+
+    copyTime = clock();
     hipMemcpy(dev_offsetArr, csr.offsetArr, sizeof(int) * (num_vertices + 1), hipMemcpyHostToDevice);
     hipMemcpy(dev_in_offsetArr, in_csr.offsetArr, sizeof(int) * (num_vertices + 1), hipMemcpyHostToDevice);
     hipMemcpy(dev_in_edgeList, in_csr.edgeList, sizeof(int) * num_edges, hipMemcpyHostToDevice);
     hipMemcpy(dev_edgeList, csr.edgeList, sizeof(int) * num_edges, hipMemcpyHostToDevice);
-
-    struct CSR *dev_csr, *dev_in_csr;
-    hipMalloc(&dev_csr, sizeof(struct CSR));
-    hipMalloc(&dev_in_csr, sizeof(struct CSR));
-    initialMemOP = clock() - initialMemOP;
+    copyTime = clock() - copyTime;
 
     assignTime = clock();
     assignToCSR<<<1, 1>>>(dev_offsetArr, dev_edgeList, num_vertices, num_edges, dev_csr);
@@ -298,6 +300,7 @@ int main(int argc, char *argv[])
     hipMalloc(&pr, sizeof(float) * num_vertices);
     hipMalloc(&prCopy, sizeof(float) * num_vertices);
     prMem = clock() - prMem;
+    mallocTime += prMem;
 
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
 
@@ -331,20 +334,27 @@ int main(int argc, char *argv[])
     }
 
     calcTime = clock() - calcTime;
+    calcTime += assignTime + initTime;
 
-    double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
-    cout << "On graph: " << fileName << ", Time taken: " << t_time << endl;
+    double kernelTime = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
+    double allocTime = ((double)mallocTime) / CLOCKS_PER_SEC * 1000;
+    double cpyTime = ((double)copyTime) / CLOCKS_PER_SEC * 1000;
+
+    cout << "On graph: " << fileName << endl;
+    cout << "Kernel Time: " << kernelTime << endl;
+    cout << "Malloc time: " << allocTime << endl;
+    cout << "Memcpy time: " << cpyTime << endl;
     cout << endl;
 
     // if (max_iter % 2 == 0)
     // {
     //     printPR<<<1, 1>>>(prCopy, num_vertices);
-    //     hipDeviceSynchronize();
+    //     cudaDeviceSynchronize();
     // }
     // else
     // {
     //     printPR<<<1, 1>>>(pr, num_vertices);
-    //     hipDeviceSynchronize();
+    //     cudaDeviceSynchronize();
     // }
 
     return 0;

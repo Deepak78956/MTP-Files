@@ -1,3 +1,5 @@
+#define HIPSYCL_ALLOW_INSTANT_SUBMISSION 1
+
 #include <sycl/sycl.hpp>
 #include <array>
 #include <iostream>
@@ -332,9 +334,9 @@ int main(int argc, char *argv[]) {
     int *dev_offsetArr, *dev_edgeList;
     int *dev_in_offsetArr, *dev_in_edgeList;
 
-    clock_t calcTime, assignTime, initTime, initialMemOP, prMem;
+    clock_t calcTime, assignTime, initTime, mallocTime, prMem, copyTime;
 
-    sycl::queue q{sycl::gpu_selector{}};
+    sycl::queue q{sycl::gpu_selector{}, sycl::property::queue::hipSYCL_coarse_grained_events{}};
 
     sycl::device dev = q.get_device();
 
@@ -344,23 +346,33 @@ int main(int argc, char *argv[]) {
     // cout << "Device Type: " << dev.is_gpu() << endl;
 
 
-    initialMemOP = clock();
+    mallocTime = clock();
+
     dev_offsetArr = sycl::malloc_device<int>(num_vertices + 1, q);
+    q.wait();
     dev_in_offsetArr = sycl::malloc_device<int>(num_vertices + 1, q);
+    q.wait();
 
     dev_edgeList = sycl::malloc_device<int>(size, q);
+    q.wait();
     dev_in_edgeList = sycl::malloc_device<int>(size, q);
+    q.wait();
 
+    struct CSR *dev_csr, *dev_in_csr;
+    dev_csr = sycl::malloc_device<struct CSR>(1, q);
+    q.wait();
+    dev_in_csr = sycl::malloc_device<struct CSR>(1, q);
+    q.wait();
+
+    mallocTime = clock() - mallocTime;
+
+    copyTime = clock();
     q.memcpy(dev_offsetArr, csr.offsetArr, sizeof(int) * (num_vertices + 1)).wait();
     q.memcpy(dev_in_offsetArr, in_csr.offsetArr, sizeof(int) * (num_vertices + 1)).wait();
 
     q.memcpy(dev_in_edgeList, in_csr.edgeList, sizeof(int) * size).wait();
     q.memcpy(dev_edgeList, csr.edgeList, sizeof(int) * size).wait();
-
-    struct CSR *dev_csr, *dev_in_csr;
-    dev_csr = sycl::malloc_device<struct CSR>(1, q);
-    dev_in_csr = sycl::malloc_device<struct CSR>(1, q);
-    initialMemOP = clock() - initialMemOP;
+    copyTime = clock() - copyTime;
 
     assignTime = clock();
     assignToCSR(q, dev_csr, dev_offsetArr, dev_edgeList, num_vertices, num_edges);
@@ -376,9 +388,13 @@ int main(int argc, char *argv[]) {
 
     prMem = clock();
     pr = sycl::malloc_device<float>(num_vertices, q);
+    q.wait();
     prCopy = sycl::malloc_device<float>(num_vertices, q);
+    q.wait();
     
     prMem = clock() - prMem;
+
+    mallocTime += prMem;
 
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
 
@@ -422,8 +438,16 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
-    cout << "On graph: " << fileName << ", Time taken: " << t_time << endl;
+    calcTime += assignTime + initTime;
+
+    double kernelTime = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
+    double allocTime = ((double)mallocTime) / CLOCKS_PER_SEC * 1000;
+    double cpyTime = ((double)copyTime) / CLOCKS_PER_SEC * 1000;
+
+    cout << "On graph: " << fileName << endl;
+    cout << "Kernel Time: " << kernelTime << endl;
+    cout << "Malloc time: " << allocTime << endl;
+    cout << "Memcpy time: " << cpyTime << endl;
     cout << endl;
 
     return 0;

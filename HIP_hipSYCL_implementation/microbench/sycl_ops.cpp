@@ -1,3 +1,5 @@
+#define HIPSYCL_ALLOW_INSTANT_SUBMISSION 1
+
 #include <iostream>
 #include <math.h>
 #include <vector>
@@ -263,11 +265,13 @@ void random_accesses(sycl::queue &Q){
 }
 
 int main(int argc, char *argv[]) {
-    sycl::queue Q(sycl::gpu_selector_v); 
+    // sycl::queue Q(sycl::gpu_selector_v); 
+
+    sycl::queue Q{sycl::gpu_selector_v, sycl::property::queue::hipSYCL_coarse_grained_events{}};
     
     // device_memory_alloc(Q);
 
-    // kernel_offload(Q);
+    kernel_offload(Q);
 
     // host_to_dev_copy(Q);
 
