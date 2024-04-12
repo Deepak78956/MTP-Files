@@ -4,3 +4,7 @@ sycl_output
 a.out 
 *.o
 output
+comgr_tmp_
+hip_output
+sycl_output
+a.out
