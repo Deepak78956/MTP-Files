@@ -1,7 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
+#include <sstream>
+#include <algorithm>
+
 #include <numeric>
 #include <cuda.h>
 #include "make_csr.hpp"
@@ -333,16 +336,16 @@ int main(int argc, char *argv[])
     cout << "On graph: " << fileName << ", Time taken: " << t_time << endl;
     cout << endl;
 
-    // if (max_iter % 2 == 0)
-    // {
-    //     printPR<<<1, 1>>>(prCopy, num_vertices);
-    //     cudaDeviceSynchronize();
-    // }
-    // else
-    // {
-    //     printPR<<<1, 1>>>(pr, num_vertices);
-    //     cudaDeviceSynchronize();
-    // }
+    if (max_iter % 2 == 0)
+    {
+        printPR<<<1, 1>>>(prCopy, num_vertices);
+        cudaDeviceSynchronize();
+    }
+    else
+    {
+        printPR<<<1, 1>>>(pr, num_vertices);
+        cudaDeviceSynchronize();
+    }
 
     return 0;
 }

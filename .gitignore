@@ -1,2 +1,6 @@
 *.mtx
 *.txt
+sycl_output
+a.out 
+*.o
+output

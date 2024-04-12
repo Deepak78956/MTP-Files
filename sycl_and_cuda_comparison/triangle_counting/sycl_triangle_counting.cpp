@@ -113,8 +113,9 @@ bool isNeigh(Graph* graph, int t, int r) {
 void countTriangles(sycl::queue &Q, struct Graph *graph, int num_vertices) {
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
     auto range = sycl::nd_range<1>(sycl::range<1>(nBlocks_for_vertices * B_SIZE), sycl::range<1>(B_SIZE));
-    int *tc;
-    tc = sycl::malloc_device<int>(1, Q);
+    
+    float *tc;
+    tc = sycl::malloc_device<float>(1, Q);
     Q.parallel_for(range, [=](sycl::nd_item<1> item){
         unsigned p = item.get_global_id(0);
         if (p < graph->numVertices)
@@ -127,12 +128,10 @@ void countTriangles(sycl::queue &Q, struct Graph *graph, int num_vertices) {
                 {
                     if (t != r && isNeigh(graph, t->data, r->data))
                     {
-                        // atomicAdd(&tc, 1);
-                        // sycl::atomic_ref<int, sycl::memory_order::relaxed, sycl::memory_scope::system,
-                        // sycl::access::address_space::global_space> atomic_data(tc[0]);
-                        // tc[0] +=1 ;
-                        sycl::atomic<int, sycl::access::address_space::global_space>(sycl::global_ptr<int>(tc)).fetch_add(1);
-                        // sycl::atomic_fetch_add()
+                        sycl::atomic_ref<float, sycl::memory_order::relaxed, sycl::memory_scope::device, sycl::access::address_space::global_space> atomic_tc(*tc);
+                        atomic_tc += 1.0;
+                        // sycl::atomic<float, sycl::access::address_space::global_space>(sycl::global_ptr<float>(tc)).fetch_add(1);
+                        
                     }
                     r = r->next;
                 }
@@ -148,8 +147,8 @@ void countTriangles(sycl::queue &Q, struct Graph *graph, int num_vertices) {
 
 void countTriangles_usingRange(sycl::queue &Q, struct Graph *graph, int num_vertices) {
     auto range = sycl::range<1>(num_vertices);
-    int *tc;
-    tc = sycl::malloc_device<int>(1, Q);
+    float *tc;
+    tc = sycl::malloc_device<float>(1, Q);
 
     Q.parallel_for(range, [=](sycl::id<1> idx){
         unsigned p = idx[0];
@@ -163,12 +162,9 @@ void countTriangles_usingRange(sycl::queue &Q, struct Graph *graph, int num_vert
                 {
                     if (t != r && isNeigh(graph, t->data, r->data))
                     {
-                        // atomicAdd(&tc, 1);
-                        // sycl::atomic_ref<int, sycl::memory_order::relaxed, sycl::memory_scope::system,
-                        // sycl::access::address_space::global_space> atomic_data(tc[0]);
-                        // tc[0] +=1 ;
-                        sycl::atomic<int, sycl::access::address_space::global_space>(sycl::global_ptr<int>(tc)).fetch_add(1);
-                        // sycl::atomic_fetch_add()
+                        sycl::atomic_ref<float, sycl::memory_order::relaxed, sycl::memory_scope::device, sycl::access::address_space::global_space> atomic_tc(*tc);
+                        atomic_tc += 1.0;
+                        // sycl::atomic<int, sycl::access::address_space::global_space>(sycl::global_ptr<int>(tc)).fetch_add(1);
                     }
                     r = r->next;
                 }

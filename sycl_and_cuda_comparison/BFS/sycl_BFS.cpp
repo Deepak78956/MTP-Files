@@ -41,7 +41,9 @@ void BFS(sycl::queue &Q, int *dist, int *src, int *dest, int num_vertices, int *
                 int v = dest[i];
 
                 if(dist[v] > dist[u] + 1){
-                    sycl::atomic<int, sycl::access::address_space::global_space>(sycl::global_ptr<int>(&dist[v])).fetch_min(dist[u] + 1);
+                    // sycl::atomic<int, sycl::access::address_space::global_space>(sycl::global_ptr<int>(&dist[v])).fetch_min(dist[u] + 1);
+                    sycl::atomic_ref<int, sycl::memory_order::relaxed, sycl::memory_scope::device, sycl::access::address_space::global_space> atomicRef(dist[v]);
+                    atomicRef.fetch_min(dist[u] + 1);
                     changed[0] = 1;
                 }
             }
