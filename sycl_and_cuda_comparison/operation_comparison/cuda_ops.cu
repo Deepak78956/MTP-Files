@@ -8,8 +8,9 @@
 #include <fstream>
 
 #define it 10000
-#define size 65536
+#define size (1 << 28) // 2^28
 #define B_SIZE 1024
+#define randomArrSize (1 << 18)
 
 // parameters for shared_memory kernel
 #define use_prefetch 1
@@ -199,7 +200,7 @@ void readNumbersFromFile(const string& filename, int* randoms) {
         return;
     }
 
-    for (int i = 0; i < size; ++i) {
+    for (int i = 0; i < randomArrSize; ++i) {
         if (!(inFile >> randoms[i])) {
             cerr << "Error reading from file." << endl;
             return;
@@ -211,13 +212,13 @@ void readNumbersFromFile(const string& filename, int* randoms) {
 
 __global__ void random_accesses_kernel(int *randoms_dev, int *output_arr) {
     unsigned id = blockDim.x * blockIdx.x + threadIdx.x;
-    if (id < size) {
+    if (id < randomArrSize) {
         output_arr[randoms_dev[id]] = id * 2; 
     }
 }
 
 void random_accesses(){
-    int* randoms = static_cast<int*>(malloc(size * sizeof(int))); 
+    int* randoms = static_cast<int*>(malloc((randomArrSize) * sizeof(int))); 
 
     if (randoms == nullptr) {
         cerr << "Memory allocation failed." << endl;
@@ -227,11 +228,11 @@ void random_accesses(){
     readNumbersFromFile("random_numbers.txt", randoms);
 
     int *randoms_dev, *output_arr;
-    cudaMalloc(&randoms_dev, sizeof(int) * size);
+    cudaMalloc(&randoms_dev, sizeof(int) * randomArrSize);
     cudaMalloc(&output_arr, sizeof(int) * size);
-    cudaMemcpy(randoms_dev, randoms, sizeof(int) * size, cudaMemcpyHostToDevice);
+    cudaMemcpy(randoms_dev, randoms, sizeof(int) * randomArrSize, cudaMemcpyHostToDevice);
 
-    unsigned nBlocks = ceil((float)size / B_SIZE);
+    unsigned nBlocks = ceil((float)randomArrSize / B_SIZE);
 
     clock_t timer;
     timer = clock();
@@ -263,7 +264,7 @@ int main(int argc, char *argv[]) {
 
     // shared_memory();
 
-    // random_accesses();
+    random_accesses();
 
     return 0;
 }
