@@ -5,11 +5,11 @@ FILENAMES := $(wildcard $(INPUT_DIR)/*.mtx)
 CUDA_OUTPUT := output
 SYCL_OUTPUT := sycl_output
 
-$(CUDA_OUTPUT): cuda_BFS.o make_csr.o
-	nvcc -O3 cuda_BFS.o make_csr.o -o $(CUDA_OUTPUT)
+$(CUDA_OUTPUT): cuda_persistent_BFS.o make_csr.o
+	nvcc -O3 cuda_persistent_BFS.o make_csr.o -o $(CUDA_OUTPUT)
 
-cuda_BFS.o: cuda_BFS.cu $(FILENAMES)
-	nvcc -c -O3 -DINPUT_FILENAME=\"$<\" cuda_BFS.cu
+cuda_persistent_BFS.o: cuda_persistent_BFS.cu $(FILENAMES)
+	nvcc -c -O3 -DINPUT_FILENAME=\"$<\" cuda_persistent_BFS.cu
 
 make_csr.o: make_csr.cpp make_csr.hpp
 	nvcc -c -O3 make_csr.cpp
