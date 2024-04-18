@@ -8,8 +8,9 @@
 #include <fstream>
 
 #define it 10000
-#define size 134217728
+#define size (1 << 28) // 2^28
 #define B_SIZE 1024
+#define randomArrSize (1 << 18)
 
 using namespace std;
 
@@ -225,7 +226,7 @@ __global__ void random_accesses_kernel(int *randoms_dev, int *output_arr) {
 }
 
 void random_accesses(){
-    int* randoms = static_cast<int*>(malloc(size * sizeof(int))); 
+    int* randoms = static_cast<int*>(malloc((randomArrSize) * sizeof(int))); 
 
     if (randoms == nullptr) {
         cerr << "Memory allocation failed." << endl;
@@ -235,11 +236,11 @@ void random_accesses(){
     readNumbersFromFile("random_numbers.txt", randoms);
 
     int *randoms_dev, *output_arr;
-    cudaMalloc(&randoms_dev, sizeof(int) * size);
+    cudaMalloc(&randoms_dev, sizeof(int) * randomArrSize);
     cudaMalloc(&output_arr, sizeof(int) * size);
-    cudaMemcpy(randoms_dev, randoms, sizeof(int) * size, cudaMemcpyHostToDevice);
+    cudaMemcpy(randoms_dev, randoms, sizeof(int) * randomArrSize, cudaMemcpyHostToDevice);
 
-    unsigned nBlocks = ceil((float)size / B_SIZE);
+    unsigned nBlocks = ceil((float)randomArrSize / B_SIZE);
 
     clock_t timer;
     timer = clock();

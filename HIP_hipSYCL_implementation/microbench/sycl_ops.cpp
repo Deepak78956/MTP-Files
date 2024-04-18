@@ -10,8 +10,9 @@
 #include <fstream>
 
 #define it 10000
-#define size 134217728
+#define size (1 << 28) // 2^28
 #define B_SIZE 1024
+#define randomArrSize (1 << 18)
 
 // parameters for shared_memory kernel
 #define use_prefetch 1
@@ -224,7 +225,7 @@ void readNumbersFromFile(const string& filename, int* randoms) {
 }
 
 void random_accesses(sycl::queue &Q){
-    int* randoms = static_cast<int*>(malloc(size * sizeof(int))); 
+    int* randoms = static_cast<int*>(malloc((randomArrSize) * sizeof(int)));  
 
     if (randoms == nullptr) {
         cerr << "Memory allocation failed." << endl;
@@ -234,12 +235,12 @@ void random_accesses(sycl::queue &Q){
     readNumbersFromFile("random_numbers.txt", randoms);
 
     int *randoms_dev, *output_arr;
-    randoms_dev = sycl::malloc_device<int>(size * sizeof(int), Q);
+    randoms_dev = sycl::malloc_device<int>(randomArrSize * sizeof(int), Q);
     output_arr = sycl::malloc_device<int>(size * sizeof(int), Q);
 
-    Q.memcpy(randoms_dev, randoms, sizeof(int) * size);
+    Q.memcpy(randoms_dev, randoms, sizeof(int) * randomArrSize);
 
-    auto globalRange = sycl::range<1>(size);
+    auto globalRange = sycl::range<1>(randomArrSize);
     auto localRange = sycl::range<1>(B_SIZE);
 
     clock_t timer;
@@ -248,7 +249,7 @@ void random_accesses(sycl::queue &Q){
     for (int i = 0; i < it; i++){
         Q.parallel_for(sycl::nd_range<1>(globalRange, localRange), [=](sycl::nd_item<1> item){
             unsigned id = item.get_global_id(0);
-            if (id < size) {
+            if (id < randomArrSize) {
                 output_arr[randoms_dev[id]] = id * 2; 
             }
         }).wait();
@@ -267,11 +268,11 @@ void random_accesses(sycl::queue &Q){
 int main(int argc, char *argv[]) {
     // sycl::queue Q(sycl::gpu_selector_v); 
 
-    sycl::queue Q{sycl::gpu_selector_v, sycl::property::queue::hipSYCL_coarse_grained_events{}};
+    sycl::queue Q{sycl::gpu_selector_v};
     
     // device_memory_alloc(Q);
 
-    kernel_offload(Q);
+    // kernel_offload(Q);
 
     // host_to_dev_copy(Q);
 
@@ -279,7 +280,9 @@ int main(int argc, char *argv[]) {
 
     // DRAM(Q);
 
-    shared_memory(Q);
+    // shared_memory(Q);
+
+    random_accesses(Q);
 
     return 0;
 }
