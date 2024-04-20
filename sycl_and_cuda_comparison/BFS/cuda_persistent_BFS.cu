@@ -61,6 +61,7 @@ __global__ void BFS(int *dist, int *dev_row_ptr, int *dev_col_ind, int num_verti
     // ArgsStruct *args;
     // args = (ArgsStruct *)para;
     cg::grid_group grid = cg::this_grid();
+    printf("here\n");
 
     launchedKernel[0] = 1;
     
@@ -195,7 +196,7 @@ int main(int argc, char *argv[]){
   }
 
     dim3 blockSize(256,1,1);
-    dim3 gridSize(1024,1,1);
+    dim3 gridSize(1,1,1);
 
     ArgsStruct *para;
     cudaMalloc(&para, sizeof(ArgsStruct));
