@@ -6,6 +6,7 @@
 #include <numeric>
 #include <cuda.h>
 #include <cooperative_groups.h>
+#include <queue>
 #include "make_csr.hpp"
 #define DEBUG false
 #define B_SIZE 1024
@@ -33,7 +34,7 @@ __global__ void init_dist(int *dist, int vertices, int s) {
             dist[id] = 0;
         }
         else {
-            dist[id] = 1000000;
+            dist[id] = inf;
         }
     }
 }
@@ -85,6 +86,41 @@ __global__ void setParams(int *dist, int *dev_row_ptr, int *dev_col_ind, int num
     (*args).dev_col_ind = dev_col_ind;
     (*args).num_vertices = num_vertices;
     (*args).changed = changed;
+}
+
+void verifyDistances(struct NonWeightCSR csr, int num_vertices, int source, int *dev_dist) {
+    queue<int> q;
+    int dist[num_vertices];
+
+    for (int i = 0; i < num_vertices; i++) {
+        dist[i] = inf;
+    }
+    dist[source] = 0;
+
+    q.push(source);
+
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+
+        for (int i = csr.offsetArr[u]; i < csr.offsetArr[u + 1]; i++) {
+            int v = csr.edgeList[i];
+            if (dist[v] == inf) {
+                dist[v] = dist[u] + 1;
+                q.push(v);
+            }
+        }
+    }
+
+    for (int i = 0; i < num_vertices; i++) {
+        if (dist[i] != dev_dist[i]) {
+            printf("Distance mismatch for node %d, expected: %d, actual: %d\n", i, dist[i], dev_dist[i]);
+            break;
+        }
+    }
+
+    printf("Answer correct\n");
+    return;
 }
 
 int main(int argc, char *argv[]){
@@ -217,10 +253,7 @@ int main(int argc, char *argv[]){
 
     cudaMemcpy(dist_copy, dist, sizeof(int) * num_vertices, cudaMemcpyDeviceToHost);
 
-    for (int i = 0; i < num_vertices; i++) {
-        cout << dist_copy[i] << " ";
-    }
-    cout << endl;
+    verifyDistances(csr, num_vertices, source, dist_copy);
 
     return 0;
 }
