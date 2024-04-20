@@ -24,6 +24,8 @@ struct ArgsStruct {
     int *changed;
 };
 
+__device__ int changed = 0;
+
 __global__ void init_dist(int *dist, int vertices, int s) {
     unsigned id = blockDim.x * blockIdx.x + threadIdx.x;
     if (id < vertices) {
@@ -42,7 +44,7 @@ __global__ void print_dist(int *dist, int num_vertices) {
     }
 }
 
-__device__ void BFS_util(int *dist, int *src, int *destination, int num_vertices, int *changed) {
+__device__ void BFS_util(int *dist, int *src, int *destination, int num_vertices) {
     unsigned id = blockIdx.x * blockDim.x + threadIdx.x;
     if (id < num_vertices) {
         int u = id;
@@ -51,24 +53,24 @@ __device__ void BFS_util(int *dist, int *src, int *destination, int num_vertices
             int v = destination[i];
             if(dist[v] > dist[u] + 1){
                 atomicMin(&dist[v], dist[u] + 1);
-                changed[0] = 1;
+                changed = 1;
             }
         }
     }
 }
 
-__global__ void BFS(int *dist, int *dev_row_ptr, int *dev_col_ind, int num_vertices, int *changed, int *launchedKernel){
+__global__ void BFS(int *dist, int *dev_row_ptr, int *dev_col_ind, int num_vertices){
     // ArgsStruct *args;
     // args = (ArgsStruct *)para;
     cg::grid_group grid = cg::this_grid();
-    printf("here\n");
-
-    launchedKernel[0] = 1;
     
     while (true) {
-        BFS_util(dist, dev_row_ptr, dev_col_ind, num_vertices, changed);
+        changed = 0;
         grid.sync();
-        if (changed[0] == 0) {
+
+        BFS_util(dist, dev_row_ptr, dev_col_ind, num_vertices);
+        grid.sync();
+        if (changed == 0) {
             break;
         }
     }
@@ -172,9 +174,9 @@ int main(int argc, char *argv[]){
     init_dist<<<nBlocks_for_vertices, B_SIZE>>>(dist, num_vertices, source);
     cudaDeviceSynchronize();
 
-    int *changed;
-    cudaMalloc(&changed, sizeof(int));
-    cudaMemset(changed, 0, sizeof(int));
+    // int *changed;
+    // cudaMalloc(&changed, sizeof(int));
+    // cudaMemset(changed, 0, sizeof(int));
 
     int *launchedKernel;
     cudaMallocManaged(&launchedKernel, sizeof(int));
@@ -196,7 +198,7 @@ int main(int argc, char *argv[]){
   }
 
     dim3 blockSize(256,1,1);
-    dim3 gridSize(1,1,1);
+    dim3 gridSize(nBlocks_for_vertices,1,1);
 
     ArgsStruct *para;
     cudaMalloc(&para, sizeof(ArgsStruct));
@@ -204,9 +206,9 @@ int main(int argc, char *argv[]){
     // setParams<<<1,1>>>(dist, dev_row_ptr, dev_col_ind, num_vertices, changed, (void **)para);
     // cudaDeviceSynchronize();
 
-    void *kernelArgs[] = {(void *)&dist, (void *)&dev_row_ptr, (void *)&dev_col_ind, (void *)&num_vertices, (void *)&changed, (void *)&launchedKernel};
+    void *kernelArgs[] = {(void *)&dist, (void *)&dev_row_ptr, (void *)&dev_col_ind, (void *)&num_vertices, (void *)&launchedKernel};
 
-    // cout << "here" << endl;
+    // cout << nBlocks_for_vertices << endl;
     cudaLaunchCooperativeKernel((void*)BFS, gridSize, blockSize, kernelArgs);
     auto error = cudaDeviceSynchronize();
 
@@ -219,8 +221,6 @@ int main(int argc, char *argv[]){
         cout << dist_copy[i] << " ";
     }
     cout << endl;
-
-    cout << launchedKernel[0] << endl;
 
     return 0;
 }
