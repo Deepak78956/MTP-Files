@@ -112,14 +112,16 @@ void verifyDistances(struct NonWeightCSR csr, int num_vertices, int source, int 
         }
     }
 
+    int correct = 1;
     for (int i = 0; i < num_vertices; i++) {
         if (dist[i] != dev_dist[i]) {
             printf("Distance mismatch for node %d, expected: %d, actual: %d\n", i, dist[i], dev_dist[i]);
+            correct = 0;
             break;
         }
     }
 
-    printf("Answer correct\n");
+    if (correct == 1) printf("Answer correct\n");
     return;
 }
 
@@ -233,7 +235,7 @@ int main(int argc, char *argv[]){
     printf("cudaDeviceGetAttribute failed with error: %s\n", cudaGetErrorName(result));
   }
 
-    dim3 blockSize(256,1,1);
+    dim3 blockSize(1024,1,1);
     dim3 gridSize(nBlocks_for_vertices,1,1);
 
     ArgsStruct *para;
@@ -254,6 +256,7 @@ int main(int argc, char *argv[]){
     cudaMemcpy(dist_copy, dist, sizeof(int) * num_vertices, cudaMemcpyDeviceToHost);
 
     verifyDistances(csr, num_vertices, source, dist_copy);
+    cout << endl;
 
     return 0;
 }

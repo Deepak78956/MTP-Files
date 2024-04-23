@@ -18,7 +18,7 @@ __global__ void init_dist(int *dist, int vertices, int s) {
             dist[id] = 0;
         }
         else {
-            dist[id] = 1000000;
+            dist[id] = inf;
         }
     }
 }
@@ -49,6 +49,43 @@ __global__ void ker(int *dist) {
         printf("%d ", dist[i]);
     }
     printf("\n");
+}
+
+void verifyDistances(struct NonWeightCSR csr, int num_vertices, int source, int *dev_dist) {
+    queue<int> q;
+    int dist[num_vertices];
+
+    for (int i = 0; i < num_vertices; i++) {
+        dist[i] = inf;
+    }
+    dist[source] = 0;
+
+    q.push(source);
+
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+
+        for (int i = csr.offsetArr[u]; i < csr.offsetArr[u + 1]; i++) {
+            int v = csr.edgeList[i];
+            if (dist[v] == inf) {
+                dist[v] = dist[u] + 1;
+                q.push(v);
+            }
+        }
+    }
+
+    int correct = 1;
+    for (int i = 0; i < num_vertices; i++) {
+        if (dist[i] != dev_dist[i]) {
+            printf("Distance mismatch for node %d, expected: %d, actual: %d\n", i, dist[i], dev_dist[i]);
+            correct = 0;
+            break;
+        }
+    }
+
+    if (correct == 1) printf("Answer correct\n");
+    return;
 }
 
 int main(int argc, char *argv[]) {
@@ -162,8 +199,16 @@ int main(int argc, char *argv[]) {
     double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
 
     cout << "On graph " << fileName << " Time taken = " << t_time << endl;
-    ker<<<1,1>>>(dist);
-    cudaDeviceSynchronize();
+    // ker<<<1,1>>>(dist);
+    // cudaDeviceSynchronize();
+    cout << endl;
+
+    int *dist_copy;
+    dist_copy = (int *)malloc(sizeof(int) * num_vertices);
+
+    cudaMemcpy(dist_copy, dist, sizeof(int) * num_vertices, cudaMemcpyDeviceToHost);
+
+    verifyDistances(csr, num_vertices, source, dist_copy);
     cout << endl;
 
     return 0;

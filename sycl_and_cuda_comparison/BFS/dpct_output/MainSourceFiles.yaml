@@ -1,0 +1,622 @@
+---
+MainSourceFile:  '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/MainSrcFiles_placehold'
+Replacements:
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          0
+    Length:          0
+    ReplacementText: "#include <sycl/sycl.hpp>\n#include <dpct/dpct.hpp>\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          116
+    Length:          18
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          134
+    Length:          32
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          206
+    Length:          0
+    ReplacementText: "\n#include <cmath>\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          328
+    Length:          34
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          487
+    Length:          27
+    ReplacementText: 'dpct::global_memory<int, 0> changed(0);'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          516
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          572
+    Length:          0
+    ReplacementText: ', const sycl::nd_item<3> &item_ct1'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          594
+    Length:          10
+    ReplacementText: 'item_ct1.get_local_range(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          607
+    Length:          10
+    ReplacementText: 'item_ct1.get_group(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          620
+    Length:          11
+    ReplacementText: 'item_ct1.get_local_id(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          779
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          833
+    Length:          0
+    ReplacementText: ', const sycl::stream &stream_ct1'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          882
+    Length:          0
+    ReplacementText: "        /*\n        DPCT1015:0: Output needs adjustment.\n        */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          890
+    Length:          46
+    ReplacementText: 'stream_ct1 << "node i = %d, dist = %d\n"'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          947
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          1027
+    Length:          0
+    ReplacementText: ",\n              const sycl::nd_item<3> &item_ct1, int &changed"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          1049
+    Length:          10
+    ReplacementText: 'item_ct1.get_group(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          1062
+    Length:          10
+    ReplacementText: 'item_ct1.get_local_range(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          1075
+    Length:          11
+    ReplacementText: 'item_ct1.get_local_id(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          1289
+    Length:          32
+    ReplacementText: 'dpct::atomic_fetch_min<sycl::access::address_space::generic_space>(&dist[v], dist[u] + 1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          1385
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          1468
+    Length:          0
+    ReplacementText: ",\n         const sycl::nd_item<3> &item_ct1, int &changed"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          1530
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1087:1: SYCL currently does not support cross group synchronization. You can specify \"--use-experimental-features=nd_range_barrier\" to use the dpct helper function nd_range_barrier to migrate this_grid().\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          1618
+    Length:          0
+    ReplacementText: "        /*\n        DPCT1087:2: SYCL currently does not support cross group synchronization. You can specify \"--use-experimental-features=nd_range_barrier\" to use the dpct helper function nd_range_barrier to migrate grid.sync().\n        */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          1701
+    Length:          0
+    ReplacementText: ', item_ct1, changed'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          1704
+    Length:          0
+    ReplacementText: "        /*\n        DPCT1087:3: SYCL currently does not support cross group synchronization. You can specify \"--use-experimental-features=nd_range_barrier\" to use the dpct helper function nd_range_barrier to migrate grid.sync().\n        */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          1791
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          3078
+    Length:          0
+    ReplacementText: ' try '
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          3102
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1093:6: The \"deviceId\" device may be not the one intended for use. Adjust the selected device if needed.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          3106
+    Length:          13
+    ReplacementText: 'dpct::select_device'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          4758
+    Length:          58
+    ReplacementText: 'dev_row_ptr = sycl::malloc_device<int>((num_vertices + 1), dpct::get_in_order_queue())'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          4822
+    Length:          44
+    ReplacementText: 'dev_col_ind = sycl::malloc_device<int>(size, dpct::get_in_order_queue())'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          4872
+    Length:          10
+    ReplacementText: 'dpct::get_in_order_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          4943
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          4974
+    Length:          10
+    ReplacementText: 'dpct::get_in_order_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          5030
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          5055
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          5077
+    Length:          45
+    ReplacementText: 'dist = sycl::malloc_device<int>(num_vertices, dpct::get_in_order_queue())'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          5232
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1049:4: The work-group size passed to the SYCL kernel may exceed the limit. To get the device limit, query info::device::max_work_group_size. Adjust the work-group size if needed.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          5236
+    Length:          71
+    ReplacementText: "dpct::get_in_order_queue().parallel_for(\n      sycl::nd_range<3>(sycl::range<3>(1, 1, nBlocks_for_vertices) * sycl::range<3>(1, 1, B_SIZE), sycl::range<3>(1, 1, B_SIZE)), \n      [=](sycl::nd_item<3> item_ct1) {\n        init_dist(dist, num_vertices, source, item_ct1);\n      });"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: true
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          5307
+    Length:          1
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          5313
+    Length:          23
+    ReplacementText: 'dpct::get_current_device().queues_wait_and_throw()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          5476
+    Length:          47
+    ReplacementText: 'launchedKernel = sycl::malloc_shared<int>(1, dpct::get_in_order_queue())'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          5606
+    Length:          11
+    ReplacementText: 'dpct::err0'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          5726
+    Length:          11
+    ReplacementText: '0'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6012
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1009:7: SYCL uses exceptions to report errors and does not use the error codes. The call was replaced by a placeholder string. You need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6073
+    Length:          24
+    ReplacementText: '"<Placeholder string>"'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6109
+    Length:          4
+    ReplacementText: 'sycl::range<3>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6124
+    Length:          8
+    ReplacementText: 1, 1, 1024
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6139
+    Length:          4
+    ReplacementText: 'sycl::range<3>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6153
+    Length:          24
+    ReplacementText: 1, 1, nBlocks_for_vertices
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6207
+    Length:          37
+    ReplacementText: 'para = sycl::malloc_device<ArgsStruct>(1, dpct::get_in_order_queue())'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6561
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1049:5: The work-group size passed to the SYCL kernel may exceed the limit. To get the device limit, query info::device::max_work_group_size. Adjust the work-group size if needed.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6565
+    Length:          72
+    ReplacementText: "{\n      changed.init();\n\n      dpct::get_in_order_queue().submit(\n        [&](sycl::handler &cgh) {\n          auto changed_ptr_ct1 = changed.get_ptr();\n\n          int * dist_ct0 = *(int **)kernelArgs[0];\n          int * dev_row_ptr_ct1 = *(int **)kernelArgs[1];\n          int * dev_col_ind_ct2 = *(int **)kernelArgs[2];\n          int num_vertices_ct3 = *(int *)kernelArgs[3];\n\n          cgh.parallel_for(\n            sycl::nd_range<3>(gridSize * blockSize, blockSize), \n            [=](sycl::nd_item<3> item_ct1) {\n              BFS(dist_ct0, dev_row_ptr_ct1, dev_col_ind_ct2, num_vertices_ct3, item_ct1, *changed_ptr_ct1);\n            });\n        });\n    }"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: true
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6637
+    Length:          1
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6656
+    Length:          23
+    ReplacementText: 'DPCT_CHECK_ERROR(dpct::get_current_device().queues_wait_and_throw())'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6766
+    Length:          10
+    ReplacementText: 'dpct::get_in_order_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6820
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6845
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Offset:          6941
+    Length:          0
+    ReplacementText: "\ncatch (sycl::exception const &exc) {\n  std::cerr << exc.what() << \"Exception caught at file:\" << __FILE__ << \", line:\" << __LINE__ << std::endl;\n  std::exit(1);\n}"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+MainSourceFilesDigest:
+  - MainSourceFile:  '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS/cuda_persistent_BFS.cu'
+    Digest:          7ed05f6850d7d62b0e8d35a63ece3c21
+DpctVersion:     19.0.0
+MainHelperFileName: ''
+USMLevel:        ''
+FeatureMap:      {}
+CompileTargets:  {}
+OptionMap:
+  AnalysisScopePath:
+    Value:           '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/BFS'
+    Specified:       false
+  AsyncHandler:
+    Value:           'false'
+    Specified:       false
+  BuildScript:
+    Value:           '0'
+    Specified:       false
+  CodePinEnabled:
+    Value:           'false'
+    Specified:       false
+  CommentsEnabled:
+    Value:           'false'
+    Specified:       false
+  CompilationsDir:
+    Value:           ''
+    Specified:       false
+  CtadEnabled:
+    Value:           'false'
+    Specified:       false
+  EnablepProfiling:
+    Value:           'false'
+    Specified:       false
+  ExperimentalFlag:
+    Value:           '0'
+    Specified:       false
+  ExplicitNamespace:
+    Value:           '20'
+    Specified:       false
+  ExtensionDDFlag:
+    Value:           '0'
+    Specified:       false
+  ExtensionDEFlag:
+    Value:           '4294967295'
+    Specified:       false
+  HelperFuncPreferenceFlag:
+    Value:           '0'
+    Specified:       false
+  NDRangeDim:
+    Value:           '3'
+    Specified:       false
+  NoDRYPattern:
+    Value:           'false'
+    Specified:       false
+  OptimizeMigration:
+    Value:           'false'
+    Specified:       false
+  ProcessAll:
+    Value:           'false'
+    Specified:       false
+  RuleFile:
+    Value:           ''
+    Specified:       false
+  SyclNamedLambda:
+    Value:           'false'
+    Specified:       false
+  UsmLevel:
+    Value:           '1'
+    Specified:       false
+...
