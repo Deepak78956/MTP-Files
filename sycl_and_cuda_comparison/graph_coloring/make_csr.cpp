@@ -84,12 +84,13 @@ struct NonWeightCSR CSRNonWeighted(int num_vertices, int num_edges, int directed
     for (int i = 0; i < num_edges; i++)
     {
         int u, v, w;
-        if (keywordFound) {
+        if (!keywordFound) {
             fin >> u >> v;
         }
         else {
             fin >> u >> v >> w;
         }
+        // std::cout << u << " " << v << std::endl;
         edges[i][0] = u - 1;
         edges[i][1] = v - 1;
         if (!directed)

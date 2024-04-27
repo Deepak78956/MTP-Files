@@ -6,13 +6,25 @@
 #include <algorithm>
 #include <numeric>
 #include <cuda.h>
-#include <thrust/count.h>
-#include <thrust/device_ptr.h>
-#include <cooperative_groups.h>
 #include "make_csr.hpp"
 #define DEBUG false
 #define B_SIZE 1024
 #define directed 0
+
+__global__ void check(int *offsets, int *values) {
+    // for (int i = offsets[23]; i < offsets[24]; i++) {
+    //     printf("%d ", values[i]);
+    // }
+    // printf("\n");
+
+    for (int i = 0; i < 39; i++) {
+        printf("For vertex %d:\n", i);
+        for (int j = offsets[i]; j < offsets[i + 1]; j++) {
+            printf("%d ", values[j]);
+        }
+        printf("\n");
+    }
+}
 
 __global__ void graph_coloring_kernel(int n, int c, int *offsets, int *values, int *randoms, int *colors){
     int id = threadIdx.x + blockIdx.x * blockDim.x;
@@ -23,7 +35,6 @@ __global__ void graph_coloring_kernel(int n, int c, int *offsets, int *values, i
 
         int ir = randoms[i];
 
-
         // look at neighbors to check their random number
         for (int k = offsets[i]; k < offsets[i + 1]; k++) {
             int j = values[k];
@@ -31,9 +42,10 @@ __global__ void graph_coloring_kernel(int n, int c, int *offsets, int *values, i
 
             // ignore nodes colored earlier (and yourself)
             if (((jc != -1) && (jc != c)) || (i == j)) continue;
-
+            
+            
             int jr = randoms[j];
-            if (ir <= jr) f = 0;
+            if (ir < jr) f = 0;
         }
 
         // assign color if you have the maximum random number
@@ -49,7 +61,7 @@ __global__ void countm1(int n, int *left, int *colors) {
     }
 }
 
-void graph_coloring(int n, int *offsets, int *values) {
+int* graph_coloring(int n, int *offsets, int *values) {
     int *randoms; // have to allocate and init randoms
     int *colors;
     cudaMalloc(&colors, sizeof(int)*n);
@@ -57,12 +69,13 @@ void graph_coloring(int n, int *offsets, int *values) {
     cudaMemset(colors, -1, sizeof(int) * n);
     randoms = (int *)malloc(sizeof(int) * n);
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dis(0, n);
+    // std::random_device rd;
+    // std::mt19937 gen(rd());
+    // std::uniform_int_distribution<int> dis(0, n);
 
     for (int i = 0; i < n; i++) {
-        int randNum = dis(gen);
+        // int randNum = dis(gen);
+        int randNum = i;
         randoms[i] = randNum;
     }
 
@@ -73,13 +86,11 @@ void graph_coloring(int n, int *offsets, int *values) {
     clock_t t_time = 0, temp_time;
     long int iterations = 0;
 
-    int *left;
-    cudaMallocManaged(&left, sizeof(int));
-    left[0] = 0;
-
-    int deviceId; 
-    cudaGetDevice(&deviceId); 
-    cudaMemPrefetchAsync(left, sizeof(int), deviceId);
+    int *left_dev, *left_host;
+    cudaMalloc(&left_dev, sizeof(int));
+    cudaMemset(left_dev, 0, sizeof(int));
+    left_host = (int *)malloc(sizeof(int));
+    left_host[0] = 0; 
 
     for (int c = 0; c < n; c++) {
         int nt = B_SIZE;
@@ -94,22 +105,44 @@ void graph_coloring(int n, int *offsets, int *values) {
 
         t_time += temp_time;
 
-        countm1<<<nb, nt>>>(n, left, colors);
+        countm1<<<nb, nt>>>(n, left_dev, colors);
         cudaDeviceSynchronize();
 
-        if (left[0] == 0) break;
+        // std::cout << iterations << std::endl;
+        cudaMemcpy(left_host, left_dev, sizeof(int), cudaMemcpyDeviceToHost);
+        cudaDeviceSynchronize();
+        // std::cout << left_host[0] << std::endl;
+
+        if (left_host[0] == 0) break;
     }
 
     double final_time = ((double)t_time) / CLOCKS_PER_SEC * 1000;
 
     std::cout << "Iterations: " << iterations << std::endl; 
     std::cout << "Time taken: " << final_time << std::endl;
-    std::cout << std::endl;
 
-    cudaFree(colors);
-    cudaFree(dev_randoms);
-    cudaFree(offsets);
-    cudaFree(values);
+    return colors;
+}
+
+void check_ans(int *colorsArr, int *offsets, int *values, int n) {
+    int breakLoop = 0;
+    for (int i = 0; i < n; i++) {
+        int color_u = colorsArr[i];
+        // std::cout << "vertex is " << i << std::endl;
+        for (int j = offsets[i]; j < offsets[i + 1]; j++) {
+            int color_v = colorsArr[values[j]];
+            // std::cout << values[j] << std::endl;
+            if (color_u == color_v) {
+                printf("Wrong ans on vertex %d, same color %d with vertex %d\n", i, color_v, values[j]);
+                breakLoop = 1;
+                break;
+            }
+        }
+        if (breakLoop) break;
+        // std::cout << std::endl;
+    }
+
+    if (!breakLoop) std::cout << "Correct ans" << std::endl;
 }
 
 int main(int argc, char *argv[]) {
@@ -153,7 +186,9 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    int size = num_edges;
+    int size;
+    if (directed) size = num_edges;
+    else size = 2 * num_edges;
 
     struct NonWeightCSR csr = CSRNonWeighted(num_vertices, num_edges, directed, fin, keywordFound);
 
@@ -163,8 +198,36 @@ int main(int argc, char *argv[]) {
     cudaMemcpy(dev_row_ptr, csr.offsetArr, sizeof(int) * (num_vertices + 1), cudaMemcpyHostToDevice);
     cudaMemcpy(dev_col_ind, csr.edgeList, sizeof(int) * size, cudaMemcpyHostToDevice);
 
+    // for (int i = 34; i < 36; i++) {
+    //     printf("%d ", csr.offsetArr[i]);
+    // }
+
+    // cout << endl;
+
+    // for (int i = csr.offsetArr[23]; i < csr.offsetArr[24]; i++) {
+    //     printf("%d ", csr.edgeList[i]);
+    // }
+    // cout << endl;
+
+    // check<<<1,1>>>(dev_row_ptr, dev_col_ind);
+    // cudaDeviceSynchronize();
+
     std::cout << "On graph " << fileName << std::endl;
-    graph_coloring(num_vertices, dev_row_ptr, dev_col_ind);
+
+    int *dev_colors;
+    dev_colors = graph_coloring(num_vertices, dev_row_ptr, dev_col_ind);
+
+    int *colors;
+    colors = (int *)malloc(sizeof(int) * num_vertices);
+
+    cudaMemcpy(colors, dev_colors, sizeof(int) * num_vertices, cudaMemcpyDeviceToHost);
+
+    check_ans(colors, csr.offsetArr, csr.edgeList, num_vertices);
+    std::cout << std::endl;
+
+    cudaFree(dev_colors);
+    cudaFree(dev_col_ind);
+    cudaFree(dev_row_ptr);
 
     return 0;
 }
