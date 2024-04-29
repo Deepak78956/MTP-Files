@@ -14,8 +14,8 @@ cuda_gc.o: cuda_gc.cu $(FILENAMES)
 make_csr.o: make_csr.cpp make_csr.hpp
 	nvcc -c -O3 make_csr.cpp
 
-$(SYCL_OUTPUT): sycl_BFS.cpp make_csr.hpp make_csr.cpp
-	clang++ -O3 -fsycl sycl_BFS.cpp -fsycl-targets=nvptx64-nvidia-cuda make_csr.cpp -o $(SYCL_OUTPUT)
+$(SYCL_OUTPUT): sycl_gc.dp.cpp make_csr.hpp make_csr.cpp
+	clang++ -O3 -fsycl sycl_gc.dp.cpp -fsycl-targets=nvptx64-nvidia-cuda make_csr.cpp -o $(SYCL_OUTPUT)
 
 run_cuda: $(CUDA_OUTPUT)
 	for i in 1 2 3; do \
