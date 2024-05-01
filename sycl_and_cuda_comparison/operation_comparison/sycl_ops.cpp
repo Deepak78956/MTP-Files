@@ -1,6 +1,7 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
+#include <fstream>
 #include <sycl/sycl.hpp>
 #include <sys/time.h>
 #include <assert.h>
