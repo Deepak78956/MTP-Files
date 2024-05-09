@@ -1,0 +1,625 @@
+---
+MainSourceFile:  MainSrcFiles_placehold
+Replacements:
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          0
+    Length:          0
+    ReplacementText: "#include <sycl/sycl.hpp>\n#include <dpct/dpct.hpp>\nusing namespace dpct;\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          101
+    Length:          18
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          142
+    Length:          0
+    ReplacementText: "\n#include <cmath>\n\n#include <time.h>\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          243
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          272
+    Length:          0
+    ReplacementText: ', const sycl::stream &stream_ct1'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          310
+    Length:          0
+    ReplacementText: "        /*\n        DPCT1015:0: Output needs adjustment.\n        */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          318
+    Length:          22
+    ReplacementText: 'stream_ct1 << "%d "'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          352
+    Length:          12
+    ReplacementText: 'stream_ct1 << "\n"'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          937
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          998
+    Length:          0
+    ReplacementText: ",\n               const sycl::nd_item<3> &item_ct1"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          1020
+    Length:          10
+    ReplacementText: 'item_ct1.get_local_range(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          1033
+    Length:          10
+    ReplacementText: 'item_ct1.get_group(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          1046
+    Length:          11
+    ReplacementText: 'item_ct1.get_local_id(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          1210
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          1304
+    Length:          0
+    ReplacementText: ",\n          const sycl::nd_item<3> &item_ct1"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          1326
+    Length:          10
+    ReplacementText: 'item_ct1.get_local_range(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          1339
+    Length:          10
+    ReplacementText: 'item_ct1.get_group(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          1352
+    Length:          11
+    ReplacementText: 'item_ct1.get_local_id(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          1683
+    Length:          32
+    ReplacementText: 'atomic_fetch_min<sycl::access::address_space::generic_space>(&dist[v], dist[u] + w)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          1916
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          1970
+    Length:          0
+    ReplacementText: ', const sycl::stream &stream_ct1'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          2019
+    Length:          0
+    ReplacementText: "        /*\n        DPCT1015:1: Output needs adjustment.\n        */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          2027
+    Length:          46
+    ReplacementText: 'stream_ct1 << "node i = %d, dist = %d\n"'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          2119
+    Length:          0
+    ReplacementText: "\n    device_ext &dev_ct1 = get_current_device();\n    sycl::queue &q_ct1 = dev_ct1.default_queue();"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          2939
+    Length:          45
+    ReplacementText: 'dev_src = sycl::malloc_device<int>(num_edges, q_ct1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          2990
+    Length:          46
+    ReplacementText: 'dev_dest = sycl::malloc_device<int>(num_edges, q_ct1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          3042
+    Length:          49
+    ReplacementText: 'dev_weights = sycl::malloc_device<int>(num_edges, q_ct1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          3978
+    Length:          10
+    ReplacementText: q_ct1.memcpy
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4026
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4051
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4057
+    Length:          10
+    ReplacementText: q_ct1.memcpy
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4107
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4132
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4138
+    Length:          10
+    ReplacementText: q_ct1.memcpy
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4194
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4219
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4241
+    Length:          45
+    ReplacementText: 'dist = sycl::malloc_device<int>(num_vertices, q_ct1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4397
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1049:2: The work-group size passed to the SYCL kernel may exceed the limit. To get the device limit, query info::device::max_work_group_size. Adjust the work-group size if needed.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4401
+    Length:          71
+    ReplacementText: "q_ct1.parallel_for(\n      sycl::nd_range<3>(sycl::range<3>(1, 1, nBlocks_for_vertices) * sycl::range<3>(1, 1, B_SIZE), sycl::range<3>(1, 1, B_SIZE)), \n      [=](sycl::nd_item<3> item_ct1) {\n        init_dist(dist, num_vertices, source, item_ct1);\n      });"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: true
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4472
+    Length:          1
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4478
+    Length:          23
+    ReplacementText: 'dev_ct1.queues_wait_and_throw()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4526
+    Length:          33
+    ReplacementText: 'changed = sycl::malloc_device<int>(1, q_ct1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4565
+    Length:          40
+    ReplacementText: 'changed = sycl::malloc_shared<int>(1, q_ct1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4634
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1008:4: clock function is not defined in SYCL. This is a hardware-specific feature. Consult with your hardware vendor to find a replacement.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4771
+    Length:          0
+    ReplacementText: "        /*\n        DPCT1049:3: The work-group size passed to the SYCL kernel may exceed the limit. To get the device limit, query info::device::max_work_group_size. Adjust the work-group size if needed.\n        */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4779
+    Length:          93
+    ReplacementText: "q_ct1.parallel_for(\n          sycl::nd_range<3>(sycl::range<3>(1, 1, nBlocks_for_edges) * sycl::range<3>(1, 1, B_SIZE), sycl::range<3>(1, 1, B_SIZE)), \n          [=](sycl::nd_item<3> item_ct1) {\n            sssp(dist, dev_src, dev_dest, dev_weights, num_edges, changed, item_ct1);\n          });"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: true
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4872
+    Length:          1
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4882
+    Length:          23
+    ReplacementText: 'dev_ct1.queues_wait_and_throw()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Offset:          4950
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1008:5: clock function is not defined in SYCL. This is a hardware-specific feature. Consult with your hardware vendor to find a replacement.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+MainSourceFilesDigest:
+  - MainSourceFile:  '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+    Digest:          a287f82980f20892a0e073de07377a5b
+DpctVersion:     2023.2.0
+MainHelperFileName: dpct
+USMLevel:        ''
+FeatureMap:
+  atomic.hpp:
+    atomic_fetch_min:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+      SubFeatureMap:   {}
+  device.hpp:
+    dev_mgr:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+      SubFeatureMap:
+        dev_mgr_1:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+          SubFeatureMap:   {}
+        dev_mgr_2:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+          SubFeatureMap:   {}
+        dev_mgr_3:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+          SubFeatureMap:   {}
+        dev_mgr_4:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+          SubFeatureMap:   {}
+        dev_mgr_check_id:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+          SubFeatureMap:   {}
+        dev_mgr_current_device:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+          SubFeatureMap:   {}
+        dev_mgr_current_device_id:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+          SubFeatureMap:   {}
+    device_ext:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+      SubFeatureMap:
+        device_ext_1:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+          SubFeatureMap:   {}
+        device_ext_2:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+          SubFeatureMap:   {}
+        device_ext_default_queue:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+          SubFeatureMap:   {}
+        device_ext_inorder_queue:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+          SubFeatureMap:   {}
+        device_ext_outoforder_queue:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+          SubFeatureMap:   {}
+        device_ext_queues_wait_and_throw:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+          SubFeatureMap:   {}
+    exception_handler:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+      SubFeatureMap:   {}
+    get_current_device:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+      SubFeatureMap:   {}
+    get_default_queue:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+      SubFeatureMap:   {}
+    get_tid:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+      SubFeatureMap:   {}
+  dpct.hpp:
+    non_local_include_dependency:
+      IsCalled:        true
+      CallerSrcFiles:
+        - ''
+      SubFeatureMap:   {}
+  memory.hpp:
+    memcpy_direction:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge/cuda_sssp_edge.cu'
+      SubFeatureMap:   {}
+CompileTargets:  {}
+OptionMap:
+  AnalysisScopePath:
+    Value:           '/home/swati/Deepak/MTP-Files/sycl_and_cuda_comparison/SSSP_edge'
+    Specified:       false
+  AsyncHandler:
+    Value:           'false'
+    Specified:       false
+  CommentsEnabled:
+    Value:           'false'
+    Specified:       false
+  CompilationsDir:
+    Value:           ''
+    Specified:       false
+  CtadEnabled:
+    Value:           'false'
+    Specified:       false
+  CustomHelperFileName:
+    Value:           dpct
+    Specified:       false
+  EnablepProfiling:
+    Value:           'false'
+    Specified:       false
+  ExperimentalFlag:
+    Value:           '0'
+    Specified:       false
+  ExplicitClNamespace:
+    Value:           'false'
+    Specified:       false
+  ExplicitNamespace:
+    Value:           '4'
+    Specified:       true
+  ExtensionDDFlag:
+    Value:           '0'
+    Specified:       false
+  ExtensionDEFlag:
+    Value:           '4294967295'
+    Specified:       false
+  NDRangeDim:
+    Value:           '3'
+    Specified:       false
+  NoDRYPattern:
+    Value:           'false'
+    Specified:       false
+  OptimizeMigration:
+    Value:           'false'
+    Specified:       false
+  ProcessAll:
+    Value:           'false'
+    Specified:       false
+  RuleFile:
+    Value:           ''
+    Specified:       false
+  SyclNamedLambda:
+    Value:           'false'
+    Specified:       false
+  UsmLevel:
+    Value:           '1'
+    Specified:       false
+...
