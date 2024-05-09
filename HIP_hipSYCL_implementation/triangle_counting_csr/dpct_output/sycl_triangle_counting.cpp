@@ -1,11 +1,15 @@
+#include <sycl/sycl.hpp>
 #include <iostream>
 #include <vector>
 #include <fstream>
 #include <sstream>
 #include <algorithm>
 #include <numeric>
-#include <cuda.h>
 #include "make_csr.hpp"
+#include <cmath>
+
+#include <time.h>
+
 #define DEBUG false
 #define B_SIZE 1024
 #define directed 0
@@ -13,7 +17,7 @@
 
 using namespace std;
 
-__device__ int isNeigh(int *offset, int * values, int t, int r)
+int isNeigh(int *offset, int * values, int t, int r)
 {
     for (int i = offset[r]; i < offset[r + 1]; i++) {
         int temp = values[i];
@@ -22,11 +26,12 @@ __device__ int isNeigh(int *offset, int * values, int t, int r)
     return 0;
 }
 
-__device__ int tc = 0;
 
-__global__ void countTriangles(int *offset, int *values, int n)
+void countTriangles(int *offset, int *values, int n,
+                    const sycl::nd_item<3> &item_ct1, int *tc)
 {
-    unsigned p = blockDim.x * blockIdx.x + threadIdx.x;
+    unsigned p = item_ct1.get_local_range(2) * item_ct1.get_group(2) +
+                 item_ct1.get_local_id(2);
 
     if (p < n)
     {
@@ -35,20 +40,26 @@ __global__ void countTriangles(int *offset, int *values, int n)
             for (int j = offset[p]; j < offset[p+1]; j++){
                 int r = values[j];
                 if (t != r && isNeigh(offset, values, t, r)){
-                    atomicAdd(&tc, 1);
+                    sycl::atomic_ref<int, sycl::memory_order::relaxed, sycl::memory_scope::device, sycl::access::address_space::global_space> atomic_tc(*tc);
+                        atomic_tc += 1;
                 }
             }
         }
     }
 }
 
-__global__ void printTc()
+void printTc(const sycl::stream &stream_ct1, int &tc)
 {
-    printf("Triangles got %d\n", tc / 6);
+    /*
+    DPCT1015:0: Output needs adjustment.
+    */
+    stream_ct1 << "Triangles got %d\n";
 }
 
 int main(int argc, char *argv[])
 {
+    sycl::queue q_ct1{sycl::gpu_selector{}};
+
     if (argc != 2)
     {
         printf("Usage: %s <input_file>\n", argv[0]);
@@ -121,21 +132,39 @@ int main(int argc, char *argv[])
     // }
 
     int *dev_row_ptr, *dev_col_ind;
-    cudaMalloc(&dev_row_ptr, sizeof(int) * (num_vertices + 1));
-    cudaMalloc(&dev_col_ind, sizeof(int) * size);
-    cudaMemcpy(dev_row_ptr, csr.offsetArr, sizeof(int) * (num_vertices + 1), cudaMemcpyHostToDevice);
-    cudaMemcpy(dev_col_ind, csr.edgeList, sizeof(int) * size, cudaMemcpyHostToDevice);
+    dev_row_ptr = sycl::malloc_device<int>((num_vertices + 1), q_ct1);
+    dev_col_ind = sycl::malloc_device<int>(size, q_ct1);
+    q_ct1.memcpy(dev_row_ptr, csr.offsetArr, sizeof(int) * (num_vertices + 1))
+        .wait();
+    q_ct1.memcpy(dev_col_ind, csr.edgeList, sizeof(int) * size).wait();
 
     unsigned nBlocks_for_vertices = ceil((float)num_vertices / B_SIZE);
     clock_t calcTime;
 
+    int *tc;
+    tc = sycl::malloc_device<int>(1, q_ct1);
+    
     calcTime = clock();
-    countTriangles<<<nBlocks_for_vertices, B_SIZE>>>(dev_row_ptr, dev_col_ind, num_vertices);
-    cudaDeviceSynchronize();
+    
+    q_ct1.submit([&](sycl::handler &cgh) {
+        
+
+        cgh.parallel_for(
+            sycl::nd_range<3>(sycl::range<3>(1, 1, nBlocks_for_vertices) *
+                                  sycl::range<3>(1, 1, B_SIZE),
+                              sycl::range<3>(1, 1, B_SIZE)),
+            [=](sycl::nd_item<3> item_ct1) {
+                countTriangles(dev_row_ptr, dev_col_ind, num_vertices, item_ct1,
+                               tc);
+            });
+    }).wait_and_throw();
+    /*
+    DPCT1008:3: clock function is not defined in SYCL. This is a
+    hardware-specific feature. Consult with your hardware vendor to find a
+    replacement.
+    */
     calcTime = clock() - calcTime;
 
-     printTc<<<1, 1>>>();
-     cudaDeviceSynchronize();
     double t_time = ((double)calcTime) / CLOCKS_PER_SEC * 1000;
     cout << "On graph: " << fileName << ", Time taken: " << t_time << endl;
     cout << endl;

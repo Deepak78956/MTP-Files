@@ -1,0 +1,651 @@
+---
+MainSourceFile:  MainSrcFiles_placehold
+Replacements:
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          0
+    Length:          0
+    ReplacementText: "#include <sycl/sycl.hpp>\n#include <dpct/dpct.hpp>\nusing namespace dpct;\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          116
+    Length:          18
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          157
+    Length:          0
+    ReplacementText: "\n#include <cmath>\n\n#include <time.h>\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          259
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          465
+    Length:          22
+    ReplacementText: 'global_memory<int, 0> tc(0);'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          489
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          551
+    Length:          0
+    ReplacementText: ",\n                    const sycl::nd_item<3> &item_ct1, int &tc"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          572
+    Length:          10
+    ReplacementText: 'item_ct1.get_local_range(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          585
+    Length:          10
+    ReplacementText: 'item_ct1.get_group(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          598
+    Length:          11
+    ReplacementText: 'item_ct1.get_local_id(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          896
+    Length:          17
+    ReplacementText: 'atomic_fetch_add<sycl::access::address_space::generic_space>(&tc, 1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          966
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          990
+    Length:          0
+    ReplacementText: 'const sycl::stream &stream_ct1, int &tc'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          994
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1015:0: Output needs adjustment.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          998
+    Length:          36
+    ReplacementText: 'stream_ct1 << "Triangles got %d\n"'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          1073
+    Length:          0
+    ReplacementText: "\n    device_ext &dev_ct1 = get_current_device();\n    sycl::queue &q_ct1 = dev_ct1.default_queue();"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          2774
+    Length:          58
+    ReplacementText: 'dev_row_ptr = sycl::malloc_device<int>((num_vertices + 1), q_ct1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          2838
+    Length:          44
+    ReplacementText: 'dev_col_ind = sycl::malloc_device<int>(size, q_ct1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          2888
+    Length:          10
+    ReplacementText: q_ct1.memcpy
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          2959
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          2984
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          2990
+    Length:          10
+    ReplacementText: q_ct1.memcpy
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          3046
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          3071
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          3169
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1008:2: clock function is not defined in SYCL. This is a hardware-specific feature. Consult with your hardware vendor to find a replacement.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          3193
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1049:1: The work-group size passed to the SYCL kernel may exceed the limit. To get the device limit, query info::device::max_work_group_size. Adjust the work-group size if needed.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          3197
+    Length:          88
+    ReplacementText: "q_ct1.submit(\n      [&](sycl::handler &cgh) {\n        tc.init();\n\n        auto tc_ptr_ct1 = tc.get_ptr();\n\n        cgh.parallel_for(\n          sycl::nd_range<3>(sycl::range<3>(1, 1, nBlocks_for_vertices) * sycl::range<3>(1, 1, B_SIZE), sycl::range<3>(1, 1, B_SIZE)), \n          [=](sycl::nd_item<3> item_ct1) {\n            countTriangles(dev_row_ptr, dev_col_ind, num_vertices, item_ct1, *tc_ptr_ct1);\n          });\n      });"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: true
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          3285
+    Length:          1
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          3291
+    Length:          23
+    ReplacementText: 'dev_ct1.queues_wait_and_throw()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          3316
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1008:3: clock function is not defined in SYCL. This is a hardware-specific feature. Consult with your hardware vendor to find a replacement.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          3357
+    Length:          19
+    ReplacementText: "q_ct1.submit(\n       [&](sycl::handler &cgh) {\n         sycl::stream stream_ct1(64 * 1024, 80, cgh);\n\n         tc.init();\n\n         auto tc_ptr_ct1 = tc.get_ptr();\n\n         cgh.parallel_for(\n           sycl::nd_range<3>(sycl::range<3>(1, 1, 1), sycl::range<3>(1, 1, 1)), \n           [=](sycl::nd_item<3> item_ct1) {\n             printTc(stream_ct1, *tc_ptr_ct1);\n           });\n       });"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: true
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          3376
+    Length:          1
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Offset:          3383
+    Length:          23
+    ReplacementText: 'dev_ct1.queues_wait_and_throw()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+MainSourceFilesDigest:
+  - MainSourceFile:  '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+    Digest:          c4a849858da2c2fe0dfd22b7a0418fe2
+DpctVersion:     2023.2.0
+MainHelperFileName: dpct
+USMLevel:        ''
+FeatureMap:
+  atomic.hpp:
+    atomic_fetch_add:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+  device.hpp:
+    dev_mgr:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:
+        dev_mgr_1:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        dev_mgr_2:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        dev_mgr_3:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        dev_mgr_4:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        dev_mgr_check_id:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        dev_mgr_current_device:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        dev_mgr_current_device_id:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+    device_ext:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:
+        device_ext_1:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_ext_2:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_ext_default_queue:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_ext_inorder_queue:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_ext_outoforder_queue:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_ext_queues_wait_and_throw:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+    exception_handler:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    get_current_device:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    get_default_queue:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    get_tid:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+  dpct.hpp:
+    non_local_include_dependency:
+      IsCalled:        true
+      CallerSrcFiles:
+        - ''
+      SubFeatureMap:   {}
+  memory.hpp:
+    device_memory:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:
+        device_memory_1:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_memory_2:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_memory_3:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_memory_4:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_memory_5:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_memory_6:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_memory_allocate_device:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_memory_get_ptr:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_memory_get_ptr_q:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_memory_init:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_memory_init_q:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        device_memory_value_t_alias:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+    dpct_free:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    dpct_free_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    dpct_malloc_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    dpct_memcpy_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    get_buffer_T:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    get_memcpy_direction:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    get_pointer_attribute:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    global_memory_alias:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    mem_mgr:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:
+        mem_mgr_1:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        mem_mgr_2:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        mem_mgr_get_map_iterator:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        mem_mgr_is_device_ptr:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        mem_mgr_mem_alloc:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        mem_mgr_mem_free:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+        mem_mgr_translate_ptr:
+          IsCalled:        true
+          CallerSrcFiles:
+            - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+          SubFeatureMap:   {}
+    memcpy_direction:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    memory_region:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    memory_traits:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    pointer_access_attribute:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    typedef_buffer_t:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+    typedef_byte_t:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/triangle_counting.cu'
+      SubFeatureMap:   {}
+CompileTargets:  {}
+OptionMap:
+  AnalysisScopePath:
+    Value:           '/home/swati/Deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr'
+    Specified:       false
+  AsyncHandler:
+    Value:           'false'
+    Specified:       false
+  CommentsEnabled:
+    Value:           'false'
+    Specified:       false
+  CompilationsDir:
+    Value:           ''
+    Specified:       false
+  CtadEnabled:
+    Value:           'false'
+    Specified:       false
+  CustomHelperFileName:
+    Value:           dpct
+    Specified:       false
+  EnablepProfiling:
+    Value:           'false'
+    Specified:       false
+  ExperimentalFlag:
+    Value:           '0'
+    Specified:       false
+  ExplicitClNamespace:
+    Value:           'false'
+    Specified:       false
+  ExplicitNamespace:
+    Value:           '4'
+    Specified:       true
+  ExtensionDDFlag:
+    Value:           '0'
+    Specified:       false
+  ExtensionDEFlag:
+    Value:           '4294967295'
+    Specified:       false
+  NDRangeDim:
+    Value:           '3'
+    Specified:       false
+  NoDRYPattern:
+    Value:           'false'
+    Specified:       false
+  OptimizeMigration:
+    Value:           'false'
+    Specified:       false
+  ProcessAll:
+    Value:           'false'
+    Specified:       false
+  RuleFile:
+    Value:           ''
+    Specified:       false
+  SyclNamedLambda:
+    Value:           'false'
+    Specified:       false
+  UsmLevel:
+    Value:           '1'
+    Specified:       false
+...
