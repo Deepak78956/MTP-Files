@@ -9,7 +9,7 @@
 #include <sys/time.h>
 #include <fstream>
 
-#define it 10000
+#define it 1
 #define size (1 << 28) // 2^28
 #define B_SIZE 1024
 #define randomArrSize (1 << 18)
@@ -214,7 +214,7 @@ void readNumbersFromFile(const string& filename, int* randoms) {
         return;
     }
 
-    for (int i = 0; i < size; ++i) {
+    for (int i = 0; i < randomArrSize; ++i) {
         if (!(inFile >> randoms[i])) {
             cerr << "Error reading from file." << endl;
             return;
@@ -270,13 +270,13 @@ int main(int argc, char *argv[]) {
 
     sycl::queue Q{sycl::gpu_selector_v};
     
-    // device_memory_alloc(Q);
+    device_memory_alloc(Q);
 
     // kernel_offload(Q);
 
-    // host_to_dev_copy(Q);
+    host_to_dev_copy(Q);
 
-    // atomic_add_time(Q);
+    atomic_add_time(Q);
 
     // DRAM(Q);
 

@@ -7,7 +7,7 @@
 #include <sys/time.h>
 #include <fstream>
 
-#define it 10000
+#define it 1
 #define size (1 << 28) // 2^28
 #define B_SIZE 1024
 #define randomArrSize (1 << 18)
@@ -110,7 +110,7 @@ void atomic_add_time() {
     timer = clock() - timer;
     t_time = ((double)timer) / CLOCKS_PER_SEC * 1000;
     cout << "atomic add time " << t_time << endl;
-    cout << host_x[0] << endl;
+    // cout << host_x[0] << endl;
 }
 
 __global__ void DRAM_kernel(size_t gb, int *input_dev_arr, int *output_dev_arr) {
@@ -189,7 +189,7 @@ void shared_memory(){
         shared_memory_kernel<<<nBlocks, B_SIZE>>>(arr);
         hipDeviceSynchronize();
 
-        for (size_t i = 0; i < size; i++) {
+        for (size_t i = 0; i < randomArrSize; i++) {
             arr[i] -= i;
         }
     }
@@ -258,13 +258,13 @@ void random_accesses(){
 
 int main(int argc, char *argv[]) {
 
-    // device_memory_alloc();
+    device_memory_alloc();
 
     // kernel_offload();
 
-    // host_to_dev_copy();
+    host_to_dev_copy();
 
-    // atomic_add_time();
+    atomic_add_time();
 
     // DRAM();
 

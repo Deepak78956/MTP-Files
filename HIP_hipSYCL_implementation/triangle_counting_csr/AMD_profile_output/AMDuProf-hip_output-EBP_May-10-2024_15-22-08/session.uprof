@@ -1,0 +1,2255 @@
+{
+    "auxiliary": {
+        "cores": 128,
+        "cpuFamily": 25,
+        "cpuModel": 1,
+        "cpuTopology": [
+            [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                1,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                2,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                3,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                4,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                5,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                6,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                7,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                64,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                65,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                66,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                67,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                68,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                69,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                70,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                0,
+                71,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                8,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                9,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                10,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                11,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                12,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                13,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                14,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                15,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                72,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                73,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                74,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                75,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                76,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                77,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                78,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                1,
+                79,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                16,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                17,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                18,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                19,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                20,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                21,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                22,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                23,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                80,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                81,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                82,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                83,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                84,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                85,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                86,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                2,
+                87,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                24,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                25,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                26,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                27,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                28,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                29,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                30,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                31,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                88,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                89,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                90,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                91,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                92,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                93,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                94,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                3,
+                95,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                32,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                33,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                34,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                35,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                36,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                37,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                38,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                39,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                96,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                97,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                98,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                99,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                100,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                101,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                102,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                4,
+                103,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                40,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                41,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                42,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                43,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                44,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                45,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                46,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                47,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                104,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                105,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                106,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                107,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                108,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                109,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                110,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                5,
+                111,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                48,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                49,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                50,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                51,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                52,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                53,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                54,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                55,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                112,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                113,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                114,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                115,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                116,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                117,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                118,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                6,
+                119,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                56,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                57,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                58,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                59,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                60,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                61,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                62,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                63,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                120,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                121,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                122,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                123,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                124,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                125,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                126,
+                0,
+                0,
+                0,
+                0
+            ],
+            [
+                7,
+                127,
+                0,
+                0,
+                0,
+                0
+            ]
+        ],
+        "eventColumnIds": [
+            {
+                "category": 1,
+                "categoryName": "CPU PROFILE",
+                "events": [
+                    {
+                        "callstack": true,
+                        "category": 1,
+                        "cmask": 0,
+                        "description": "The number of cpu cycles when the thread is not in halt state.",
+                        "encodedId": 50331766,
+                        "eventCategory": 0,
+                        "expression": "",
+                        "frequency": 0,
+                        "hwEventId": 118,
+                        "interval": 1000000,
+                        "invCmask": false,
+                        "isFrequencyMode": false,
+                        "name": "CYCLES_NOT_IN_HALT",
+                        "opCycleCount": false,
+                        "osMode": true,
+                        "samples": 0,
+                        "threshold": 0,
+                        "unitMask": 0,
+                        "usrMode": true
+                    },
+                    {
+                        "callstack": true,
+                        "category": 1,
+                        "cmask": 0,
+                        "description": "The instruction fetches that Misses in the L1 Instruction Translation Lookaside Buffer (ITLB) but hit in the L2-ITLB.",
+                        "encodedId": 50331780,
+                        "eventCategory": 0,
+                        "expression": "",
+                        "frequency": 0,
+                        "hwEventId": 132,
+                        "interval": 25000,
+                        "invCmask": false,
+                        "isFrequencyMode": false,
+                        "name": "L1_ITLB_MISSES_L2_HITS",
+                        "opCycleCount": false,
+                        "osMode": true,
+                        "samples": 0,
+                        "threshold": 0,
+                        "unitMask": 0,
+                        "usrMode": true
+                    },
+                    {
+                        "callstack": true,
+                        "category": 1,
+                        "cmask": 0,
+                        "description": "The number of instructions retired from execution. This count includes exceptions and interrupts. Each exception or interrupt is counted as one instruction.",
+                        "encodedId": 50331840,
+                        "eventCategory": 0,
+                        "expression": "",
+                        "frequency": 0,
+                        "hwEventId": 192,
+                        "interval": 1000000,
+                        "invCmask": false,
+                        "isFrequencyMode": false,
+                        "name": "RETIRED_INST",
+                        "opCycleCount": false,
+                        "osMode": true,
+                        "samples": 0,
+                        "threshold": 0,
+                        "unitMask": 0,
+                        "usrMode": true
+                    },
+                    {
+                        "callstack": true,
+                        "category": 1,
+                        "cmask": 0,
+                        "description": "Count all the Instruction cache fill requests that misses in L2 cache.",
+                        "encodedId": 50397284,
+                        "eventCategory": 0,
+                        "expression": "",
+                        "frequency": 0,
+                        "hwEventId": 100,
+                        "interval": 25000,
+                        "invCmask": false,
+                        "isFrequencyMode": false,
+                        "name": "L2_CACHE_MISS_FROM_L1_IC_MISS",
+                        "opCycleCount": false,
+                        "osMode": true,
+                        "samples": 0,
+                        "threshold": 0,
+                        "unitMask": 1,
+                        "usrMode": true
+                    },
+                    {
+                        "callstack": true,
+                        "category": 1,
+                        "cmask": 0,
+                        "description": "Op Cache Miss",
+                        "encodedId": 50594447,
+                        "eventCategory": 0,
+                        "expression": "",
+                        "frequency": 0,
+                        "hwEventId": 655,
+                        "interval": 250000,
+                        "invCmask": false,
+                        "isFrequencyMode": false,
+                        "name": "OP_CACHE_MISS",
+                        "opCycleCount": false,
+                        "osMode": true,
+                        "samples": 0,
+                        "threshold": 0,
+                        "unitMask": 4,
+                        "usrMode": true
+                    },
+                    {
+                        "callstack": true,
+                        "category": 1,
+                        "cmask": 0,
+                        "description": "The ITLB reloads originating from page table walker. The table walk requests are made for L1-ITLB Miss and L2-ITLB Misses.",
+                        "encodedId": 50790533,
+                        "eventCategory": 0,
+                        "expression": "",
+                        "frequency": 0,
+                        "hwEventId": 133,
+                        "interval": 25000,
+                        "invCmask": false,
+                        "isFrequencyMode": false,
+                        "name": "L2_ITLB_MISSES",
+                        "opCycleCount": false,
+                        "osMode": true,
+                        "samples": 0,
+                        "threshold": 0,
+                        "unitMask": 7,
+                        "usrMode": true
+                    },
+                    {
+                        "callstack": true,
+                        "category": 1,
+                        "cmask": 0,
+                        "description": "The number of instruction fetches that hit in the L1 ITLB. ",
+                        "encodedId": 50790548,
+                        "eventCategory": 0,
+                        "expression": "",
+                        "frequency": 0,
+                        "hwEventId": 148,
+                        "interval": 25000,
+                        "invCmask": false,
+                        "isFrequencyMode": false,
+                        "name": "BpL1TlbFetchHit.IF1G.IF2M.IF4K",
+                        "opCycleCount": false,
+                        "osMode": true,
+                        "samples": 0,
+                        "threshold": 0,
+                        "unitMask": 7,
+                        "usrMode": true
+                    },
+                    {
+                        "callstack": true,
+                        "category": 1,
+                        "cmask": 0,
+                        "description": "All OP Cache Accesses",
+                        "encodedId": 50791055,
+                        "eventCategory": 0,
+                        "expression": "",
+                        "frequency": 0,
+                        "hwEventId": 655,
+                        "interval": 250000,
+                        "invCmask": false,
+                        "isFrequencyMode": false,
+                        "name": "OP_CACHE_ALL_ACCESS",
+                        "opCycleCount": false,
+                        "osMode": true,
+                        "samples": 0,
+                        "threshold": 0,
+                        "unitMask": 7,
+                        "usrMode": true
+                    },
+                    {
+                        "callstack": true,
+                        "category": 1,
+                        "cmask": 0,
+                        "description": "The L2 cache access requests due to L1 instruction cache misses.",
+                        "encodedId": 51380320,
+                        "eventCategory": 0,
+                        "expression": "",
+                        "frequency": 0,
+                        "hwEventId": 96,
+                        "interval": 25000,
+                        "invCmask": false,
+                        "isFrequencyMode": false,
+                        "name": "L2_CACHE_ACCESS_FROM_L1_IC_MISS",
+                        "opCycleCount": false,
+                        "osMode": true,
+                        "samples": 0,
+                        "threshold": 0,
+                        "unitMask": 16,
+                        "usrMode": true
+                    },
+                    {
+                        "callstack": true,
+                        "category": 1,
+                        "cmask": 0,
+                        "description": "IC Tag Instruction Cache Miss",
+                        "encodedId": 51904910,
+                        "eventCategory": 0,
+                        "expression": "",
+                        "frequency": 0,
+                        "hwEventId": 398,
+                        "interval": 250000,
+                        "invCmask": false,
+                        "isFrequencyMode": false,
+                        "name": "IC_TAG_IC_MISS",
+                        "opCycleCount": false,
+                        "osMode": true,
+                        "samples": 0,
+                        "threshold": 0,
+                        "unitMask": 24,
+                        "usrMode": true
+                    },
+                    {
+                        "callstack": true,
+                        "category": 1,
+                        "cmask": 0,
+                        "description": "IC Tag All Instruction Cache Access",
+                        "encodedId": 52363662,
+                        "eventCategory": 0,
+                        "expression": "",
+                        "frequency": 0,
+                        "hwEventId": 398,
+                        "interval": 250000,
+                        "invCmask": false,
+                        "isFrequencyMode": false,
+                        "name": "IC_TAG_ALL_IC_ACCESS",
+                        "opCycleCount": false,
+                        "osMode": true,
+                        "samples": 0,
+                        "threshold": 0,
+                        "unitMask": 31,
+                        "usrMode": true
+                    }
+                ]
+            }
+        ],
+        "guest": false,
+        "guestKallsyms": "",
+        "guestKmodules": "",
+        "guestPid": 4279840768,
+        "guestSymPaths": "",
+        "host": false,
+        "hypervisorEnabled": false,
+        "hypervisorVendor": "",
+        "ibsIdentifiers": 1023,
+        "ibsOpSampling": false,
+        "isCacheline": false,
+        "isFreqMode": false,
+        "osName": "LinuxUbuntu 22.04.4 LTS-64 Kernel:6.5.0-25-generic",
+        "p0Freq": 3527734,
+        "profScope": "Single Application",
+        "profiledPids": "676543;"
+    },
+    "categoriesCollected": [
+        "cpu"
+    ],
+    "collectCommand": "./AMDuProfCLI profile --config inst_access -o AMD_profile_output --affinity 1 ./hip_output ./sample_graphs/rgg_n_2_20_s0.mtx",
+    "collection": {
+        "branch-filter": 511,
+        "callstack": {
+            "fpo": false,
+            "interval": 1,
+            "scope": 1,
+            "unwindDepth": 64
+        },
+        "dataBufferCount": 0,
+        "events": {
+            "configName": "Investigate Instruction Access",
+            "configType": 1,
+            "cpuTraceSourceMask": 0,
+            "ibsEvents": {
+                "cacheAnalysis": false,
+                "fetch": false,
+                "fetchCallstack": true,
+                "fetchInterval": 0,
+                "fetchL3Miss": false,
+                "loadStoreOnly": false,
+                "op": false,
+                "opCallstack": true,
+                "opCycleCount": true,
+                "opInterval": 0,
+                "opL3Miss": false,
+                "randomize": true
+            },
+            "pmcEvents": {
+                "pmcEventList": [
+                    {
+                        "cntMask": 0,
+                        "collectCallstack": true,
+                        "guest": false,
+                        "host": false,
+                        "hwId": 118,
+                        "interval": 1000000,
+                        "intx": false,
+                        "intxcp": false,
+                        "invertCntMask": false,
+                        "isEdgeDetect": false,
+                        "isFrequencyMode": false,
+                        "isSampling": true,
+                        "mask": 0,
+                        "os": true,
+                        "user": true
+                    },
+                    {
+                        "cntMask": 0,
+                        "collectCallstack": true,
+                        "guest": false,
+                        "host": false,
+                        "hwId": 192,
+                        "interval": 1000000,
+                        "intx": false,
+                        "intxcp": false,
+                        "invertCntMask": false,
+                        "isEdgeDetect": false,
+                        "isFrequencyMode": false,
+                        "isSampling": true,
+                        "mask": 0,
+                        "os": true,
+                        "user": true
+                    },
+                    {
+                        "cntMask": 0,
+                        "collectCallstack": true,
+                        "guest": false,
+                        "host": false,
+                        "hwId": 655,
+                        "interval": 250000,
+                        "intx": false,
+                        "intxcp": false,
+                        "invertCntMask": false,
+                        "isEdgeDetect": false,
+                        "isFrequencyMode": false,
+                        "isSampling": true,
+                        "mask": 7,
+                        "os": true,
+                        "user": true
+                    },
+                    {
+                        "cntMask": 0,
+                        "collectCallstack": true,
+                        "guest": false,
+                        "host": false,
+                        "hwId": 655,
+                        "interval": 250000,
+                        "intx": false,
+                        "intxcp": false,
+                        "invertCntMask": false,
+                        "isEdgeDetect": false,
+                        "isFrequencyMode": false,
+                        "isSampling": true,
+                        "mask": 4,
+                        "os": true,
+                        "user": true
+                    },
+                    {
+                        "cntMask": 0,
+                        "collectCallstack": true,
+                        "guest": false,
+                        "host": false,
+                        "hwId": 398,
+                        "interval": 250000,
+                        "intx": false,
+                        "intxcp": false,
+                        "invertCntMask": false,
+                        "isEdgeDetect": false,
+                        "isFrequencyMode": false,
+                        "isSampling": true,
+                        "mask": 31,
+                        "os": true,
+                        "user": true
+                    },
+                    {
+                        "cntMask": 0,
+                        "collectCallstack": true,
+                        "guest": false,
+                        "host": false,
+                        "hwId": 398,
+                        "interval": 250000,
+                        "intx": false,
+                        "intxcp": false,
+                        "invertCntMask": false,
+                        "isEdgeDetect": false,
+                        "isFrequencyMode": false,
+                        "isSampling": true,
+                        "mask": 24,
+                        "os": true,
+                        "user": true
+                    },
+                    {
+                        "cntMask": 0,
+                        "collectCallstack": true,
+                        "guest": false,
+                        "host": false,
+                        "hwId": 96,
+                        "interval": 25000,
+                        "intx": false,
+                        "intxcp": false,
+                        "invertCntMask": false,
+                        "isEdgeDetect": false,
+                        "isFrequencyMode": false,
+                        "isSampling": true,
+                        "mask": 16,
+                        "os": true,
+                        "user": true
+                    },
+                    {
+                        "cntMask": 0,
+                        "collectCallstack": true,
+                        "guest": false,
+                        "host": false,
+                        "hwId": 100,
+                        "interval": 25000,
+                        "intx": false,
+                        "intxcp": false,
+                        "invertCntMask": false,
+                        "isEdgeDetect": false,
+                        "isFrequencyMode": false,
+                        "isSampling": true,
+                        "mask": 1,
+                        "os": true,
+                        "user": true
+                    },
+                    {
+                        "cntMask": 0,
+                        "collectCallstack": true,
+                        "guest": false,
+                        "host": false,
+                        "hwId": 132,
+                        "interval": 25000,
+                        "intx": false,
+                        "intxcp": false,
+                        "invertCntMask": false,
+                        "isEdgeDetect": false,
+                        "isFrequencyMode": false,
+                        "isSampling": true,
+                        "mask": 0,
+                        "os": true,
+                        "user": true
+                    },
+                    {
+                        "cntMask": 0,
+                        "collectCallstack": true,
+                        "guest": false,
+                        "host": false,
+                        "hwId": 133,
+                        "interval": 25000,
+                        "intx": false,
+                        "intxcp": false,
+                        "invertCntMask": false,
+                        "isEdgeDetect": false,
+                        "isFrequencyMode": false,
+                        "isSampling": true,
+                        "mask": 7,
+                        "os": true,
+                        "user": true
+                    },
+                    {
+                        "cntMask": 0,
+                        "collectCallstack": true,
+                        "guest": false,
+                        "host": false,
+                        "hwId": 148,
+                        "interval": 25000,
+                        "intx": false,
+                        "intxcp": false,
+                        "invertCntMask": false,
+                        "isEdgeDetect": false,
+                        "isFrequencyMode": false,
+                        "isSampling": true,
+                        "mask": 7,
+                        "os": true,
+                        "user": true
+                    }
+                ]
+            }
+        },
+        "flags": {
+            "cssDefaultValues": false,
+            "defaultBranchAnalysis": false,
+            "hasCallstack": false,
+            "maxDataFileSize": 0,
+            "perEventCSSDefault": false,
+            "profileMpi": false,
+            "pythonTraceOptions": false,
+            "traceMpi": false,
+            "traceOpenmp": false,
+            "traceOpenmpMode": 0
+        },
+        "globalFrequency": 0,
+        "globalSamplingInterval": 0,
+        "lbr": false,
+        "livePower": null,
+        "mmapBuffer": 0,
+        "profileConfigFiles": [
+            "inst_access"
+        ],
+        "schedule": {
+            "categoryDurations": [
+                {
+                    "category": 1,
+                    "categoryName": "CPU PROFILE",
+                    "end": 5233347806104908,
+                    "start": 5233342213362189,
+                    "type": 0
+                }
+            ],
+            "elapsed": 5593,
+            "end": 5233347806104908,
+            "endTs": "Fri May 10 15:22:14 2024",
+            "hostDurations": [
+                {
+                    "end": 5233347806104908,
+                    "host": "iit",
+                    "start": 5233342213362189
+                }
+            ],
+            "profileCollectionDataLimitType": 0,
+            "profileDuration": 0,
+            "start": 5233342213362189,
+            "startDelay": 0,
+            "startTs": "Fri May 10 15:22:09 2024",
+            "type": 1
+        },
+        "sessionVersion": 5,
+        "target": {
+            "appArgs": "./sample_graphs/rgg_n_2_20_s0.mtx ",
+            "coreAffinity": "2",
+            "coreMask": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+            "gpuFamily": "",
+            "launchApp": "./hip_output",
+            "profileCores": false,
+            "systemWide": false,
+            "terminateApp": false,
+            "workingDir": "/home/deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr"
+        }
+    },
+    "deviceInfo": {
+        "keys": [
+            0
+        ],
+        "values": [
+            {
+                "keys": [
+                    31,
+                    112,
+                    84,
+                    122,
+                    94,
+                    7,
+                    66,
+                    46,
+                    104,
+                    18,
+                    76,
+                    88,
+                    56,
+                    114,
+                    21,
+                    80,
+                    28,
+                    86,
+                    78,
+                    11,
+                    70,
+                    48,
+                    106,
+                    0,
+                    127,
+                    68,
+                    9,
+                    38,
+                    96,
+                    124,
+                    116,
+                    90,
+                    32,
+                    24,
+                    82,
+                    52,
+                    110,
+                    14,
+                    72,
+                    109,
+                    42,
+                    100,
+                    34,
+                    92,
+                    119,
+                    1,
+                    60,
+                    99,
+                    126,
+                    3,
+                    62,
+                    120,
+                    44,
+                    16,
+                    54,
+                    26,
+                    36,
+                    5,
+                    64,
+                    58,
+                    74,
+                    102,
+                    89,
+                    22,
+                    117,
+                    50,
+                    79,
+                    12,
+                    107,
+                    40,
+                    69,
+                    97,
+                    30,
+                    125,
+                    59,
+                    87,
+                    20,
+                    115,
+                    49,
+                    77,
+                    10,
+                    105,
+                    8,
+                    39,
+                    67,
+                    95,
+                    29,
+                    123,
+                    57,
+                    85,
+                    19,
+                    113,
+                    47,
+                    75,
+                    103,
+                    6,
+                    37,
+                    65,
+                    93,
+                    27,
+                    121,
+                    55,
+                    83,
+                    17,
+                    111,
+                    45,
+                    73,
+                    101,
+                    4,
+                    35,
+                    63,
+                    91,
+                    25,
+                    53,
+                    81,
+                    15,
+                    43,
+                    71,
+                    2,
+                    33,
+                    61,
+                    23,
+                    118,
+                    51,
+                    13,
+                    108,
+                    41,
+                    98
+                ],
+                "values": [
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ],
+                    [
+                        1500000,
+                        2200000
+                    ]
+                ]
+            }
+        ]
+    },
+    "generatedDBs": [
+        {
+            "category": 1,
+            "categoryName": "cpu",
+            "databaseName": "cpu"
+        }
+    ],
+    "hpc": {
+        "hostName": "iit"
+    },
+    "profileType": 1,
+    "translateCommand": "",
+    "translation": [
+        {
+            "aggregateCoreLevel": false,
+            "aggregateInst": true,
+            "aggregateInterval": 1,
+            "asciiFlags": 0,
+            "cachePath": "",
+            "category": 1,
+            "categoryNames": "CPU PROFILE",
+            "dataCoarsenessLevel": 1,
+            "debugSymbolsPath": "",
+            "hostName": "",
+            "mpiInputDir": "/home/deepak/MTP-Files/HIP_hipSYCL_implementation/triangle_counting_csr/AMD_profile_output/AMDuProf-hip_output-EBP_May-10-2024_15-22-08/cpu",
+            "processInlineFunctions": false,
+            "summaryTimelineSz": 5000,
+            "symbolServerDirs": "",
+            "useLegacySymbolDowloader": false
+        }
+    ]
+}

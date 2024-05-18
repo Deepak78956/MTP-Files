@@ -127,11 +127,6 @@ int *graph_coloring(int n, int *offsets, int *values, sycl::queue &q_ct1) {
 
         t_time += temp_time;
 
-        /*
-        DPCT1049:3: The work-group size passed to the SYCL kernel may exceed the
-        limit. To get the device limit, query info::device::max_work_group_size.
-        Adjust the work-group size if needed.
-        */
         q_ct1.parallel_for(sycl::nd_range<3>(sycl::range<3>(1, 1, nb) *
                                                  sycl::range<3>(1, 1, nt),
                                              sycl::range<3>(1, 1, nt)),
